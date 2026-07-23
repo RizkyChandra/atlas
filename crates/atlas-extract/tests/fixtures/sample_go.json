@@ -1,0 +1,351 @@
+{
+  "nodes": [
+    {
+      "id": "sample",
+      "label": "sample.go",
+      "file_type": "code",
+      "source_file": "sample.go",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "atlas_ora_go_server",
+      "label": "Server",
+      "file_type": "code",
+      "source_file": "sample.go",
+      "source_location": "L8",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_newserver",
+      "label": "NewServer()",
+      "file_type": "code",
+      "source_file": "sample.go",
+      "source_location": "L12",
+      "_origin": "ast"
+    },
+    {
+      "id": "atlas_ora_go_server_start",
+      "label": ".Start()",
+      "file_type": "code",
+      "source_file": "sample.go",
+      "source_location": "L16",
+      "_origin": "ast"
+    },
+    {
+      "id": "atlas_ora_go_server_stop",
+      "label": ".Stop()",
+      "file_type": "code",
+      "source_file": "sample.go",
+      "source_location": "L20",
+      "_origin": "ast"
+    },
+    {
+      "id": "atlas_ora_go_logger",
+      "label": "Logger",
+      "file_type": "code",
+      "source_file": "sample.go",
+      "source_location": "L24",
+      "_origin": "ast"
+    },
+    {
+      "id": "atlas_ora_go_reader",
+      "label": "Reader",
+      "file_type": "code",
+      "source_file": "sample.go",
+      "source_location": "L28",
+      "_origin": "ast"
+    },
+    {
+      "id": "atlas_ora_go_readerlogger",
+      "label": "ReaderLogger",
+      "file_type": "code",
+      "source_file": "sample.go",
+      "source_location": "L32",
+      "_origin": "ast"
+    },
+    {
+      "id": "atlas_ora_go_baseprocessor",
+      "label": "BaseProcessor",
+      "file_type": "code",
+      "source_file": "sample.go",
+      "source_location": "L37",
+      "_origin": "ast"
+    },
+    {
+      "id": "atlas_ora_go_result",
+      "label": "Result",
+      "file_type": "code",
+      "source_file": "sample.go",
+      "source_location": "L39",
+      "_origin": "ast"
+    },
+    {
+      "id": "atlas_ora_go_dataprocessor",
+      "label": "DataProcessor",
+      "file_type": "code",
+      "source_file": "sample.go",
+      "source_location": "L43",
+      "_origin": "ast"
+    },
+    {
+      "id": "atlas_ora_go_dataprocessor_build",
+      "label": ".Build()",
+      "file_type": "code",
+      "source_file": "sample.go",
+      "source_location": "L48",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_main",
+      "label": "main()",
+      "file_type": "code",
+      "source_file": "sample.go",
+      "source_location": "L52",
+      "_origin": "ast"
+    }
+  ],
+  "edges": [
+    {
+      "source": "sample",
+      "target": "go_pkg_fmt",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.go",
+      "source_location": "L4",
+      "weight": 1.0,
+      "context": "import",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "go_pkg_net_http",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.go",
+      "source_location": "L5",
+      "weight": 1.0,
+      "context": "import",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "atlas_ora_go_server",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.go",
+      "source_location": "L8",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "sample_newserver",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.go",
+      "source_location": "L12",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_newserver",
+      "target": "atlas_ora_go_server",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.go",
+      "source_location": "L12",
+      "weight": 1.0,
+      "context": "return_type",
+      "_origin": "ast"
+    },
+    {
+      "source": "atlas_ora_go_server",
+      "target": "atlas_ora_go_server_start",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.go",
+      "source_location": "L16",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "atlas_ora_go_server",
+      "target": "atlas_ora_go_server_stop",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.go",
+      "source_location": "L20",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "atlas_ora_go_logger",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.go",
+      "source_location": "L24",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "atlas_ora_go_reader",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.go",
+      "source_location": "L28",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "atlas_ora_go_readerlogger",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.go",
+      "source_location": "L32",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "atlas_ora_go_readerlogger",
+      "target": "atlas_ora_go_logger",
+      "relation": "embeds",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.go",
+      "source_location": "L33",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "atlas_ora_go_readerlogger",
+      "target": "atlas_ora_go_reader",
+      "relation": "embeds",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.go",
+      "source_location": "L34",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "atlas_ora_go_baseprocessor",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.go",
+      "source_location": "L37",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "atlas_ora_go_result",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.go",
+      "source_location": "L39",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "atlas_ora_go_dataprocessor",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.go",
+      "source_location": "L43",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "atlas_ora_go_dataprocessor",
+      "target": "atlas_ora_go_baseprocessor",
+      "relation": "embeds",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.go",
+      "source_location": "L44",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "atlas_ora_go_dataprocessor",
+      "target": "atlas_ora_go_result",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.go",
+      "source_location": "L45",
+      "weight": 1.0,
+      "context": "field",
+      "_origin": "ast"
+    },
+    {
+      "source": "atlas_ora_go_dataprocessor",
+      "target": "atlas_ora_go_dataprocessor_build",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.go",
+      "source_location": "L48",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "atlas_ora_go_dataprocessor_build",
+      "target": "atlas_ora_go_dataprocessor",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.go",
+      "source_location": "L48",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "_origin": "ast"
+    },
+    {
+      "source": "atlas_ora_go_dataprocessor_build",
+      "target": "atlas_ora_go_result",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.go",
+      "source_location": "L48",
+      "weight": 1.0,
+      "context": "return_type",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "sample_main",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.go",
+      "source_location": "L52",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_main",
+      "target": "sample_newserver",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.go",
+      "source_location": "L53",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_main",
+      "target": "atlas_ora_go_server_start",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.go",
+      "source_location": "L54",
+      "weight": 1.0,
+      "_origin": "ast"
+    }
+  ],
+  "hyperedges": [],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

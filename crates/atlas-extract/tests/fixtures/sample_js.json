@@ -1,0 +1,140 @@
+{
+  "nodes": [
+    {
+      "id": "sample",
+      "label": "sample.js",
+      "file_type": "code",
+      "source_file": "sample.js",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_httpclient",
+      "label": "HttpClient",
+      "file_type": "code",
+      "source_file": "sample.js",
+      "source_location": "L3",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_httpclient_constructor",
+      "label": ".constructor()",
+      "file_type": "code",
+      "source_file": "sample.js",
+      "source_location": "L4",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_httpclient_get",
+      "label": ".get()",
+      "file_type": "code",
+      "source_file": "sample.js",
+      "source_location": "L8",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_httpclient_post",
+      "label": ".post()",
+      "file_type": "code",
+      "source_file": "sample.js",
+      "source_location": "L12",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_buildheaders",
+      "label": "buildHeaders()",
+      "file_type": "code",
+      "source_file": "sample.js",
+      "source_location": "L17",
+      "_origin": "ast"
+    }
+  ],
+  "edges": [
+    {
+      "source": "sample",
+      "target": "tmp_atlas_ora_js_models",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "tmp_atlas_ora_js_models_response",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.js",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "sample_httpclient",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.js",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_httpclient",
+      "target": "sample_httpclient_constructor",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.js",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_httpclient",
+      "target": "sample_httpclient_get",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.js",
+      "source_location": "L8",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_httpclient",
+      "target": "sample_httpclient_post",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.js",
+      "source_location": "L12",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "sample_buildheaders",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.js",
+      "source_location": "L17",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_httpclient_post",
+      "target": "sample_httpclient_get",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.js",
+      "source_location": "L13",
+      "weight": 1.0,
+      "_origin": "ast"
+    }
+  ],
+  "hyperedges": [],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

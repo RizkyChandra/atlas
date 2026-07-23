@@ -1,0 +1,163 @@
+{
+  "nodes": [
+    {
+      "id": "sample",
+      "label": "sample.c",
+      "file_type": "code",
+      "source_file": "sample.c",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_validate",
+      "label": "validate()",
+      "file_type": "code",
+      "source_file": "sample.c",
+      "source_location": "L12",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_process",
+      "label": "process()",
+      "file_type": "code",
+      "source_file": "sample.c",
+      "source_location": "L16",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_make_rect",
+      "label": "make_rect()",
+      "file_type": "code",
+      "source_file": "sample.c",
+      "source_location": "L25",
+      "_origin": "ast"
+    },
+    {
+      "id": "rectangle",
+      "label": "Rectangle",
+      "file_type": "code",
+      "source_file": "",
+      "source_location": "",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_main",
+      "label": "main()",
+      "file_type": "code",
+      "source_file": "sample.c",
+      "source_location": "L34",
+      "_origin": "ast"
+    }
+  ],
+  "edges": [
+    {
+      "source": "sample",
+      "target": "stdio",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.c",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "stdlib",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.c",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "string",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.c",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "sample_validate",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.c",
+      "source_location": "L12",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "sample_process",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.c",
+      "source_location": "L16",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "sample_make_rect",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.c",
+      "source_location": "L25",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_make_rect",
+      "target": "rectangle",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.c",
+      "source_location": "L25",
+      "weight": 1.0,
+      "context": "return_type",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "sample_main",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.c",
+      "source_location": "L34",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_process",
+      "target": "sample_validate",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.c",
+      "source_location": "L17",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_main",
+      "target": "sample_process",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.c",
+      "source_location": "L35",
+      "weight": 1.0,
+      "_origin": "ast"
+    }
+  ],
+  "hyperedges": [],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

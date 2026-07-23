@@ -1,0 +1,542 @@
+{
+  "nodes": [
+    {
+      "id": "sample",
+      "label": "sample.rs",
+      "file_type": "code",
+      "source_file": "sample.rs",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_graph",
+      "label": "Graph",
+      "file_type": "code",
+      "source_file": "sample.rs",
+      "source_location": "L3",
+      "_origin": "ast"
+    },
+    {
+      "id": "hashmap",
+      "label": "HashMap",
+      "file_type": "code",
+      "source_file": "",
+      "source_location": "",
+      "_origin": "ast"
+    },
+    {
+      "id": "string",
+      "label": "String",
+      "file_type": "code",
+      "source_file": "",
+      "source_location": "",
+      "_origin": "ast"
+    },
+    {
+      "id": "vec",
+      "label": "Vec",
+      "file_type": "code",
+      "source_file": "",
+      "source_location": "",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_graph_new",
+      "label": ".new()",
+      "file_type": "code",
+      "source_file": "sample.rs",
+      "source_location": "L8",
+      "_origin": "ast"
+    },
+    {
+      "id": "self",
+      "label": "Self",
+      "file_type": "code",
+      "source_file": "",
+      "source_location": "",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_graph_add_node",
+      "label": ".add_node()",
+      "file_type": "code",
+      "source_file": "sample.rs",
+      "source_location": "L12",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_graph_add_edge",
+      "label": ".add_edge()",
+      "file_type": "code",
+      "source_file": "sample.rs",
+      "source_location": "L16",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_build_graph",
+      "label": "build_graph()",
+      "file_type": "code",
+      "source_file": "sample.rs",
+      "source_location": "L21",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_processor",
+      "label": "Processor",
+      "file_type": "code",
+      "source_file": "sample.rs",
+      "source_location": "L29",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_logger",
+      "label": "Logger",
+      "file_type": "code",
+      "source_file": "sample.rs",
+      "source_location": "L33",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_result",
+      "label": "Result",
+      "file_type": "code",
+      "source_file": "sample.rs",
+      "source_location": "L37",
+      "_origin": "ast"
+    },
+    {
+      "id": "t",
+      "label": "T",
+      "file_type": "code",
+      "source_file": "",
+      "source_location": "",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_dataprocessor",
+      "label": "DataProcessor",
+      "file_type": "code",
+      "source_file": "sample.rs",
+      "source_location": "L41",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_dataprocessor_run",
+      "label": ".run()",
+      "file_type": "code",
+      "source_file": "sample.rs",
+      "source_location": "L46",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_dataprocessor_build",
+      "label": ".build()",
+      "file_type": "code",
+      "source_file": "sample.rs",
+      "source_location": "L50",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_graphevent",
+      "label": "GraphEvent",
+      "file_type": "code",
+      "source_file": "sample.rs",
+      "source_location": "L55",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_graphpair",
+      "label": "GraphPair",
+      "file_type": "code",
+      "source_file": "sample.rs",
+      "source_location": "L60",
+      "_origin": "ast"
+    }
+  ],
+  "edges": [
+    {
+      "source": "sample",
+      "target": "hashmap",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.rs",
+      "source_location": "L1",
+      "weight": 1.0,
+      "context": "import",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "sample_graph",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.rs",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_graph",
+      "target": "hashmap",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.rs",
+      "source_location": "L4",
+      "weight": 1.0,
+      "context": "field",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_graph",
+      "target": "string",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.rs",
+      "source_location": "L4",
+      "weight": 1.0,
+      "context": "generic_arg",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_graph",
+      "target": "vec",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.rs",
+      "source_location": "L4",
+      "weight": 1.0,
+      "context": "generic_arg",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_graph",
+      "target": "sample_graph_new",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.rs",
+      "source_location": "L8",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_graph_new",
+      "target": "self",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.rs",
+      "source_location": "L8",
+      "weight": 1.0,
+      "context": "return_type",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_graph",
+      "target": "sample_graph_add_node",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.rs",
+      "source_location": "L12",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_graph_add_node",
+      "target": "string",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.rs",
+      "source_location": "L12",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_graph",
+      "target": "sample_graph_add_edge",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.rs",
+      "source_location": "L16",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_graph_add_edge",
+      "target": "string",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.rs",
+      "source_location": "L16",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "sample_build_graph",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.rs",
+      "source_location": "L21",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_build_graph",
+      "target": "vec",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.rs",
+      "source_location": "L21",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_build_graph",
+      "target": "string",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.rs",
+      "source_location": "L21",
+      "weight": 1.0,
+      "context": "generic_arg",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_build_graph",
+      "target": "sample_graph",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.rs",
+      "source_location": "L21",
+      "weight": 1.0,
+      "context": "return_type",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "sample_processor",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.rs",
+      "source_location": "L29",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "sample_logger",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.rs",
+      "source_location": "L33",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_logger",
+      "target": "sample_processor",
+      "relation": "inherits",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.rs",
+      "source_location": "L33",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "sample_result",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.rs",
+      "source_location": "L37",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_result",
+      "target": "t",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.rs",
+      "source_location": "L38",
+      "weight": 1.0,
+      "context": "field",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "sample_dataprocessor",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.rs",
+      "source_location": "L41",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_dataprocessor",
+      "target": "sample_result",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.rs",
+      "source_location": "L42",
+      "weight": 1.0,
+      "context": "field",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_dataprocessor",
+      "target": "sample_processor",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.rs",
+      "source_location": "L45",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_dataprocessor",
+      "target": "sample_dataprocessor_run",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.rs",
+      "source_location": "L46",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_dataprocessor",
+      "target": "sample_dataprocessor_build",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.rs",
+      "source_location": "L50",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_dataprocessor_build",
+      "target": "sample_dataprocessor",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.rs",
+      "source_location": "L50",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_dataprocessor_build",
+      "target": "sample_result",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.rs",
+      "source_location": "L50",
+      "weight": 1.0,
+      "context": "return_type",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "sample_graphevent",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.rs",
+      "source_location": "L55",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_graphevent",
+      "target": "sample_graph",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.rs",
+      "source_location": "L56",
+      "weight": 1.0,
+      "context": "field",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_graphevent",
+      "target": "sample_dataprocessor",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.rs",
+      "source_location": "L57",
+      "weight": 1.0,
+      "context": "field",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "sample_graphpair",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.rs",
+      "source_location": "L60",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_graphpair",
+      "target": "sample_graph",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.rs",
+      "source_location": "L60",
+      "weight": 1.0,
+      "context": "field",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_graphpair",
+      "target": "sample_result",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.rs",
+      "source_location": "L60",
+      "weight": 1.0,
+      "context": "field",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_graphpair",
+      "target": "sample_dataprocessor",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.rs",
+      "source_location": "L60",
+      "weight": 1.0,
+      "context": "generic_arg",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_build_graph",
+      "target": "sample_graph_new",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.rs",
+      "source_location": "L22",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_build_graph",
+      "target": "sample_graph_add_edge",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.rs",
+      "source_location": "L24",
+      "weight": 1.0,
+      "_origin": "ast"
+    }
+  ],
+  "hyperedges": [],
+  "input_tokens": 0,
+  "output_tokens": 0
+}
