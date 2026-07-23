@@ -48,7 +48,11 @@ where
 {
     let joined = parts
         .into_iter()
-        .map(|p| p.as_ref().trim_matches(|c| c == '_' || c == '.').to_string())
+        .map(|p| {
+            p.as_ref()
+                .trim_matches(|c| c == '_' || c == '.')
+                .to_string()
+        })
         .filter(|p| !p.is_empty())
         .collect::<Vec<_>>()
         .join("_");
@@ -94,7 +98,10 @@ mod tests {
 
     #[test]
     fn make_id_joins_and_strips() {
-        assert_eq!(make_id(["utils", "primitive_value_to_str"]), "utils_primitive_value_to_str");
+        assert_eq!(
+            make_id(["utils", "primitive_value_to_str"]),
+            "utils_primitive_value_to_str"
+        );
         // stray _/. at part edges are trimmed before joining
         assert_eq!(make_id(["utils", ".__init__."]), "utils_init");
         // empty parts dropped
@@ -111,8 +118,14 @@ mod tests {
     #[test]
     fn file_stem_paths() {
         assert_eq!(file_stem(&PathBuf::from("utils.py")), "utils");
-        assert_eq!(file_stem(&PathBuf::from("docs/v1/api/README.md")), "docs/v1/api/README");
+        assert_eq!(
+            file_stem(&PathBuf::from("docs/v1/api/README.md")),
+            "docs/v1/api/README"
+        );
         // and make_id over that stem collapses to the node-id prefix
-        assert_eq!(make_id([file_stem(&PathBuf::from("docs/v1/api/README.md"))]), "docs_v1_api_readme");
+        assert_eq!(
+            make_id([file_stem(&PathBuf::from("docs/v1/api/README.md"))]),
+            "docs_v1_api_readme"
+        );
     }
 }

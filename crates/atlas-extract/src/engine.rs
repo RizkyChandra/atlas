@@ -60,7 +60,11 @@ fn config_for(lang: Lang) -> LanguageConfig {
         },
         Lang::Js => LanguageConfig {
             class_types: &["class_declaration"],
-            function_types: &["function_declaration", "generator_function_declaration", "method_definition"],
+            function_types: &[
+                "function_declaration",
+                "generator_function_declaration",
+                "method_definition",
+            ],
             import_types: &["import_statement", "export_statement"],
             call_types: &["call_expression", "new_expression"],
             name_field: "name",
@@ -70,11 +74,27 @@ fn config_for(lang: Lang) -> LanguageConfig {
             call_accessor_node_types: &["member_expression"],
             call_accessor_field: "property",
             call_accessor_object_field: "object",
-            function_boundary_types: &["function_declaration", "generator_function_declaration", "arrow_function", "method_definition"],
+            function_boundary_types: &[
+                "function_declaration",
+                "generator_function_declaration",
+                "arrow_function",
+                "method_definition",
+            ],
         },
         Lang::Ts => LanguageConfig {
-            class_types: &["class_declaration", "abstract_class_declaration", "interface_declaration", "enum_declaration", "type_alias_declaration"],
-            function_types: &["function_declaration", "generator_function_declaration", "method_definition", "method_signature"],
+            class_types: &[
+                "class_declaration",
+                "abstract_class_declaration",
+                "interface_declaration",
+                "enum_declaration",
+                "type_alias_declaration",
+            ],
+            function_types: &[
+                "function_declaration",
+                "generator_function_declaration",
+                "method_definition",
+                "method_signature",
+            ],
             import_types: &["import_statement", "export_statement"],
             call_types: &["call_expression", "new_expression"],
             name_field: "name",
@@ -84,10 +104,21 @@ fn config_for(lang: Lang) -> LanguageConfig {
             call_accessor_node_types: &["member_expression"],
             call_accessor_field: "property",
             call_accessor_object_field: "object",
-            function_boundary_types: &["function_declaration", "generator_function_declaration", "arrow_function", "method_definition"],
+            function_boundary_types: &[
+                "function_declaration",
+                "generator_function_declaration",
+                "arrow_function",
+                "method_definition",
+            ],
         },
         Lang::Java => LanguageConfig {
-            class_types: &["class_declaration", "interface_declaration", "record_declaration", "enum_declaration", "annotation_type_declaration"],
+            class_types: &[
+                "class_declaration",
+                "interface_declaration",
+                "record_declaration",
+                "enum_declaration",
+                "annotation_type_declaration",
+            ],
             function_types: &["method_declaration", "constructor_declaration"],
             import_types: &["import_declaration"],
             call_types: &["method_invocation", "object_creation_expression"],
@@ -147,7 +178,12 @@ pub fn extract(path: &Path, source: &[u8], lang: Lang) -> ExtractResult {
     parser.set_language(&language(lang)).expect("load grammar");
     let tree = match parser.parse(source, None) {
         Some(t) => t,
-        None => return ExtractResult { nodes: vec![], edges: vec![] },
+        None => {
+            return ExtractResult {
+                nodes: vec![],
+                edges: vec![],
+            }
+        }
     };
 
     let stem = file_stem(path);
@@ -156,7 +192,10 @@ pub fn extract(path: &Path, source: &[u8], lang: Lang) -> ExtractResult {
     // absolute paths and match the *built* graph, so we key the file node off
     // the stem directly (as M1 did) — making it a prefix of every symbol id.
     let file_nid = make_id([stem.as_str()]);
-    let file_label = path.file_name().map(|s| s.to_string_lossy().into_owned()).unwrap_or_default();
+    let file_label = path
+        .file_name()
+        .map(|s| s.to_string_lossy().into_owned())
+        .unwrap_or_default();
 
     let mut ex = Extractor {
         lang,
@@ -188,7 +227,10 @@ pub fn extract(path: &Path, source: &[u8], lang: Lang) -> ExtractResult {
         ex.rationale(root);
     }
 
-    ExtractResult { nodes: ex.nodes, edges: ex.edges }
+    ExtractResult {
+        nodes: ex.nodes,
+        edges: ex.edges,
+    }
 }
 
 struct Extractor<'a> {
@@ -226,11 +268,31 @@ impl<'a> Extractor<'a> {
         if !self.seen.insert(nid.to_string()) {
             return;
         }
-        self.nodes.push(node_map(nid, label, "code", &self.str_path, &format!("L{line}")));
+        self.nodes.push(node_map(
+            nid,
+            label,
+            "code",
+            &self.str_path,
+            &format!("L{line}"),
+        ));
     }
 
-    fn add_edge(&mut self, src: &str, tgt: &str, relation: &str, context: Option<&str>, line: usize) {
-        self.edges.push(edge_map(src, tgt, relation, context, &self.str_path, &format!("L{line}")));
+    fn add_edge(
+        &mut self,
+        src: &str,
+        tgt: &str,
+        relation: &str,
+        context: Option<&str>,
+        line: usize,
+    ) {
+        self.edges.push(edge_map(
+            src,
+            tgt,
+            relation,
+            context,
+            &self.str_path,
+            &format!("L{line}"),
+        ));
     }
 
     /// graphify `ensure_named_node`: resolve a referenced name to an in-file
@@ -357,7 +419,9 @@ impl<'a> Extractor<'a> {
     }
 
     fn handle_class(&mut self, node: Node<'a>, parent_class_nid: Option<&str>) {
-        let Some(name_node) = node.child_by_field_name(self.cfg.name_field) else { return };
+        let Some(name_node) = node.child_by_field_name(self.cfg.name_field) else {
+            return;
+        };
         let class_name = self.text(name_node);
         let class_nid = make_id([self.stem.as_str(), class_name.as_str()]);
         let line = self.line(node);
@@ -474,7 +538,10 @@ impl<'a> Extractor<'a> {
                     "type_identifier" => (self.text(sub), None),
                     "qualified_identifier" => {
                         let tail = sub.child_by_field_name("name");
-                        (tail.map(|n| self.text(n)).unwrap_or_else(|| self.text(sub)), None)
+                        (
+                            tail.map(|n| self.text(n)).unwrap_or_else(|| self.text(sub)),
+                            None,
+                        )
                     }
                     "template_type" => {
                         let name = sub.child_by_field_name("name");
@@ -509,7 +576,9 @@ impl<'a> Extractor<'a> {
     }
 
     fn handle_function(&mut self, node: Node<'a>, parent_class_nid: Option<&str>) {
-        let Some(func_name) = self.resolve_func_name(node) else { return };
+        let Some(func_name) = self.resolve_func_name(node) else {
+            return;
+        };
         if func_name.is_empty() || normalize_id(&func_name).is_empty() {
             return;
         }
@@ -597,7 +666,11 @@ impl<'a> Extractor<'a> {
     }
 
     fn c_func_refs(&mut self, node: Node, func_nid: &str, line: usize) {
-        let collect = if self.lang == Lang::Cpp { cpp_collect_type_refs } else { c_collect_type_refs };
+        let collect = if self.lang == Lang::Cpp {
+            cpp_collect_type_refs
+        } else {
+            c_collect_type_refs
+        };
         // Return type first (graphify order → keep-first dedup keeps return_type).
         if let Some(return_node) = node.child_by_field_name("type") {
             let mut refs = Vec::new();
@@ -635,8 +708,19 @@ impl<'a> Extractor<'a> {
         }
     }
 
-    fn emit_ref_line(&mut self, func_nid: &str, ref_name: &str, role: Role, type_ctx: &str, line: usize) {
-        let ctx = if role == Role::Generic { "generic_arg" } else { type_ctx };
+    fn emit_ref_line(
+        &mut self,
+        func_nid: &str,
+        ref_name: &str,
+        role: Role,
+        type_ctx: &str,
+        line: usize,
+    ) {
+        let ctx = if role == Role::Generic {
+            "generic_arg"
+        } else {
+            type_ctx
+        };
         let tgt = self.ensure_named_node(ref_name);
         if tgt != func_nid {
             self.add_edge(func_nid, &tgt, "references", Some(ctx), line);
@@ -645,7 +729,9 @@ impl<'a> Extractor<'a> {
 
     fn cpp_field(&mut self, node: Node, class_nid: &str) {
         // Skip method prototypes (declarator is/contains a function_declarator).
-        let decls: Vec<Node> = node.children_by_field_name("declarator", &mut node.walk()).collect();
+        let decls: Vec<Node> = node
+            .children_by_field_name("declarator", &mut node.walk())
+            .collect();
         let is_method = decls.iter().any(|d| {
             d.kind() == "function_declarator"
                 || (matches!(d.kind(), "pointer_declarator" | "reference_declarator")
@@ -677,7 +763,11 @@ impl<'a> Extractor<'a> {
             let mut refs = Vec::new();
             java_collect_type_refs(self.source, type_node, false, &mut refs);
             for (name, role) in refs {
-                let ctx = if role == Role::Generic { "generic_arg" } else { "field" };
+                let ctx = if role == Role::Generic {
+                    "generic_arg"
+                } else {
+                    "field"
+                };
                 let tgt = self.ensure_named_node(&name);
                 if tgt != class_nid {
                     self.add_edge(class_nid, &tgt, "references", Some(ctx), line);
@@ -730,7 +820,10 @@ impl<'a> Extractor<'a> {
     fn resolve_relative_import(&self, raw: &str) -> String {
         let dots = raw.chars().take_while(|&c| c == '.').count();
         let module_name = raw.trim_start_matches('.');
-        let mut base = Path::new(&self.str_path).parent().map(|p| p.to_path_buf()).unwrap_or_default();
+        let mut base = Path::new(&self.str_path)
+            .parent()
+            .map(|p| p.to_path_buf())
+            .unwrap_or_default();
         for _ in 0..dots.saturating_sub(1) {
             base = base.parent().map(|p| p.to_path_buf()).unwrap_or_default();
         }
@@ -768,7 +861,9 @@ impl<'a> Extractor<'a> {
         let Some(ms) = module_string else { return };
         let raw = self.text(ms);
         let raw = raw.trim_matches(|c| c == '\'' || c == '"' || c == '`' || c == ' ');
-        let Some((tgt_nid, resolved_stem)) = resolve_js_import_target(raw, &self.path) else { return };
+        let Some((tgt_nid, resolved_stem)) = resolve_js_import_target(raw, &self.path) else {
+            return;
+        };
         let line = self.line(node);
         let f = self.file_nid.clone();
         let ctx = if is_reexport { "re-export" } else { "import" };
@@ -841,10 +936,19 @@ impl<'a> Extractor<'a> {
     fn import_c(&mut self, node: Node) {
         let line = self.line(node);
         for child in kids(node) {
-            if matches!(child.kind(), "string_literal" | "system_lib_string" | "string") {
+            if matches!(
+                child.kind(),
+                "string_literal" | "system_lib_string" | "string"
+            ) {
                 let raw = self.text(child);
                 let raw = raw.trim_matches(|c| c == '"' || c == '<' || c == '>' || c == ' ');
-                let module_name = raw.rsplit('/').next().unwrap_or("").split('.').next().unwrap_or("");
+                let module_name = raw
+                    .rsplit('/')
+                    .next()
+                    .unwrap_or("")
+                    .split('.')
+                    .next()
+                    .unwrap_or("");
                 if !module_name.is_empty() {
                     let tgt = make_id([module_name]);
                     let f = self.file_nid.clone();
@@ -858,9 +962,17 @@ impl<'a> Extractor<'a> {
     // ── call graph ──────────────────────────────────────────────────────────
     fn build_label_map(&mut self) {
         for n in &self.nodes {
-            let (Some(id), Some(label)) = (n.get("id").and_then(Value::as_str), n.get("label").and_then(Value::as_str)) else { continue };
-            let normalised = label.trim_matches(|c| c == '(' || c == ')').trim_start_matches('.');
-            self.label_to_nid.insert(normalised.to_string(), id.to_string());
+            let (Some(id), Some(label)) = (
+                n.get("id").and_then(Value::as_str),
+                n.get("label").and_then(Value::as_str),
+            ) else {
+                continue;
+            };
+            let normalised = label
+                .trim_matches(|c| c == '(' || c == ')')
+                .trim_start_matches('.');
+            self.label_to_nid
+                .insert(normalised.to_string(), id.to_string());
         }
     }
 
@@ -898,11 +1010,16 @@ impl<'a> Extractor<'a> {
         if deferred {
             return;
         }
-        let Some(tgt) = self.label_to_nid.get(&name).cloned() else { return };
+        let Some(tgt) = self.label_to_nid.get(&name).cloned() else {
+            return;
+        };
         if tgt == caller_nid {
             return;
         }
-        if self.seen_call_pairs.insert((caller_nid.to_string(), tgt.clone())) {
+        if self
+            .seen_call_pairs
+            .insert((caller_nid.to_string(), tgt.clone()))
+        {
             let line = self.line(node);
             self.add_edge(caller_nid, &tgt, "calls", Some("call"), line);
         }
@@ -937,13 +1054,19 @@ impl<'a> Extractor<'a> {
                 }
             }
             Lang::Cpp => {
-                let Some(f) = node.child_by_field_name("function") else { return (None, false, None) };
+                let Some(f) = node.child_by_field_name("function") else {
+                    return (None, false, None);
+                };
                 match f.kind() {
                     "identifier" => (Some(self.text(f)), false, None),
                     "field_expression" => {
                         let callee = f.child_by_field_name("field").map(|n| self.text(n));
                         let receiver = f.child_by_field_name("argument").and_then(|o| {
-                            if o.kind() == "identifier" { Some(self.text(o)) } else { None }
+                            if o.kind() == "identifier" {
+                                Some(self.text(o))
+                            } else {
+                                None
+                            }
                         });
                         (callee, true, receiver)
                     }
@@ -971,7 +1094,9 @@ impl<'a> Extractor<'a> {
                         }
                     }
                     if !self.cfg.call_accessor_object_field.is_empty() {
-                        if let Some(obj) = f.child_by_field_name(self.cfg.call_accessor_object_field) {
+                        if let Some(obj) =
+                            f.child_by_field_name(self.cfg.call_accessor_object_field)
+                        {
                             if obj.kind() == "identifier" {
                                 receiver = Some(self.text(obj));
                             }
@@ -1014,7 +1139,10 @@ impl<'a> Extractor<'a> {
         for sub in kids(first) {
             if matches!(sub.kind(), "string" | "concatenated_string") {
                 let raw = self.text(sub);
-                let text = raw.trim_matches(|c| c == '"' || c == '\'').trim().to_string();
+                let text = raw
+                    .trim_matches(|c| c == '"' || c == '\'')
+                    .trim()
+                    .to_string();
                 if text.chars().count() > 20 {
                     return Some((text, first.start_position().row + 1));
                 }
@@ -1036,17 +1164,33 @@ impl<'a> Extractor<'a> {
         let rid = make_id([self.stem.as_str(), "rationale", line.to_string().as_str()]);
         if !self.seen.contains(&rid) {
             self.seen.insert(rid.clone());
-            self.nodes.push(node_map(&rid, &label, "rationale", &self.str_path, &format!("L{line}")));
+            self.nodes.push(node_map(
+                &rid,
+                &label,
+                "rationale",
+                &self.str_path,
+                &format!("L{line}"),
+            ));
         }
-        self.edges.push(edge_map(&rid, parent_nid, "rationale_for", None, &self.str_path, &format!("L{line}")));
+        self.edges.push(edge_map(
+            &rid,
+            parent_nid,
+            "rationale_for",
+            None,
+            &self.str_path,
+            &format!("L{line}"),
+        ));
     }
 
     fn walk_docstrings(&mut self, node: Node, parent_nid: &str) {
         match node.kind() {
             "class_definition" => {
-                let (Some(name_node), Some(body)) =
-                    (node.child_by_field_name("name"), node.child_by_field_name("body"))
-                else { return };
+                let (Some(name_node), Some(body)) = (
+                    node.child_by_field_name("name"),
+                    node.child_by_field_name("body"),
+                ) else {
+                    return;
+                };
                 let class_name = self.text(name_node);
                 let nid = make_id([self.stem.as_str(), class_name.as_str()]);
                 if let Some((text, line)) = self.get_docstring(body) {
@@ -1057,9 +1201,12 @@ impl<'a> Extractor<'a> {
                 }
             }
             "function_definition" => {
-                let (Some(name), Some(body)) =
-                    (node.child_by_field_name("name"), node.child_by_field_name("body"))
-                else { return };
+                let (Some(name), Some(body)) = (
+                    node.child_by_field_name("name"),
+                    node.child_by_field_name("body"),
+                ) else {
+                    return;
+                };
                 let func_name = self.text(name);
                 let nid = if parent_nid != self.file_nid {
                     make_id([parent_nid, func_name.as_str()])
@@ -1109,7 +1256,10 @@ fn py_collect_type_refs(src: &[u8], node: Node, generic: bool, out: &mut Vec<(St
             for c in kids(node) {
                 if c.kind() == "identifier" {
                     let container = text(c);
-                    if !container.is_empty() && !is_type_container(&container) && !is_annotation_noise(&container) {
+                    if !container.is_empty()
+                        && !is_type_container(&container)
+                        && !is_annotation_noise(&container)
+                    {
                         out.push((container, role));
                     }
                 } else if c.kind() == "type_parameter" {
@@ -1147,23 +1297,67 @@ fn py_collect_type_refs(src: &[u8], node: Node, generic: bool, out: &mut Vec<(St
 
 fn is_type_container(s: &str) -> bool {
     const C: &[&str] = &[
-        "list", "dict", "set", "tuple", "frozenset", "type",
-        "List", "Dict", "Set", "Tuple", "FrozenSet", "Type",
-        "Optional", "Union", "Sequence", "Iterable", "Mapping", "MutableMapping",
-        "Iterator", "Callable", "Awaitable", "AsyncIterable", "AsyncIterator", "Coroutine",
-        "Generator", "AsyncGenerator", "ContextManager", "AsyncContextManager",
-        "Annotated", "ClassVar", "Final", "Literal", "Concatenate", "ParamSpec", "TypeVar",
-        "None", "Ellipsis",
+        "list",
+        "dict",
+        "set",
+        "tuple",
+        "frozenset",
+        "type",
+        "List",
+        "Dict",
+        "Set",
+        "Tuple",
+        "FrozenSet",
+        "Type",
+        "Optional",
+        "Union",
+        "Sequence",
+        "Iterable",
+        "Mapping",
+        "MutableMapping",
+        "Iterator",
+        "Callable",
+        "Awaitable",
+        "AsyncIterable",
+        "AsyncIterator",
+        "Coroutine",
+        "Generator",
+        "AsyncGenerator",
+        "ContextManager",
+        "AsyncContextManager",
+        "Annotated",
+        "ClassVar",
+        "Final",
+        "Literal",
+        "Concatenate",
+        "ParamSpec",
+        "TypeVar",
+        "None",
+        "Ellipsis",
     ];
     C.contains(&s)
 }
 
 fn is_annotation_noise(s: &str) -> bool {
     const N: &[&str] = &[
-        "str", "int", "float", "bool", "bytes", "bytearray", "complex", "object",
-        "True", "False",
-        "MagicMock", "Mock", "AsyncMock", "NonCallableMock",
-        "NonCallableMagicMock", "PropertyMock", "patch", "sentinel",
+        "str",
+        "int",
+        "float",
+        "bool",
+        "bytes",
+        "bytearray",
+        "complex",
+        "object",
+        "True",
+        "False",
+        "MagicMock",
+        "Mock",
+        "AsyncMock",
+        "NonCallableMock",
+        "NonCallableMagicMock",
+        "PropertyMock",
+        "patch",
+        "sentinel",
     ];
     N.contains(&s)
 }
@@ -1171,12 +1365,20 @@ fn is_annotation_noise(s: &str) -> bool {
 /// graphify `_is_autogenerated_python`.
 fn is_autogenerated_python(source: &[u8]) -> bool {
     let head = String::from_utf8_lossy(&source[..source.len().min(2048)]);
-    if ["DO NOT EDIT", "@generated", "Generated by the protocol buffer"].iter().any(|m| head.contains(m)) {
+    if [
+        "DO NOT EDIT",
+        "@generated",
+        "Generated by the protocol buffer",
+    ]
+    .iter()
+    .any(|m| head.contains(m))
+    {
         return true;
     }
-    let has_revision = head
-        .lines()
-        .any(|l| l.trim_start().starts_with("revision") && l.contains(':') || l.trim_start().starts_with("revision") && l.contains('='));
+    let has_revision = head.lines().any(|l| {
+        l.trim_start().starts_with("revision") && l.contains(':')
+            || l.trim_start().starts_with("revision") && l.contains('=')
+    });
     if has_revision && head.contains("def upgrade(") && head.contains("down_revision") {
         return true;
     }
@@ -1187,7 +1389,13 @@ fn is_autogenerated_python(source: &[u8]) -> bool {
 }
 
 const RATIONALE_PREFIXES: &[&str] = &[
-    "# NOTE:", "# IMPORTANT:", "# HACK:", "# WHY:", "# RATIONALE:", "# TODO:", "# FIXME:",
+    "# NOTE:",
+    "# IMPORTANT:",
+    "# HACK:",
+    "# WHY:",
+    "# RATIONALE:",
+    "# TODO:",
+    "# FIXME:",
 ];
 
 // ── Java helpers (graphify engine.py) ───────────────────────────────────────
@@ -1220,11 +1428,21 @@ fn java_type_params_in_scope(src: &[u8], node: Node) -> HashSet<String> {
     let mut names = HashSet::new();
     let mut scope = Some(node);
     while let Some(s) = scope {
-        if matches!(s.kind(), "class_declaration" | "interface_declaration" | "record_declaration" | "method_declaration" | "constructor_declaration") {
+        if matches!(
+            s.kind(),
+            "class_declaration"
+                | "interface_declaration"
+                | "record_declaration"
+                | "method_declaration"
+                | "constructor_declaration"
+        ) {
             if let Some(params) = s.child_by_field_name("type_parameters") {
                 for param in kids(params) {
                     if param.kind() == "type_parameter" {
-                        if let Some(nn) = kids(param).into_iter().find(|c| c.kind() == "type_identifier") {
+                        if let Some(nn) = kids(param)
+                            .into_iter()
+                            .find(|c| c.kind() == "type_identifier")
+                        {
                             names.insert(text(nn));
                         }
                     }
@@ -1240,7 +1458,13 @@ fn java_collect_type_refs(src: &[u8], node: Node, generic: bool, out: &mut Vec<(
     java_collect_type_refs_skip(src, node, generic, out, None);
 }
 
-fn java_collect_type_refs_skip(src: &[u8], node: Node, generic: bool, out: &mut Vec<(String, Role)>, skip: Option<&HashSet<String>>) {
+fn java_collect_type_refs_skip(
+    src: &[u8],
+    node: Node,
+    generic: bool,
+    out: &mut Vec<(String, Role)>,
+    skip: Option<&HashSet<String>>,
+) {
     let text = |n: Node| String::from_utf8_lossy(&src[n.byte_range()]).into_owned();
     let owned_skip;
     let skip = match skip {
@@ -1312,13 +1536,20 @@ fn java_collect_type_refs_skip(src: &[u8], node: Node, generic: bool, out: &mut 
 fn java_annotation_names(src: &[u8], node: Node) -> Vec<String> {
     let text = |n: Node| String::from_utf8_lossy(&src[n.byte_range()]).into_owned();
     let mut names = Vec::new();
-    let Some(modifiers) = kids(node).into_iter().find(|c| c.kind() == "modifiers") else { return names };
+    let Some(modifiers) = kids(node).into_iter().find(|c| c.kind() == "modifiers") else {
+        return names;
+    };
     for anno in kids(modifiers) {
         if !matches!(anno.kind(), "marker_annotation" | "annotation") {
             continue;
         }
         let name_node = anno.child_by_field_name("name").or_else(|| {
-            kids(anno).into_iter().find(|s| matches!(s.kind(), "identifier" | "scoped_identifier" | "type_identifier"))
+            kids(anno).into_iter().find(|s| {
+                matches!(
+                    s.kind(),
+                    "identifier" | "scoped_identifier" | "type_identifier"
+                )
+            })
         });
         if let Some(nn) = name_node {
             let full = text(nn);
@@ -1333,46 +1564,186 @@ fn java_annotation_names(src: &[u8], node: Node) -> Vec<String> {
 
 fn is_java_builtin(s: &str) -> bool {
     const B: &[&str] = &[
-        "Object", "String", "CharSequence", "StringBuilder", "StringBuffer",
-        "Number", "Byte", "Short", "Integer", "Long", "Float", "Double",
-        "Boolean", "Character", "Void", "Class", "Enum", "Record", "Math",
-        "System", "Thread", "Runnable", "Comparable", "Iterable", "Cloneable",
-        "AutoCloseable", "Appendable", "Readable", "Process", "ProcessBuilder",
-        "Runtime", "Package", "ThreadLocal", "InheritableThreadLocal",
-        "Throwable", "Exception", "RuntimeException", "Error",
-        "IllegalArgumentException", "IllegalStateException", "NullPointerException",
-        "IndexOutOfBoundsException", "ArrayIndexOutOfBoundsException",
-        "ClassCastException", "NumberFormatException", "ArithmeticException",
-        "UnsupportedOperationException", "InterruptedException",
-        "CloneNotSupportedException", "SecurityException", "StackOverflowError",
-        "OutOfMemoryError", "AssertionError",
-        "Collection", "List", "ArrayList", "LinkedList", "Vector", "Stack",
-        "Set", "HashSet", "LinkedHashSet", "TreeSet", "SortedSet", "NavigableSet",
-        "EnumSet", "Map", "HashMap", "LinkedHashMap", "TreeMap", "SortedMap",
-        "NavigableMap", "Hashtable", "EnumMap", "Properties", "Queue", "Deque",
-        "ArrayDeque", "PriorityQueue", "Iterator", "ListIterator", "Comparator",
-        "Optional", "OptionalInt", "OptionalLong", "OptionalDouble", "Collections",
-        "Arrays", "Objects", "Date", "Calendar", "Random", "UUID", "Scanner",
-        "StringJoiner", "StringTokenizer", "BitSet", "Spliterator", "Locale",
-        "NoSuchElementException", "ConcurrentModificationException",
-        "Stream", "IntStream", "LongStream", "DoubleStream", "Collector", "Collectors",
-        "Function", "BiFunction", "Consumer", "BiConsumer", "Supplier",
-        "Predicate", "BiPredicate", "UnaryOperator", "BinaryOperator",
-        "IntFunction", "ToIntFunction", "ToLongFunction", "ToDoubleFunction",
-        "Callable", "Future", "CompletableFuture", "CompletionStage", "Executor",
-        "ExecutorService", "Executors", "ScheduledExecutorService", "TimeUnit",
-        "ConcurrentHashMap", "ConcurrentMap", "CopyOnWriteArrayList",
-        "BlockingQueue", "CountDownLatch", "Semaphore", "CyclicBarrier",
-        "AtomicInteger", "AtomicLong", "AtomicBoolean", "AtomicReference",
-        "Instant", "Duration", "Period", "LocalDate", "LocalTime", "LocalDateTime",
-        "ZonedDateTime", "OffsetDateTime", "ZoneId", "ZoneOffset", "DayOfWeek",
-        "Month", "Year", "Clock", "DateTimeFormatter",
-        "IOException", "UncheckedIOException", "FileNotFoundException", "File",
-        "InputStream", "OutputStream", "Reader", "Writer", "BufferedReader",
-        "BufferedWriter", "InputStreamReader", "OutputStreamWriter", "FileReader",
-        "FileWriter", "PrintStream", "PrintWriter", "ByteArrayInputStream",
-        "ByteArrayOutputStream", "Serializable", "Closeable", "Path", "Paths", "Files",
-        "BigDecimal", "BigInteger",
+        "Object",
+        "String",
+        "CharSequence",
+        "StringBuilder",
+        "StringBuffer",
+        "Number",
+        "Byte",
+        "Short",
+        "Integer",
+        "Long",
+        "Float",
+        "Double",
+        "Boolean",
+        "Character",
+        "Void",
+        "Class",
+        "Enum",
+        "Record",
+        "Math",
+        "System",
+        "Thread",
+        "Runnable",
+        "Comparable",
+        "Iterable",
+        "Cloneable",
+        "AutoCloseable",
+        "Appendable",
+        "Readable",
+        "Process",
+        "ProcessBuilder",
+        "Runtime",
+        "Package",
+        "ThreadLocal",
+        "InheritableThreadLocal",
+        "Throwable",
+        "Exception",
+        "RuntimeException",
+        "Error",
+        "IllegalArgumentException",
+        "IllegalStateException",
+        "NullPointerException",
+        "IndexOutOfBoundsException",
+        "ArrayIndexOutOfBoundsException",
+        "ClassCastException",
+        "NumberFormatException",
+        "ArithmeticException",
+        "UnsupportedOperationException",
+        "InterruptedException",
+        "CloneNotSupportedException",
+        "SecurityException",
+        "StackOverflowError",
+        "OutOfMemoryError",
+        "AssertionError",
+        "Collection",
+        "List",
+        "ArrayList",
+        "LinkedList",
+        "Vector",
+        "Stack",
+        "Set",
+        "HashSet",
+        "LinkedHashSet",
+        "TreeSet",
+        "SortedSet",
+        "NavigableSet",
+        "EnumSet",
+        "Map",
+        "HashMap",
+        "LinkedHashMap",
+        "TreeMap",
+        "SortedMap",
+        "NavigableMap",
+        "Hashtable",
+        "EnumMap",
+        "Properties",
+        "Queue",
+        "Deque",
+        "ArrayDeque",
+        "PriorityQueue",
+        "Iterator",
+        "ListIterator",
+        "Comparator",
+        "Optional",
+        "OptionalInt",
+        "OptionalLong",
+        "OptionalDouble",
+        "Collections",
+        "Arrays",
+        "Objects",
+        "Date",
+        "Calendar",
+        "Random",
+        "UUID",
+        "Scanner",
+        "StringJoiner",
+        "StringTokenizer",
+        "BitSet",
+        "Spliterator",
+        "Locale",
+        "NoSuchElementException",
+        "ConcurrentModificationException",
+        "Stream",
+        "IntStream",
+        "LongStream",
+        "DoubleStream",
+        "Collector",
+        "Collectors",
+        "Function",
+        "BiFunction",
+        "Consumer",
+        "BiConsumer",
+        "Supplier",
+        "Predicate",
+        "BiPredicate",
+        "UnaryOperator",
+        "BinaryOperator",
+        "IntFunction",
+        "ToIntFunction",
+        "ToLongFunction",
+        "ToDoubleFunction",
+        "Callable",
+        "Future",
+        "CompletableFuture",
+        "CompletionStage",
+        "Executor",
+        "ExecutorService",
+        "Executors",
+        "ScheduledExecutorService",
+        "TimeUnit",
+        "ConcurrentHashMap",
+        "ConcurrentMap",
+        "CopyOnWriteArrayList",
+        "BlockingQueue",
+        "CountDownLatch",
+        "Semaphore",
+        "CyclicBarrier",
+        "AtomicInteger",
+        "AtomicLong",
+        "AtomicBoolean",
+        "AtomicReference",
+        "Instant",
+        "Duration",
+        "Period",
+        "LocalDate",
+        "LocalTime",
+        "LocalDateTime",
+        "ZonedDateTime",
+        "OffsetDateTime",
+        "ZoneId",
+        "ZoneOffset",
+        "DayOfWeek",
+        "Month",
+        "Year",
+        "Clock",
+        "DateTimeFormatter",
+        "IOException",
+        "UncheckedIOException",
+        "FileNotFoundException",
+        "File",
+        "InputStream",
+        "OutputStream",
+        "Reader",
+        "Writer",
+        "BufferedReader",
+        "BufferedWriter",
+        "InputStreamReader",
+        "OutputStreamWriter",
+        "FileReader",
+        "FileWriter",
+        "PrintStream",
+        "PrintWriter",
+        "ByteArrayInputStream",
+        "ByteArrayOutputStream",
+        "Serializable",
+        "Closeable",
+        "Path",
+        "Paths",
+        "Files",
+        "BigDecimal",
+        "BigInteger",
     ];
     B.contains(&s)
 }
@@ -1380,7 +1751,10 @@ fn is_java_builtin(s: &str) -> bool {
 // ── C / C++ helpers ─────────────────────────────────────────────────────────
 
 fn is_c_primitive(kind: &str) -> bool {
-    matches!(kind, "primitive_type" | "sized_type_specifier" | "auto" | "placeholder_type_specifier")
+    matches!(
+        kind,
+        "primitive_type" | "sized_type_specifier" | "auto" | "placeholder_type_specifier"
+    )
 }
 
 fn c_collect_type_refs(src: &[u8], node: Node, generic: bool, out: &mut Vec<(String, Role)>) {
@@ -1396,8 +1770,13 @@ fn c_collect_type_refs(src: &[u8], node: Node, generic: bool, out: &mut Vec<(Str
                 out.push((t, role));
             }
         }
-        "pointer_declarator" | "reference_declarator" | "array_declarator" | "type_qualifier"
-        | "type_descriptor" | "abstract_pointer_declarator" | "abstract_reference_declarator"
+        "pointer_declarator"
+        | "reference_declarator"
+        | "array_declarator"
+        | "type_qualifier"
+        | "type_descriptor"
+        | "abstract_pointer_declarator"
+        | "abstract_reference_declarator"
         | "abstract_array_declarator" => {
             for c in kids(node) {
                 if c.is_named() {
@@ -1442,8 +1821,13 @@ fn cpp_collect_type_refs(src: &[u8], node: Node, generic: bool, out: &mut Vec<(S
                 }
             }
         }
-        "type_descriptor" | "pointer_declarator" | "reference_declarator" | "array_declarator"
-        | "type_qualifier" | "abstract_pointer_declarator" | "abstract_reference_declarator"
+        "type_descriptor"
+        | "pointer_declarator"
+        | "reference_declarator"
+        | "array_declarator"
+        | "type_qualifier"
+        | "abstract_pointer_declarator"
+        | "abstract_reference_declarator"
         | "abstract_array_declarator" => {
             for c in kids(node) {
                 if c.is_named() {
@@ -1463,13 +1847,20 @@ fn get_c_func_name(src: &[u8], node: Node) -> Option<String> {
     if let Some(decl) = node.child_by_field_name("declarator") {
         return get_c_func_name(src, decl);
     }
-    kids(node).into_iter().find(|c| c.kind() == "identifier").map(text)
+    kids(node)
+        .into_iter()
+        .find(|c| c.kind() == "identifier")
+        .map(text)
 }
 
 fn get_cpp_func_name(src: &[u8], node: Node) -> Option<String> {
     let text = |n: Node| String::from_utf8_lossy(&src[n.byte_range()]).into_owned();
     match node.kind() {
-        "identifier" | "field_identifier" | "destructor_name" | "operator_name" | "qualified_identifier" => {
+        "identifier"
+        | "field_identifier"
+        | "destructor_name"
+        | "operator_name"
+        | "qualified_identifier" => {
             return Some(text(node));
         }
         _ => {}
@@ -1477,13 +1868,25 @@ fn get_cpp_func_name(src: &[u8], node: Node) -> Option<String> {
     if let Some(decl) = node.child_by_field_name("declarator") {
         return get_cpp_func_name(src, decl);
     }
-    kids(node).into_iter().find(|c| c.kind() == "identifier").map(text)
+    kids(node)
+        .into_iter()
+        .find(|c| c.kind() == "identifier")
+        .map(text)
 }
 
 // ── JS/TS import resolution (graphify resolution.py) ────────────────────────
 
-const JS_RESOLVE_EXTS: &[&str] = &[".ts", ".tsx", ".d.ts", ".js", ".jsx", ".mjs", ".cjs", ".vue", ".svelte", ".json"];
-const JS_INDEX_FILES: &[&str] = &["index.ts", "index.tsx", "index.js", "index.jsx", "index.mjs", "index.cjs"];
+const JS_RESOLVE_EXTS: &[&str] = &[
+    ".ts", ".tsx", ".d.ts", ".js", ".jsx", ".mjs", ".cjs", ".vue", ".svelte", ".json",
+];
+const JS_INDEX_FILES: &[&str] = &[
+    "index.ts",
+    "index.tsx",
+    "index.js",
+    "index.jsx",
+    "index.mjs",
+    "index.cjs",
+];
 
 /// Returns (target_nid, resolved_stem) for a JS/TS import specifier.
 /// Mirrors `_resolve_js_import_target` → `_resolve_js_import_path`: relative
@@ -1523,7 +1926,10 @@ fn resolve_js_import_path(candidate: &Path) -> std::path::PathBuf {
         }
         _ => {}
     }
-    let name = candidate.file_name().map(|s| s.to_string_lossy().into_owned()).unwrap_or_default();
+    let name = candidate
+        .file_name()
+        .map(|s| s.to_string_lossy().into_owned())
+        .unwrap_or_default();
     let parent = candidate.parent().unwrap_or_else(|| Path::new(""));
     for ext in JS_RESOLVE_EXTS {
         let with_ext = parent.join(format!("{name}{ext}"));
@@ -1565,5 +1971,9 @@ fn normalize_path(p: &Path) -> std::path::PathBuf {
 /// graphify `_file_stem`: full path minus final extension, posix separators.
 fn path_stem_posix(p: &Path) -> String {
     let no_ext = p.with_extension("");
-    no_ext.components().map(|c| c.as_os_str().to_string_lossy()).collect::<Vec<_>>().join("/")
+    no_ext
+        .components()
+        .map(|c| c.as_os_str().to_string_lossy())
+        .collect::<Vec<_>>()
+        .join("/")
 }

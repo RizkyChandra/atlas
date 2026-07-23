@@ -19,7 +19,10 @@ fn cypher_escape(s: &str) -> String {
 /// Sanitise a value used in identifier position (label / rel type): strip all
 /// but `[A-Za-z0-9_]`, require a leading letter, else fall back to a constant.
 fn cypher_label(raw: &str, fallback: &str) -> String {
-    let cleaned: String = raw.chars().filter(|c| c.is_ascii_alphanumeric() || *c == '_').collect();
+    let cleaned: String = raw
+        .chars()
+        .filter(|c| c.is_ascii_alphanumeric() || *c == '_')
+        .collect();
     match cleaned.chars().next() {
         Some(c) if c.is_ascii_alphabetic() => cleaned,
         _ => fallback.to_string(),
@@ -45,7 +48,9 @@ pub fn to_cypher(g: &Graph) -> String {
         let id = node_id(n);
         let label = cypher_escape(attr_str(n, "label").unwrap_or(id));
         let id_esc = cypher_escape(id);
-        let ftype_raw = attr_str(n, "file_type").filter(|s| !s.is_empty()).unwrap_or("unknown");
+        let ftype_raw = attr_str(n, "file_type")
+            .filter(|s| !s.is_empty())
+            .unwrap_or("unknown");
         let ftype = cypher_label(&capitalize(ftype_raw), "Entity");
         lines.push(format!(
             "MERGE (n:{ftype} {{id: '{id_esc}', label: '{label}'}});"
@@ -56,7 +61,9 @@ pub fn to_cypher(g: &Graph) -> String {
     for e in &g.links {
         let u = attr_str(e, "source").unwrap_or("");
         let v = attr_str(e, "target").unwrap_or("");
-        let rel_raw = attr_str(e, "relation").filter(|s| !s.is_empty()).unwrap_or("RELATES_TO");
+        let rel_raw = attr_str(e, "relation")
+            .filter(|s| !s.is_empty())
+            .unwrap_or("RELATES_TO");
         let rel = cypher_label(&rel_raw.to_uppercase(), "RELATES_TO");
         let conf = cypher_escape(attr_str(e, "confidence").unwrap_or("EXTRACTED"));
         let u_esc = cypher_escape(u);

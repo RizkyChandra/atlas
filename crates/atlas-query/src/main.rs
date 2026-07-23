@@ -34,10 +34,13 @@ fn main() -> anyhow::Result<()> {
                 i += 2;
             }
             "--budget" => {
-                budget = args.get(i + 1).and_then(|s| s.parse().ok()).unwrap_or_else(|| {
-                    eprintln!("error: --budget must be an integer");
-                    exit(1)
-                });
+                budget = args
+                    .get(i + 1)
+                    .and_then(|s| s.parse().ok())
+                    .unwrap_or_else(|| {
+                        eprintln!("error: --budget must be an integer");
+                        exit(1)
+                    });
                 i += 2;
             }
             "--dfs" => {
@@ -54,7 +57,9 @@ fn main() -> anyhow::Result<()> {
         eprintln!("error: --graph <graph.json> is required");
         exit(1)
     });
-    let Some(cmd) = pos.first().cloned() else { usage() };
+    let Some(cmd) = pos.first().cloned() else {
+        usage()
+    };
     let g = QGraph::from_file(&graph_path)?;
 
     match cmd.as_str() {

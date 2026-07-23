@@ -1,13 +1,18 @@
 //! atlas CLI entry point.
 //!
-//! M0 registers the graphify command surface as clap subcommands so `atlas
-//! --help` mirrors `graphify`. Only the contract-level commands are wired up so
-//! far (`validate`, `lint`, `roundtrip`); everything else is a stub that names
-//! the milestone that will implement it. Command names/flags are kept identical
-//! to graphify so `atlas` is a drop-in replacement.
+//! Registers the graphify command surface as clap subcommands so `atlas --help`
+//! mirrors `graphify`, and (M10) wires the pipeline commands end-to-end by
+//! calling the sibling crates: extract → graph.json, cluster → GRAPH_REPORT.md,
+//! export, query/path/explain, and serve (MCP over stdio). Command names/flags
+//! are kept identical to graphify so `atlas` is a drop-in replacement.
 
 use clap::{Parser, Subcommand};
 use std::process::ExitCode;
+
+mod pipeline;
+
+/// Default graph location, matching graphify's `graphify-out/graph.json`.
+const DEFAULT_GRAPH: &str = "graphify-out/graph.json";
 
 #[derive(Parser)]
 #[command(
@@ -42,27 +47,73 @@ enum Command {
         emit: bool,
     },
 
-    // ---- surface registered now, implemented in later milestones ----
-    /// [M1/M2] Extract a knowledge graph from a folder.
-    Extract { args: Vec<String> },
+    /// Extract a knowledge graph from a folder.
+    Extract {
+        /// Directory to walk for source files.
+        dir: String,
+        /// Index only code (AST) — atlas is code-only today, so this is the default behavior.
+        #[arg(long)]
+        code_only: bool,
+        /// Skip clustering + graph.html; write graph.json only.
+        #[arg(long)]
+        no_viz: bool,
+    },
+    /// Re-run clustering on an existing graph and rewrite GRAPH_REPORT.md.
+    ClusterOnly {
+        /// Project dir containing graphify-out/graph.json (default: CWD).
+        #[arg(default_value = ".")]
+        dir: String,
+    },
+    /// Export the graph (html/svg/graphml/cypher).
+    Export {
+        /// Output format: html | svg | graphml | cypher.
+        format: String,
+        /// Path to graph.json.
+        #[arg(long, default_value = DEFAULT_GRAPH)]
+        graph: String,
+        /// Write to this file instead of stdout.
+        #[arg(long)]
+        output: Option<String>,
+    },
+    /// Query the graph in natural language.
+    Query {
+        /// The question / search terms.
+        question: String,
+        #[arg(long, default_value = DEFAULT_GRAPH)]
+        graph: String,
+        #[arg(long)]
+        dfs: bool,
+        #[arg(long)]
+        budget: Option<usize>,
+    },
+    /// Trace the shortest path between two nodes.
+    Path {
+        a: String,
+        b: String,
+        #[arg(long, default_value = DEFAULT_GRAPH)]
+        graph: String,
+    },
+    /// Explain one node and its connections.
+    Explain {
+        node: String,
+        #[arg(long, default_value = DEFAULT_GRAPH)]
+        graph: String,
+    },
+    /// Start the MCP server (stdio).
+    Serve {
+        #[arg(long, default_value = DEFAULT_GRAPH)]
+        graph: String,
+        #[arg(long, default_value = "stdio")]
+        transport: String,
+    },
+
+    // ---- surface registered, implemented in later milestones ----
     /// [M2/M3] Re-extract only changed files.
     Update { args: Vec<String> },
-    /// [M3] Re-run clustering on an existing graph.
-    ClusterOnly { args: Vec<String> },
     /// [M3] (Re)name communities.
     Label { args: Vec<String> },
-    /// [M4] Export the graph (html/svg/graphml/cypher/obsidian/...).
-    Export { args: Vec<String> },
-    /// [M5] Query the graph in natural language.
-    Query { args: Vec<String> },
-    /// [M5] Trace the shortest path between two nodes.
-    Path { args: Vec<String> },
-    /// [M5] Explain one node and its connections.
-    Explain { args: Vec<String> },
     /// [M8] Fetch a URL/paper/video and add it to the graph.
     Add { args: Vec<String> },
-    /// [M7] Start the MCP server (stdio/http).
-    Serve { args: Vec<String> },
     /// [M9] Register the skill with an AI assistant.
     Install { args: Vec<String> },
     /// [M9] Remove atlas from all platforms.
@@ -73,30 +124,50 @@ enum Command {
 
 fn main() -> ExitCode {
     let cli = Cli::parse();
-    match cli.command {
-        Command::Validate { path } => run_validate(&path),
-        Command::Lint { path } => run_lint(&path),
-        Command::Roundtrip { path, emit } => run_roundtrip(&path, emit),
+    let r = match cli.command {
+        Command::Validate { path } => return run_validate(&path),
+        Command::Lint { path } => return run_lint(&path),
+        Command::Roundtrip { path, emit } => return run_roundtrip(&path, emit),
+        Command::Extract {
+            dir,
+            code_only,
+            no_viz,
+        } => pipeline::extract(&dir, code_only, no_viz),
+        Command::ClusterOnly { dir } => pipeline::cluster_only(&dir),
+        Command::Export {
+            format,
+            graph,
+            output,
+        } => pipeline::export(&format, &graph, output.as_deref()),
+        Command::Query {
+            question,
+            graph,
+            dfs,
+            budget,
+        } => pipeline::query(&graph, &question, dfs, budget),
+        Command::Path { a, b, graph } => pipeline::path(&graph, &a, &b),
+        Command::Explain { node, graph } => pipeline::explain(&graph, &node),
+        Command::Serve { graph, transport } => pipeline::serve(&graph, &transport),
         other => {
             eprintln!("atlas: `{}` is not implemented yet.", stub_name(&other));
             eprintln!("       (planned for a later milestone — see the port plan)");
-            ExitCode::from(2)
+            return ExitCode::from(2);
+        }
+    };
+    match r {
+        Ok(()) => ExitCode::SUCCESS,
+        Err(e) => {
+            eprintln!("atlas: {e:#}");
+            ExitCode::FAILURE
         }
     }
 }
 
 fn stub_name(c: &Command) -> &'static str {
     match c {
-        Command::Extract { .. } => "extract",
         Command::Update { .. } => "update",
-        Command::ClusterOnly { .. } => "cluster-only",
         Command::Label { .. } => "label",
-        Command::Export { .. } => "export",
-        Command::Query { .. } => "query",
-        Command::Path { .. } => "path",
-        Command::Explain { .. } => "explain",
         Command::Add { .. } => "add",
-        Command::Serve { .. } => "serve",
         Command::Install { .. } => "install",
         Command::Uninstall { .. } => "uninstall",
         Command::Watch { .. } => "watch",
@@ -163,7 +234,11 @@ fn run_roundtrip(path: &str, emit: bool) -> ExitCode {
             if emit {
                 println!("{s}");
             } else {
-                println!("ok: round-tripped {} nodes, {} edges", g.nodes.len(), g.links.len());
+                println!(
+                    "ok: round-tripped {} nodes, {} edges",
+                    g.nodes.len(),
+                    g.links.len()
+                );
             }
             ExitCode::SUCCESS
         }

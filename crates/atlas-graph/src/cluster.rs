@@ -66,10 +66,7 @@ pub fn cluster(model: &Model, resolution: f64) -> Clustering {
     // order (sorted member ids) so identical groupings get identical ids.
     let mut groups: BTreeMap<usize, Vec<String>> = BTreeMap::new();
     for (pos, &c) in part.iter().enumerate() {
-        groups
-            .entry(c)
-            .or_default()
-            .push(model.id(pos).to_string());
+        groups.entry(c).or_default().push(model.id(pos).to_string());
     }
     let mut ordered: Vec<Vec<String>> = groups.into_values().collect();
     for g in &mut ordered {
@@ -145,8 +142,14 @@ fn louvain(adj: &[Vec<(usize, f64)>], resolution: f64) -> Vec<usize> {
 /// modularity gain (staying put is the baseline).
 fn one_level(adj: &[Vec<(usize, f64)>], resolution: f64) -> (Vec<usize>, bool) {
     let n = adj.len();
-    let m2: f64 = adj.iter().flat_map(|nbrs| nbrs.iter().map(|&(_, w)| w)).sum();
-    let k: Vec<f64> = adj.iter().map(|nbrs| nbrs.iter().map(|&(_, w)| w).sum()).collect();
+    let m2: f64 = adj
+        .iter()
+        .flat_map(|nbrs| nbrs.iter().map(|&(_, w)| w))
+        .sum();
+    let k: Vec<f64> = adj
+        .iter()
+        .map(|nbrs| nbrs.iter().map(|&(_, w)| w).sum())
+        .collect();
     let mut comm: Vec<usize> = (0..n).collect();
     let mut k_tot = k.clone();
     let mut moved_any = false;
@@ -209,7 +212,10 @@ fn aggregate(adj: &[Vec<(usize, f64)>], comm: &[usize], c: usize) -> Vec<Vec<(us
 
 /// Modularity of `part` on the graph `adj` at the given resolution.
 fn modularity(adj: &[Vec<(usize, f64)>], part: &[usize], resolution: f64) -> f64 {
-    let m2: f64 = adj.iter().flat_map(|nbrs| nbrs.iter().map(|&(_, w)| w)).sum();
+    let m2: f64 = adj
+        .iter()
+        .flat_map(|nbrs| nbrs.iter().map(|&(_, w)| w))
+        .sum();
     if m2 == 0.0 {
         return 0.0;
     }

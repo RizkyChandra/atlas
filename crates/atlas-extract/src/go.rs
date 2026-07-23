@@ -15,9 +15,28 @@ use std::path::Path;
 use tree_sitter::{Node, Parser};
 
 const GO_PREDECLARED: &[&str] = &[
-    "bool", "byte", "complex64", "complex128", "error", "float32", "float64",
-    "int", "int8", "int16", "int32", "int64", "rune", "string",
-    "uint", "uint8", "uint16", "uint32", "uint64", "uintptr", "any", "comparable",
+    "bool",
+    "byte",
+    "complex64",
+    "complex128",
+    "error",
+    "float32",
+    "float64",
+    "int",
+    "int8",
+    "int16",
+    "int32",
+    "int64",
+    "rune",
+    "string",
+    "uint",
+    "uint8",
+    "uint16",
+    "uint32",
+    "uint64",
+    "uintptr",
+    "any",
+    "comparable",
 ];
 
 #[derive(PartialEq, Eq, Clone, Copy)]
@@ -28,10 +47,17 @@ enum Role {
 
 pub fn extract(path: &Path, source: &[u8]) -> ExtractResult {
     let mut parser = Parser::new();
-    parser.set_language(&tree_sitter_go::LANGUAGE.into()).expect("load go grammar");
+    parser
+        .set_language(&tree_sitter_go::LANGUAGE.into())
+        .expect("load go grammar");
     let tree = match parser.parse(source, None) {
         Some(t) => t,
-        None => return ExtractResult { nodes: vec![], edges: vec![] },
+        None => {
+            return ExtractResult {
+                nodes: vec![],
+                edges: vec![],
+            }
+        }
     };
 
     let stem = file_stem(path);
@@ -59,7 +85,10 @@ pub fn extract(path: &Path, source: &[u8]) -> ExtractResult {
     };
 
     let root = tree.root_node();
-    let label = path.file_name().map(|s| s.to_string_lossy().into_owned()).unwrap_or_default();
+    let label = path
+        .file_name()
+        .map(|s| s.to_string_lossy().into_owned())
+        .unwrap_or_default();
     let fnid = ex.file_nid.clone();
     ex.add_node(&fnid, &label, 1);
     ex.walk(root);
@@ -71,7 +100,10 @@ pub fn extract(path: &Path, source: &[u8]) -> ExtractResult {
     }
     ex.clean_dangling();
 
-    ExtractResult { nodes: ex.nodes, edges: ex.edges }
+    ExtractResult {
+        nodes: ex.nodes,
+        edges: ex.edges,
+    }
 }
 
 struct Go<'a> {
@@ -98,11 +130,31 @@ impl<'a> Go<'a> {
     }
     fn add_node(&mut self, nid: &str, label: &str, line: usize) {
         if self.seen.insert(nid.to_string()) {
-            self.nodes.push(node_map(nid, label, "code", &self.str_path, &format!("L{line}")));
+            self.nodes.push(node_map(
+                nid,
+                label,
+                "code",
+                &self.str_path,
+                &format!("L{line}"),
+            ));
         }
     }
-    fn add_edge(&mut self, src: &str, tgt: &str, relation: &str, context: Option<&str>, line: usize) {
-        self.edges.push(edge_map(src, tgt, relation, context, &self.str_path, &format!("L{line}")));
+    fn add_edge(
+        &mut self,
+        src: &str,
+        tgt: &str,
+        relation: &str,
+        context: Option<&str>,
+        line: usize,
+    ) {
+        self.edges.push(edge_map(
+            src,
+            tgt,
+            relation,
+            context,
+            &self.str_path,
+            &format!("L{line}"),
+        ));
     }
 
     fn ensure_named_node(&mut self, name: &str) -> String {
@@ -128,7 +180,11 @@ impl<'a> Go<'a> {
                     let mut refs = Vec::new();
                     collect_type_refs(self.source, type_node, false, &mut refs);
                     for (name, role) in refs {
-                        let ctx = if role == Role::Generic { "generic_arg" } else { "parameter_type" };
+                        let ctx = if role == Role::Generic {
+                            "generic_arg"
+                        } else {
+                            "parameter_type"
+                        };
                         let tgt = self.ensure_named_node(&name);
                         if tgt != func_nid {
                             self.add_edge(func_nid, &tgt, "references", Some(ctx), line);
@@ -143,12 +199,18 @@ impl<'a> Go<'a> {
                     if p.kind() != "parameter_declaration" {
                         continue;
                     }
-                    let type_node = p.child_by_field_name("type").or_else(|| kids(p).into_iter().find(|c| c.is_named()));
+                    let type_node = p
+                        .child_by_field_name("type")
+                        .or_else(|| kids(p).into_iter().find(|c| c.is_named()));
                     if let Some(tn) = type_node {
                         let mut refs = Vec::new();
                         collect_type_refs(self.source, tn, false, &mut refs);
                         for (name, role) in refs {
-                            let ctx = if role == Role::Generic { "generic_arg" } else { "return_type" };
+                            let ctx = if role == Role::Generic {
+                                "generic_arg"
+                            } else {
+                                "return_type"
+                            };
                             let tgt = self.ensure_named_node(&name);
                             if tgt != func_nid {
                                 self.add_edge(func_nid, &tgt, "references", Some(ctx), line);
@@ -160,7 +222,11 @@ impl<'a> Go<'a> {
                 let mut refs = Vec::new();
                 collect_type_refs(self.source, result, false, &mut refs);
                 for (name, role) in refs {
-                    let ctx = if role == Role::Generic { "generic_arg" } else { "return_type" };
+                    let ctx = if role == Role::Generic {
+                        "generic_arg"
+                    } else {
+                        "return_type"
+                    };
                     let tgt = self.ensure_named_node(&name);
                     if tgt != func_nid {
                         self.add_edge(func_nid, &tgt, "references", Some(ctx), line);
@@ -192,13 +258,20 @@ impl<'a> Go<'a> {
                     for param in kids(receiver) {
                         if param.kind() == "parameter_declaration" {
                             if let Some(type_node) = param.child_by_field_name("type") {
-                                receiver_type = Some(self.text(type_node).trim_start_matches('*').trim().to_string());
+                                receiver_type = Some(
+                                    self.text(type_node)
+                                        .trim_start_matches('*')
+                                        .trim()
+                                        .to_string(),
+                                );
                             }
                             break;
                         }
                     }
                 }
-                let Some(name_node) = node.child_by_field_name("name") else { return };
+                let Some(name_node) = node.child_by_field_name("name") else {
+                    return;
+                };
                 let method_name = self.text(name_node);
                 let line = self.line(node);
                 let method_nid = match receiver_type {
@@ -228,7 +301,9 @@ impl<'a> Go<'a> {
                     if child.kind() != "type_spec" {
                         continue;
                     }
-                    let Some(name_node) = child.child_by_field_name("name") else { continue };
+                    let Some(name_node) = child.child_by_field_name("name") else {
+                        continue;
+                    };
                     let type_name = self.text(name_node);
                     let line = self.line(child);
                     let type_nid = make_id([self.pkg_scope.as_str(), type_name.as_str()]);
@@ -236,7 +311,9 @@ impl<'a> Go<'a> {
                     let f = self.file_nid.clone();
                     self.add_edge(&f, &type_nid, "contains", None, line);
 
-                    let type_body = kids(child).into_iter().find(|tc| matches!(tc.kind(), "struct_type" | "interface_type"));
+                    let type_body = kids(child)
+                        .into_iter()
+                        .find(|tc| matches!(tc.kind(), "struct_type" | "interface_type"));
                     let Some(type_body) = type_body else { continue };
                     if type_body.kind() == "struct_type" {
                         self.go_struct_fields(type_body, &type_nid);
@@ -279,7 +356,9 @@ impl<'a> Go<'a> {
                 }
                 let has_name = kids(field).iter().any(|fc| fc.kind() == "field_identifier");
                 let type_node = field.child_by_field_name("type").or_else(|| {
-                    kids(field).into_iter().find(|fc| fc.is_named() && fc.kind() != "field_identifier")
+                    kids(field)
+                        .into_iter()
+                        .find(|fc| fc.is_named() && fc.kind() != "field_identifier")
                 });
                 let Some(type_node) = type_node else { continue };
                 let line = self.line(field);
@@ -293,7 +372,11 @@ impl<'a> Go<'a> {
                     if !has_name && role == Role::Type {
                         self.add_edge(type_nid, &tgt, "embeds", None, line);
                     } else {
-                        let ctx = if role == Role::Generic { "generic_arg" } else { "field" };
+                        let ctx = if role == Role::Generic {
+                            "generic_arg"
+                        } else {
+                            "field"
+                        };
                         self.add_edge(type_nid, &tgt, "references", Some(ctx), line);
                     }
                 }
@@ -328,7 +411,9 @@ impl<'a> Go<'a> {
     }
 
     fn go_import_spec(&mut self, spec: Node) {
-        let Some(path_node) = spec.child_by_field_name("path") else { return };
+        let Some(path_node) = spec.child_by_field_name("path") else {
+            return;
+        };
         let raw = self.text(path_node);
         let raw = raw.trim_matches('"');
         let tgt = make_id(["go", "pkg", raw]);
@@ -346,9 +431,17 @@ impl<'a> Go<'a> {
     // ── calls ───────────────────────────────────────────────────────────────
     fn build_label_map(&mut self) {
         for n in &self.nodes {
-            let (Some(id), Some(label)) = (n.get("id").and_then(Value::as_str), n.get("label").and_then(Value::as_str)) else { continue };
-            let normalised = label.trim_matches(|c| c == '(' || c == ')').trim_start_matches('.');
-            self.label_to_nid.insert(normalised.to_string(), id.to_string());
+            let (Some(id), Some(label)) = (
+                n.get("id").and_then(Value::as_str),
+                n.get("label").and_then(Value::as_str),
+            ) else {
+                continue;
+            };
+            let normalised = label
+                .trim_matches(|c| c == '(' || c == ')')
+                .trim_start_matches('.');
+            self.label_to_nid
+                .insert(normalised.to_string(), id.to_string());
         }
     }
 
@@ -375,7 +468,11 @@ impl<'a> Go<'a> {
                 if let Some(name) = callee {
                     if !name.is_empty() && !is_builtin_global(&name) {
                         if let Some(tgt) = self.label_to_nid.get(&name).cloned() {
-                            if tgt != caller_nid && self.seen_call_pairs.insert((caller_nid.to_string(), tgt.clone())) {
+                            if tgt != caller_nid
+                                && self
+                                    .seen_call_pairs
+                                    .insert((caller_nid.to_string(), tgt.clone()))
+                            {
                                 let line = self.line(node);
                                 self.add_edge(caller_nid, &tgt, "calls", Some("call"), line);
                             }
@@ -396,7 +493,8 @@ impl<'a> Go<'a> {
             let src = e.get("source").and_then(Value::as_str).unwrap_or("");
             let tgt = e.get("target").and_then(Value::as_str).unwrap_or("");
             let rel = e.get("relation").and_then(Value::as_str).unwrap_or("");
-            valid.contains(src) && (valid.contains(tgt) || matches!(rel, "imports" | "imports_from"))
+            valid.contains(src)
+                && (valid.contains(tgt) || matches!(rel, "imports" | "imports_from"))
         });
     }
 }
@@ -432,7 +530,8 @@ fn collect_type_refs(src: &[u8], node: Node, generic: bool, out: &mut Vec<(Strin
                 }
             }
         }
-        "pointer_type" | "slice_type" | "array_type" | "map_type" | "channel_type" | "parenthesized_type" => {
+        "pointer_type" | "slice_type" | "array_type" | "map_type" | "channel_type"
+        | "parenthesized_type" => {
             for c in kids(node) {
                 if c.is_named() {
                     collect_type_refs(src, c, generic, out);

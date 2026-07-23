@@ -83,7 +83,11 @@ fn slice_boundaries(chars: &[char], max_chars: usize) -> Vec<(usize, usize)> {
     let mut pos = 0;
     while pos < n {
         let hard = (pos + max_chars).min(n);
-        let mut end = if hard < n { best_cut(chars, pos, hard) } else { n };
+        let mut end = if hard < n {
+            best_cut(chars, pos, hard)
+        } else {
+            n
+        };
         if end <= pos {
             end = hard; // defensive: never stall
         }

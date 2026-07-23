@@ -32,8 +32,7 @@ fn worked_goldens_round_trip_losslessly() {
         let raw = std::fs::read_to_string(&gj).unwrap();
         let original: Value = serde_json::from_str(&raw).unwrap();
 
-        let g = Graph::from_json_str(&raw)
-            .unwrap_or_else(|e| panic!("load {}: {e}", gj.display()));
+        let g = Graph::from_json_str(&raw).unwrap_or_else(|e| panic!("load {}: {e}", gj.display()));
         g.validate()
             .unwrap_or_else(|errs| panic!("{} failed schema: {:?}", gj.display(), errs));
 
@@ -41,6 +40,10 @@ fn worked_goldens_round_trip_losslessly() {
         assert_eq!(original, redumped, "round-trip changed {}", gj.display());
         checked += 1;
     }
-    assert!(checked > 0, "no worked/*/graph.json goldens found in {}", dir.display());
+    assert!(
+        checked > 0,
+        "no worked/*/graph.json goldens found in {}",
+        dir.display()
+    );
     eprintln!("round-tripped {checked} worked goldens");
 }

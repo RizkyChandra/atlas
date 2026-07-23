@@ -25,10 +25,7 @@ pub fn ipynb_to_text(path: impl AsRef<Path>) -> String {
 fn cell_source(cell: &Value) -> String {
     match cell.get("source") {
         Some(Value::String(s)) => s.clone(),
-        Some(Value::Array(lines)) => lines
-            .iter()
-            .filter_map(Value::as_str)
-            .collect::<String>(),
+        Some(Value::Array(lines)) => lines.iter().filter_map(Value::as_str).collect::<String>(),
         _ => String::new(),
     }
 }

@@ -69,20 +69,85 @@ const CURSOR_TARGET: &str = ".cursor/rules/graphify.mdc";
 /// The platform table. Core-4 are fully wired in [`install`]; the rest fall
 /// through to the generic skill writer (skill file + version stamp only).
 pub static PLATFORMS: &[PlatformCfg] = &[
-    PlatformCfg { name: "claude", skill_body: SKILL_CLAUDE, project_skill: ".claude/skills/graphify/SKILL.md", user_skill: ".claude/skills/graphify/SKILL.md" },
-    PlatformCfg { name: "codex", skill_body: SKILL_CODEX, project_skill: ".codex/skills/graphify/SKILL.md", user_skill: ".codex/skills/graphify/SKILL.md" },
-    PlatformCfg { name: "gemini", skill_body: SKILL_CLAUDE, project_skill: ".gemini/skills/graphify/SKILL.md", user_skill: ".gemini/skills/graphify/SKILL.md" },
-    PlatformCfg { name: "cursor", skill_body: CURSOR_RULE, project_skill: CURSOR_TARGET, user_skill: CURSOR_TARGET },
+    PlatformCfg {
+        name: "claude",
+        skill_body: SKILL_CLAUDE,
+        project_skill: ".claude/skills/graphify/SKILL.md",
+        user_skill: ".claude/skills/graphify/SKILL.md",
+    },
+    PlatformCfg {
+        name: "codex",
+        skill_body: SKILL_CODEX,
+        project_skill: ".codex/skills/graphify/SKILL.md",
+        user_skill: ".codex/skills/graphify/SKILL.md",
+    },
+    PlatformCfg {
+        name: "gemini",
+        skill_body: SKILL_CLAUDE,
+        project_skill: ".gemini/skills/graphify/SKILL.md",
+        user_skill: ".gemini/skills/graphify/SKILL.md",
+    },
+    PlatformCfg {
+        name: "cursor",
+        skill_body: CURSOR_RULE,
+        project_skill: CURSOR_TARGET,
+        user_skill: CURSOR_TARGET,
+    },
     // table-only: real target paths, generic writer, no bespoke config wiring yet.
-    PlatformCfg { name: "opencode", skill_body: SKILL_CLAUDE, project_skill: ".opencode/skills/graphify/SKILL.md", user_skill: ".config/opencode/skills/graphify/SKILL.md" },
-    PlatformCfg { name: "kilo", skill_body: SKILL_CLAUDE, project_skill: ".kilo/skills/graphify/SKILL.md", user_skill: ".config/kilo/skills/graphify/SKILL.md" },
-    PlatformCfg { name: "aider", skill_body: SKILL_CLAUDE, project_skill: ".aider/graphify/SKILL.md", user_skill: ".aider/graphify/SKILL.md" },
-    PlatformCfg { name: "copilot", skill_body: SKILL_CLAUDE, project_skill: ".copilot/skills/graphify/SKILL.md", user_skill: ".copilot/skills/graphify/SKILL.md" },
-    PlatformCfg { name: "droid", skill_body: SKILL_CLAUDE, project_skill: ".factory/skills/graphify/SKILL.md", user_skill: ".factory/skills/graphify/SKILL.md" },
-    PlatformCfg { name: "kiro", skill_body: SKILL_CLAUDE, project_skill: ".kiro/skills/graphify/SKILL.md", user_skill: ".kiro/skills/graphify/SKILL.md" },
-    PlatformCfg { name: "amp", skill_body: SKILL_CLAUDE, project_skill: ".agents/skills/graphify/SKILL.md", user_skill: ".config/agents/skills/graphify/SKILL.md" },
-    PlatformCfg { name: "agents", skill_body: SKILL_CLAUDE, project_skill: ".agents/skills/graphify/SKILL.md", user_skill: ".agents/skills/graphify/SKILL.md" },
-    PlatformCfg { name: "devin", skill_body: SKILL_CLAUDE, project_skill: ".devin/skills/graphify/SKILL.md", user_skill: ".config/devin/skills/graphify/SKILL.md" },
+    PlatformCfg {
+        name: "opencode",
+        skill_body: SKILL_CLAUDE,
+        project_skill: ".opencode/skills/graphify/SKILL.md",
+        user_skill: ".config/opencode/skills/graphify/SKILL.md",
+    },
+    PlatformCfg {
+        name: "kilo",
+        skill_body: SKILL_CLAUDE,
+        project_skill: ".kilo/skills/graphify/SKILL.md",
+        user_skill: ".config/kilo/skills/graphify/SKILL.md",
+    },
+    PlatformCfg {
+        name: "aider",
+        skill_body: SKILL_CLAUDE,
+        project_skill: ".aider/graphify/SKILL.md",
+        user_skill: ".aider/graphify/SKILL.md",
+    },
+    PlatformCfg {
+        name: "copilot",
+        skill_body: SKILL_CLAUDE,
+        project_skill: ".copilot/skills/graphify/SKILL.md",
+        user_skill: ".copilot/skills/graphify/SKILL.md",
+    },
+    PlatformCfg {
+        name: "droid",
+        skill_body: SKILL_CLAUDE,
+        project_skill: ".factory/skills/graphify/SKILL.md",
+        user_skill: ".factory/skills/graphify/SKILL.md",
+    },
+    PlatformCfg {
+        name: "kiro",
+        skill_body: SKILL_CLAUDE,
+        project_skill: ".kiro/skills/graphify/SKILL.md",
+        user_skill: ".kiro/skills/graphify/SKILL.md",
+    },
+    PlatformCfg {
+        name: "amp",
+        skill_body: SKILL_CLAUDE,
+        project_skill: ".agents/skills/graphify/SKILL.md",
+        user_skill: ".config/agents/skills/graphify/SKILL.md",
+    },
+    PlatformCfg {
+        name: "agents",
+        skill_body: SKILL_CLAUDE,
+        project_skill: ".agents/skills/graphify/SKILL.md",
+        user_skill: ".agents/skills/graphify/SKILL.md",
+    },
+    PlatformCfg {
+        name: "devin",
+        skill_body: SKILL_CLAUDE,
+        project_skill: ".devin/skills/graphify/SKILL.md",
+        user_skill: ".config/devin/skills/graphify/SKILL.md",
+    },
 ];
 
 /// CLI aliases resolved to a real table key.
@@ -96,13 +161,13 @@ fn canonical(name: &str) -> &str {
 /// Look up a platform config, error on unknown.
 pub fn platform(name: &str) -> Result<&'static PlatformCfg> {
     let name = canonical(name);
-    PLATFORMS
-        .iter()
-        .find(|p| p.name == name)
-        .with_context(|| {
-            let known: Vec<&str> = PLATFORMS.iter().map(|p| p.name).collect();
-            format!("unknown platform '{name}'. Choose from: {}", known.join(", "))
-        })
+    PLATFORMS.iter().find(|p| p.name == name).with_context(|| {
+        let known: Vec<&str> = PLATFORMS.iter().map(|p| p.name).collect();
+        format!(
+            "unknown platform '{name}'. Choose from: {}",
+            known.join(", ")
+        )
+    })
 }
 
 /// Resolve the skill destination for a platform under `base`.
@@ -110,7 +175,11 @@ pub fn platform(name: &str) -> Result<&'static PlatformCfg> {
 /// `base` is the project root (project scope) or the user's home dir (user scope).
 pub fn skill_destination(name: &str, base: &Path, project: bool) -> Result<PathBuf> {
     let cfg = platform(name)?;
-    let rel = if project { cfg.project_skill } else { cfg.user_skill };
+    let rel = if project {
+        cfg.project_skill
+    } else {
+        cfg.user_skill
+    };
     Ok(base.join(rel))
 }
 
@@ -124,7 +193,11 @@ pub fn install(platform_name: &str, base: &Path, project: bool) -> Result<()> {
         return write_cursor_rule(base);
     }
 
-    let dst = base.join(if project { cfg.project_skill } else { cfg.user_skill });
+    let dst = base.join(if project {
+        cfg.project_skill
+    } else {
+        cfg.user_skill
+    });
     copy_skill(&dst, cfg.skill_body)?;
 
     match cfg.name {
@@ -153,7 +226,11 @@ pub fn uninstall(platform_name: &str, base: &Path, project: bool) -> Result<()> 
         return Ok(());
     }
 
-    let dst = base.join(if project { cfg.project_skill } else { cfg.user_skill });
+    let dst = base.join(if project {
+        cfg.project_skill
+    } else {
+        cfg.user_skill
+    });
     remove_skill(&dst)?;
 
     match cfg.name {
@@ -455,7 +532,10 @@ mod tests {
         assert!(skill.exists(), "SKILL.md written");
         let body = fs::read_to_string(&skill).unwrap();
         assert!(!body.trim().is_empty(), "embedded skill non-empty");
-        assert!(body.contains("graphify"), "skill body looks like graphify content");
+        assert!(
+            body.contains("graphify"),
+            "skill body looks like graphify content"
+        );
         // CLAUDE.md registered.
         let cmd = root.join(".claude/CLAUDE.md");
         assert!(cmd.exists());
@@ -474,7 +554,10 @@ mod tests {
         install("cursor", &root, true).unwrap();
         let rule = root.join(".cursor/rules/graphify.mdc");
         let body = fs::read_to_string(&rule).unwrap();
-        assert!(body.contains("alwaysApply: true"), "cursor rule has alwaysApply");
+        assert!(
+            body.contains("alwaysApply: true"),
+            "cursor rule has alwaysApply"
+        );
         uninstall("cursor", &root, true).unwrap();
         assert!(!rule.exists());
         fs::remove_dir_all(&root).ok();
@@ -485,9 +568,12 @@ mod tests {
         let root = tmp("codex");
         install("codex", &root, true).unwrap();
         assert!(root.join(".codex/skills/graphify/SKILL.md").exists());
-        assert!(fs::read_to_string(root.join("AGENTS.md")).unwrap().contains("## graphify"));
+        assert!(fs::read_to_string(root.join("AGENTS.md"))
+            .unwrap()
+            .contains("## graphify"));
         let hooks: serde_json::Value =
-            serde_json::from_str(&fs::read_to_string(root.join(".codex/hooks.json")).unwrap()).unwrap();
+            serde_json::from_str(&fs::read_to_string(root.join(".codex/hooks.json")).unwrap())
+                .unwrap();
         assert!(hooks["hooks"]["PreToolUse"].as_array().unwrap().len() >= 1);
         uninstall("codex", &root, true).unwrap();
         assert!(!root.join(".codex/skills/graphify/SKILL.md").exists());
@@ -499,9 +585,16 @@ mod tests {
         let root = tmp("gemini");
         install("gemini", &root, true).unwrap();
         assert!(root.join(".gemini/skills/graphify/SKILL.md").exists());
-        assert!(fs::read_to_string(root.join("GEMINI.md")).unwrap().contains("## graphify"));
+        assert!(fs::read_to_string(root.join("GEMINI.md"))
+            .unwrap()
+            .contains("## graphify"));
         uninstall("gemini", &root, true).unwrap();
-        assert!(!root.join("GEMINI.md").exists() || !fs::read_to_string(root.join("GEMINI.md")).unwrap().contains("## graphify"));
+        assert!(
+            !root.join("GEMINI.md").exists()
+                || !fs::read_to_string(root.join("GEMINI.md"))
+                    .unwrap()
+                    .contains("## graphify")
+        );
         fs::remove_dir_all(&root).ok();
     }
 

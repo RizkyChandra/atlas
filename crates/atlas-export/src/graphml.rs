@@ -43,7 +43,11 @@ fn collect(items: &[Attrs], scope: &'static str, skip: &[&str], keys: &mut Vec<K
                 continue;
             }
             if !keys.iter().any(|x| x.scope == scope && x.name == *k) {
-                keys.push(Key { scope, name: k.clone(), ty: val_type(v) });
+                keys.push(Key {
+                    scope,
+                    name: k.clone(),
+                    ty: val_type(v),
+                });
             }
         }
     }
@@ -131,9 +135,18 @@ mod tests {
         assert_eq!(xml.matches("<edge ").count(), g.links.len());
         // attrs surface as <data>, and every one is closed (structural balance).
         assert!(xml.contains("<data key="));
-        assert_eq!(xml.matches("<data key=").count(), xml.matches("</data>").count());
-        assert_eq!(xml.matches("<node ").count(), xml.matches("</node>").count());
-        assert_eq!(xml.matches("<edge ").count(), xml.matches("</edge>").count());
+        assert_eq!(
+            xml.matches("<data key=").count(),
+            xml.matches("</data>").count()
+        );
+        assert_eq!(
+            xml.matches("<node ").count(),
+            xml.matches("</node>").count()
+        );
+        assert_eq!(
+            xml.matches("<edge ").count(),
+            xml.matches("</edge>").count()
+        );
     }
 
     #[test]

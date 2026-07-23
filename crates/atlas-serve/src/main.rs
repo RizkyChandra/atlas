@@ -7,7 +7,10 @@ use clap::Parser;
 use std::io::{BufRead, Write};
 
 #[derive(Parser)]
-#[command(name = "atlas-serve", about = "Serve an atlas/graphify graph over MCP (stdio).")]
+#[command(
+    name = "atlas-serve",
+    about = "Serve an atlas/graphify graph over MCP (stdio)."
+)]
 struct Args {
     /// Path to graph.json.
     #[arg(long, default_value = "graphify-out/graph.json")]
@@ -38,13 +41,21 @@ fn main() -> Result<()> {
         anyhow::bail!(
             "http transport not yet implemented (host={}, port={}, path={}, api_key={:?}, \
              stateless={}, session_timeout={}); use --transport stdio.",
-            args.host, args.port, args.path, args.api_key, args.stateless, args.session_timeout
+            args.host,
+            args.port,
+            args.path,
+            args.api_key,
+            args.stateless,
+            args.session_timeout
         );
     }
 
     let qg = QGraph::from_file(&args.graph)
         .map_err(|e| anyhow::anyhow!("loading graph {}: {e}", args.graph))?;
-    eprintln!("atlas-serve: loaded {} — serving MCP over stdio", args.graph);
+    eprintln!(
+        "atlas-serve: loaded {} — serving MCP over stdio",
+        args.graph
+    );
 
     let stdin = std::io::stdin();
     let mut stdout = std::io::stdout();

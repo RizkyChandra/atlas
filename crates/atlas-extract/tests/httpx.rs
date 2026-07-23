@@ -40,7 +40,10 @@ fn canon(m: &Map<String, Value>, file_nid: &str) -> String {
         if s.is_empty() {
             String::new()
         } else {
-            Path::new(s).file_name().map(|b| b.to_string_lossy().into_owned()).unwrap_or_else(|| s.to_string())
+            Path::new(s)
+                .file_name()
+                .map(|b| b.to_string_lossy().into_owned())
+                .unwrap_or_else(|| s.to_string())
         }
     };
 
@@ -60,7 +63,10 @@ fn canon(m: &Map<String, Value>, file_nid: &str) -> String {
 }
 
 fn canon_set(items: &[Value], file_nid: &str) -> Vec<String> {
-    let mut v: Vec<String> = items.iter().map(|it| canon(it.as_object().unwrap(), file_nid)).collect();
+    let mut v: Vec<String> = items
+        .iter()
+        .map(|it| canon(it.as_object().unwrap(), file_nid))
+        .collect();
     v.sort();
     v
 }
@@ -70,7 +76,11 @@ fn check(file: &str) {
     let got = atlas_extract::extract_file(&path).expect("extract");
     let my_file_nid = make_id([file_stem(Path::new(&path)).as_str()]);
 
-    let fixture = std::fs::read_to_string(format!("{}/tests/fixtures/{file}.json", env!("CARGO_MANIFEST_DIR"))).expect("fixture");
+    let fixture = std::fs::read_to_string(format!(
+        "{}/tests/fixtures/{file}.json",
+        env!("CARGO_MANIFEST_DIR")
+    ))
+    .expect("fixture");
     let oracle: Value = serde_json::from_str(&fixture).expect("parse fixture");
     // Oracle ids are keyed off the bare stem == basename-without-ext.
     let oracle_file_nid = make_id([file_stem(Path::new(&format!("{file}.py"))).as_str()]);

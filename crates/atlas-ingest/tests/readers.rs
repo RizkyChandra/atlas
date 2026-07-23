@@ -7,7 +7,9 @@ use atlas_ingest::{chunk_text, csv_reader, ipynb, markdown};
 use std::path::PathBuf;
 
 fn fixture(name: &str) -> PathBuf {
-    PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("tests/fixtures").join(name)
+    PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+        .join("tests/fixtures")
+        .join(name)
 }
 
 fn attr<'a>(m: &'a serde_json::Map<String, serde_json::Value>, k: &str) -> &'a str {
@@ -25,13 +27,17 @@ fn markdown_emits_doc_node_and_reference_edges() {
 
     // Exactly two `references` edges: the [x](./y.md) link and the [[wiki]]
     // link. The external URL and the image must be skipped.
-    let refs: Vec<&_> = ex
-        .links_with_relation("references")
-        .collect();
+    let refs: Vec<&_> = ex.links_with_relation("references").collect();
     assert_eq!(refs.len(), 2, "only sibling-doc links become references");
     let targets: Vec<&str> = refs.iter().map(|e| attr(e, "target")).collect();
-    assert!(targets.iter().any(|t| t.ends_with("y_md")), "targets: {targets:?}");
-    assert!(targets.iter().any(|t| t.ends_with("wiki_md")), "targets: {targets:?}");
+    assert!(
+        targets.iter().any(|t| t.ends_with("y_md")),
+        "targets: {targets:?}"
+    );
+    assert!(
+        targets.iter().any(|t| t.ends_with("wiki_md")),
+        "targets: {targets:?}"
+    );
 
     // Headings become nodes with `contains` edges.
     assert!(ex.nodes.iter().any(|n| attr(n, "label") == "Subsection"));
@@ -143,7 +149,10 @@ fn docx_round_trip_non_empty() {
 
     let text = atlas_ingest::office::docx_to_text(&path);
     let _ = std::fs::remove_file(&path);
-    assert!(text.contains("Hello from a docx paragraph"), "extracted: {text:?}");
+    assert!(
+        text.contains("Hello from a docx paragraph"),
+        "extracted: {text:?}"
+    );
     assert!(text.contains("Second paragraph line"));
 }
 
@@ -174,8 +183,8 @@ fn write_zip(path: &std::path::Path, entries: &[(&str, &str)]) {
     use std::io::Write;
     let file = std::fs::File::create(path).unwrap();
     let mut zip = zip::ZipWriter::new(file);
-    let opts: zip::write::SimpleFileOptions =
-        zip::write::SimpleFileOptions::default().compression_method(zip::CompressionMethod::Deflated);
+    let opts: zip::write::SimpleFileOptions = zip::write::SimpleFileOptions::default()
+        .compression_method(zip::CompressionMethod::Deflated);
     for (name, body) in entries {
         zip.start_file(*name, opts).unwrap();
         zip.write_all(body.as_bytes()).unwrap();

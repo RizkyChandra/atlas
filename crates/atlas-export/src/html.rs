@@ -199,11 +199,25 @@ mod tests {
         let html = super::to_html(&g);
         assert!(html.starts_with("<!DOCTYPE html>"));
         // No external script/style/link src or href pointing at a URL.
-        for pat in ["src=\"http", "src='http", "href=\"http", "href='http", "@import", "//unpkg", "//cdn"] {
-            assert!(!html.contains(pat), "external resource reference found: {pat}");
+        for pat in [
+            "src=\"http",
+            "src='http",
+            "href=\"http",
+            "href='http",
+            "@import",
+            "//unpkg",
+            "//cdn",
+        ] {
+            assert!(
+                !html.contains(pat),
+                "external resource reference found: {pat}"
+            );
         }
         // No stray http(s):// URL anywhere in the document.
-        assert!(!html.contains("http://") && !html.contains("https://"), "raw URL present");
+        assert!(
+            !html.contains("http://") && !html.contains("https://"),
+            "raw URL present"
+        );
     }
 
     #[test]

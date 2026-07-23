@@ -21,3 +21,21 @@ petgraph = "0.6"
 [profile.release]
 lto = true
 strip = true
+
+# cargo-dist: single-binary releases built on tag by .github/workflows/release.yml.
+[workspace.metadata.dist]
+cargo-dist-version = "0.28.0"
+ci = "github"
+installers = ["shell", "powershell"]
+targets = [
+    "x86_64-unknown-linux-gnu",
+    "aarch64-unknown-linux-gnu",
+    "x86_64-apple-darwin",
+    "aarch64-apple-darwin",
+    "x86_64-pc-windows-msvc",
+    "aarch64-pc-windows-msvc",
+]
+
+[profile.dist]
+inherits = "release"
+lto = true

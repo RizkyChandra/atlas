@@ -60,7 +60,10 @@ pub fn extract_file(path: impl AsRef<Path>) -> std::io::Result<ExtractResult> {
         "go" => go::extract(path, &source),
         "rs" => rust_lang::extract(path, &source),
         // Unknown extension: empty graph (graphify returns nothing for these).
-        _ => ExtractResult { nodes: vec![], edges: vec![] },
+        _ => ExtractResult {
+            nodes: vec![],
+            edges: vec![],
+        },
     };
 
     let (nodes, edges) = rewire_infile_stubs(raw.nodes, raw.edges);
@@ -77,28 +80,50 @@ pub fn extract_file(path: impl AsRef<Path>) -> std::io::Result<ExtractResult> {
 /// and the orphaned stub is dropped. This is why the built `graph.json` shows a
 /// forward-referenced type as its real node, not a bare stub.
 fn rewire_infile_stubs(nodes: Vec<Attrs>, edges: Vec<Attrs>) -> (Vec<Attrs>, Vec<Attrs>) {
-    let norm = |label: &str| label.trim_matches(|c| c == '(' || c == ')').trim_start_matches('.').to_string();
+    let norm = |label: &str| {
+        label
+            .trim_matches(|c| c == '(' || c == ')')
+            .trim_start_matches('.')
+            .to_string()
+    };
 
     // normalized label → first real (sourced) node id.
-    let mut label_to_real: std::collections::HashMap<String, String> = std::collections::HashMap::new();
+    let mut label_to_real: std::collections::HashMap<String, String> =
+        std::collections::HashMap::new();
     for n in &nodes {
-        let sourced = n.get("source_file").and_then(Value::as_str).map(|s| !s.is_empty()).unwrap_or(false);
+        let sourced = n
+            .get("source_file")
+            .and_then(Value::as_str)
+            .map(|s| !s.is_empty())
+            .unwrap_or(false);
         if !sourced {
             continue;
         }
-        if let (Some(id), Some(label)) = (n.get("id").and_then(Value::as_str), n.get("label").and_then(Value::as_str)) {
-            label_to_real.entry(norm(label)).or_insert_with(|| id.to_string());
+        if let (Some(id), Some(label)) = (
+            n.get("id").and_then(Value::as_str),
+            n.get("label").and_then(Value::as_str),
+        ) {
+            label_to_real
+                .entry(norm(label))
+                .or_insert_with(|| id.to_string());
         }
     }
 
     // stub id → real id (only stubs whose label matches a distinct real node).
     let mut remap: std::collections::HashMap<String, String> = std::collections::HashMap::new();
     for n in &nodes {
-        let sourced = n.get("source_file").and_then(Value::as_str).map(|s| !s.is_empty()).unwrap_or(false);
+        let sourced = n
+            .get("source_file")
+            .and_then(Value::as_str)
+            .map(|s| !s.is_empty())
+            .unwrap_or(false);
         if sourced {
             continue;
         }
-        if let (Some(id), Some(label)) = (n.get("id").and_then(Value::as_str), n.get("label").and_then(Value::as_str)) {
+        if let (Some(id), Some(label)) = (
+            n.get("id").and_then(Value::as_str),
+            n.get("label").and_then(Value::as_str),
+        ) {
             if let Some(real) = label_to_real.get(&norm(label)) {
                 if real != id {
                     remap.insert(id.to_string(), real.clone());
@@ -112,7 +137,12 @@ fn rewire_infile_stubs(nodes: Vec<Attrs>, edges: Vec<Attrs>) -> (Vec<Attrs>, Vec
 
     let nodes: Vec<Attrs> = nodes
         .into_iter()
-        .filter(|n| n.get("id").and_then(Value::as_str).map(|id| !remap.contains_key(id)).unwrap_or(true))
+        .filter(|n| {
+            n.get("id")
+                .and_then(Value::as_str)
+                .map(|id| !remap.contains_key(id))
+                .unwrap_or(true)
+        })
         .collect();
     let edges: Vec<Attrs> = edges
         .into_iter()
@@ -134,30 +164,44 @@ fn rewire_infile_stubs(nodes: Vec<Attrs>, edges: Vec<Attrs>) -> (Vec<Attrs>, Vec
 
 /// graphify `build.py::dedupe_nodes`: collapse nodes sharing an `id`,
 /// last-writer-wins on attributes, first-appearance order.
-fn dedupe_nodes(nodes: Vec<Attrs>) -> Vec<Attrs> {
+pub fn dedupe_nodes(nodes: Vec<Attrs>) -> Vec<Attrs> {
     let mut order: Vec<String> = Vec::new();
     let mut by_id: std::collections::HashMap<String, Attrs> = std::collections::HashMap::new();
     for n in nodes {
-        let Some(id) = n.get("id").and_then(Value::as_str) else { continue };
+        let Some(id) = n.get("id").and_then(Value::as_str) else {
+            continue;
+        };
         let id = id.to_string();
         if !by_id.contains_key(&id) {
             order.push(id.clone());
         }
         by_id.insert(id, n);
     }
-    order.into_iter().map(|id| by_id.remove(&id).unwrap()).collect()
+    order
+        .into_iter()
+        .map(|id| by_id.remove(&id).unwrap())
+        .collect()
 }
 
 /// graphify `build.py::dedupe_edges`: collapse exact parallel edges by
 /// `(source, target, relation)`, keeping the first occurrence.
-fn dedupe_edges(edges: Vec<Attrs>) -> Vec<Attrs> {
+pub fn dedupe_edges(edges: Vec<Attrs>) -> Vec<Attrs> {
     let mut seen: HashSet<(String, String, String)> = HashSet::new();
     let mut out = Vec::with_capacity(edges.len());
     for e in edges {
         let key = (
-            e.get("source").and_then(Value::as_str).unwrap_or("").to_string(),
-            e.get("target").and_then(Value::as_str).unwrap_or("").to_string(),
-            e.get("relation").and_then(Value::as_str).unwrap_or("").to_string(),
+            e.get("source")
+                .and_then(Value::as_str)
+                .unwrap_or("")
+                .to_string(),
+            e.get("target")
+                .and_then(Value::as_str)
+                .unwrap_or("")
+                .to_string(),
+            e.get("relation")
+                .and_then(Value::as_str)
+                .unwrap_or("")
+                .to_string(),
         );
         if seen.insert(key) {
             out.push(e);
@@ -217,21 +261,94 @@ pub(crate) fn kids(n: tree_sitter::Node) -> Vec<tree_sitter::Node> {
 /// god-nodes as constructor/coercion call targets (JS + Python builtins).
 pub(crate) fn is_builtin_global(s: &str) -> bool {
     const G: &[&str] = &[
-        "String", "Number", "Boolean", "Object", "Array", "Symbol", "BigInt",
-        "Date", "RegExp", "Error", "TypeError", "RangeError", "SyntaxError",
-        "ReferenceError", "EvalError", "URIError",
-        "Promise", "Map", "Set", "WeakMap", "WeakSet", "JSON", "Math",
-        "Reflect", "Proxy", "Intl",
-        "parseInt", "parseFloat", "isNaN", "isFinite",
-        "encodeURIComponent", "decodeURIComponent", "encodeURI", "decodeURI",
-        "URL", "URLSearchParams", "FormData", "Blob", "File",
-        "Headers", "Request", "Response", "AbortController", "AbortSignal",
-        "TextEncoder", "TextDecoder", "console",
-        "str", "int", "float", "bool", "list", "dict", "set", "tuple", "bytes",
-        "len", "range", "enumerate", "zip", "map", "filter", "sum", "min", "max",
-        "print", "open", "isinstance", "type", "super", "sorted", "reversed",
-        "any", "all", "abs", "round", "next", "iter", "hash", "id", "repr",
-        "callable", "getattr", "setattr", "hasattr", "delattr", "vars", "dir",
+        "String",
+        "Number",
+        "Boolean",
+        "Object",
+        "Array",
+        "Symbol",
+        "BigInt",
+        "Date",
+        "RegExp",
+        "Error",
+        "TypeError",
+        "RangeError",
+        "SyntaxError",
+        "ReferenceError",
+        "EvalError",
+        "URIError",
+        "Promise",
+        "Map",
+        "Set",
+        "WeakMap",
+        "WeakSet",
+        "JSON",
+        "Math",
+        "Reflect",
+        "Proxy",
+        "Intl",
+        "parseInt",
+        "parseFloat",
+        "isNaN",
+        "isFinite",
+        "encodeURIComponent",
+        "decodeURIComponent",
+        "encodeURI",
+        "decodeURI",
+        "URL",
+        "URLSearchParams",
+        "FormData",
+        "Blob",
+        "File",
+        "Headers",
+        "Request",
+        "Response",
+        "AbortController",
+        "AbortSignal",
+        "TextEncoder",
+        "TextDecoder",
+        "console",
+        "str",
+        "int",
+        "float",
+        "bool",
+        "list",
+        "dict",
+        "set",
+        "tuple",
+        "bytes",
+        "len",
+        "range",
+        "enumerate",
+        "zip",
+        "map",
+        "filter",
+        "sum",
+        "min",
+        "max",
+        "print",
+        "open",
+        "isinstance",
+        "type",
+        "super",
+        "sorted",
+        "reversed",
+        "any",
+        "all",
+        "abs",
+        "round",
+        "next",
+        "iter",
+        "hash",
+        "id",
+        "repr",
+        "callable",
+        "getattr",
+        "setattr",
+        "hasattr",
+        "delattr",
+        "vars",
+        "dir",
     ];
     G.contains(&s)
 }

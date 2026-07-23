@@ -146,7 +146,9 @@ fn uninstall_one(dir: &Path, name: &str, marker: &str, marker_end: &str) -> Resu
         return Ok(format!("removed {name} hook"));
     }
     fs::write(&path, format!("{new}\n"))?;
-    Ok(format!("atlas removed from {name} (other content preserved)"))
+    Ok(format!(
+        "atlas removed from {name} (other content preserved)"
+    ))
 }
 
 #[cfg(unix)]
@@ -170,7 +172,12 @@ pub fn install(path: &Path) -> Result<String> {
     let dir = hooks_dir(&root)?;
     let pinned = pinned_exe();
     let commit = install_one(&dir, "post-commit", &hook_script(&pinned), HOOK_MARKER)?;
-    let checkout = install_one(&dir, "post-checkout", &checkout_script(&pinned), CHECKOUT_MARKER)?;
+    let checkout = install_one(
+        &dir,
+        "post-checkout",
+        &checkout_script(&pinned),
+        CHECKOUT_MARKER,
+    )?;
     Ok(format!("post-commit: {commit}\npost-checkout: {checkout}"))
 }
 
@@ -264,7 +271,9 @@ mod tests {
 
         uninstall(&root).unwrap();
         assert!(!pc.exists());
-        assert!(status(&root).unwrap().contains("post-commit: not installed"));
+        assert!(status(&root)
+            .unwrap()
+            .contains("post-commit: not installed"));
         fs::remove_dir_all(&root).ok();
     }
 

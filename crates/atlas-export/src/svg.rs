@@ -126,13 +126,19 @@ pub fn to_svg(g: &Graph) -> String {
     // edges first (under the nodes)
     out.push_str("  <g stroke=\"#aaaaaa\">\n");
     for e in &g.links {
-        let (s, t) = match (attr_str(e, "source").and_then(|v| idx.get(v)),
-                            attr_str(e, "target").and_then(|v| idx.get(v))) {
+        let (s, t) = match (
+            attr_str(e, "source").and_then(|v| idx.get(v)),
+            attr_str(e, "target").and_then(|v| idx.get(v)),
+        ) {
             (Some(s), Some(t)) => (*s, *t),
             _ => continue,
         };
         let extracted = attr_str(e, "confidence").unwrap_or("EXTRACTED") == "EXTRACTED";
-        let (dash, opacity) = if extracted { ("", 0.6) } else { (" stroke-dasharray=\"4,4\"", 0.3) };
+        let (dash, opacity) = if extracted {
+            ("", 0.6)
+        } else {
+            (" stroke-dasharray=\"4,4\"", 0.3)
+        };
         let (x0, y0) = pos[s];
         let (x1, y1) = pos[t];
         out.push_str(&format!(

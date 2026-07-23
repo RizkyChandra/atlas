@@ -108,9 +108,9 @@ pub struct PathResult {
 /// Result of [`QGraph::query`].
 #[derive(Debug, Clone)]
 pub struct QueryResult {
-    pub mode: &'static str, // "bfs" | "dfs"
-    pub seeds: Vec<String>, // resolved seed node ids
-    pub nodes: Vec<String>, // subgraph node ids (seeds first)
+    pub mode: &'static str,           // "bfs" | "dfs"
+    pub seeds: Vec<String>,           // resolved seed node ids
+    pub nodes: Vec<String>,           // subgraph node ids (seeds first)
     pub edges: Vec<(String, String)>, // discovery edges (source id, target id)
 }
 
@@ -138,7 +138,10 @@ impl QGraph {
 
     /// Display label for a node id (falls back to the id itself). For rendering.
     pub fn label_for_id(&self, id: &str) -> String {
-        self.idx.get(id).map(|&ni| self.label_of(ni)).unwrap_or_else(|| id.to_string())
+        self.idx
+            .get(id)
+            .map(|&ni| self.label_of(ni))
+            .unwrap_or_else(|| id.to_string())
     }
 
     fn node_attrs(&self, ni: NodeIndex) -> &Attrs {
@@ -151,7 +154,11 @@ impl QGraph {
     fn label_of(&self, ni: NodeIndex) -> String {
         let a = self.node_attrs(ni);
         let l = attr(a, "label");
-        if l.is_empty() { attr(a, "id").to_string() } else { l.to_string() }
+        if l.is_empty() {
+            attr(a, "id").to_string()
+        } else {
+            l.to_string()
+        }
     }
     /// Total incident edges, counting parallels (matches NetworkX DiGraph.degree
     /// = in_degree + out_degree on the multigraph graphify loads for `explain`).
@@ -209,7 +216,9 @@ impl QGraph {
             if !cn.is_empty() {
                 cn.to_string()
             } else {
-                a.get("community").map(|v| v.to_string()).unwrap_or_default()
+                a.get("community")
+                    .map(|v| v.to_string())
+                    .unwrap_or_default()
             }
         };
         let mut connections = Vec::new();
@@ -315,7 +324,10 @@ impl QGraph {
         if let Some(e) = self.g.find_edge(u, v) {
             (self.g[e], true)
         } else {
-            let e = self.g.find_edge(v, u).expect("path neighbours share an edge");
+            let e = self
+                .g
+                .find_edge(v, u)
+                .expect("path neighbours share an edge");
             (self.g[e], false)
         }
     }
@@ -330,7 +342,10 @@ impl QGraph {
             .collect();
         if terms.is_empty() {
             // All-stopword query: fall back to raw searchable tokens.
-            terms = tokens(question).into_iter().filter(|t| searchable(t)).collect();
+            terms = tokens(question)
+                .into_iter()
+                .filter(|t| searchable(t))
+                .collect();
         }
         // One seed per term: its best `find_node` match. Dedup, keep order.
         let mut seeds: Vec<NodeIndex> = Vec::new();
@@ -343,7 +358,12 @@ impl QGraph {
         }
         let mode = if dfs { "dfs" } else { "bfs" };
         if seeds.is_empty() {
-            return QueryResult { mode, seeds: Vec::new(), nodes: Vec::new(), edges: Vec::new() };
+            return QueryResult {
+                mode,
+                seeds: Vec::new(),
+                nodes: Vec::new(),
+                edges: Vec::new(),
+            };
         }
         let (nodes, edges) = self.expand(&seeds, budget, dfs);
         QueryResult {
@@ -378,8 +398,7 @@ impl QGraph {
             v.dedup();
             v
         };
-        let expandable =
-            |n: NodeIndex| seed_set.contains(&n) || self.degree(n) < hub_threshold;
+        let expandable = |n: NodeIndex| seed_set.contains(&n) || self.degree(n) < hub_threshold;
 
         if dfs {
             // Depth-limited DFS.
@@ -489,7 +508,11 @@ impl PathResult {
             } else {
                 format!(" [{}]", h.confidence)
             };
-            let rel = if h.relation.is_empty() { "related" } else { &h.relation };
+            let rel = if h.relation.is_empty() {
+                "related"
+            } else {
+                &h.relation
+            };
             if h.forward {
                 seg.push_str(&format!(" --{rel}{conf}--> {}", label_of(&h.to)));
             } else {

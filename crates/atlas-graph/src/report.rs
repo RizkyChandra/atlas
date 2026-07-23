@@ -59,7 +59,12 @@ pub fn render_report(model: &Model, clustering: &Clustering, root: &str, today: 
     lines.push(String::new());
     lines.push("## God Nodes (most connected - your core abstractions)".into());
     for (i, node) in god_nodes(model, 10).iter().enumerate() {
-        lines.push(format!("{}. `{}` - {} edges", i + 1, node.label, node.degree));
+        lines.push(format!(
+            "{}. `{}` - {} edges",
+            i + 1,
+            node.label,
+            node.degree
+        ));
     }
 
     // --- Surprising Connections ---
@@ -93,7 +98,11 @@ pub fn render_report(model: &Model, clustering: &Clustering, root: &str, today: 
             .map(|p| model.label(p))
             .collect();
         let shown: Vec<&str> = if real.is_empty() {
-            members.iter().filter_map(|id| model.pos_of(id)).map(|p| model.label(p)).collect()
+            members
+                .iter()
+                .filter_map(|id| model.pos_of(id))
+                .map(|p| model.label(p))
+                .collect()
         } else {
             real
         };

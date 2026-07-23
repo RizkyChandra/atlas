@@ -18,7 +18,9 @@ fn inline_link_re() -> &'static Regex {
     // [text](target "title") — negative lookbehind for '!' excludes images.
     // Rust `regex` has no lookbehind, so we match an optional leading char and
     // reject when it's '!' in code (see scan below).
-    RE.get_or_init(|| Regex::new(r"(?:^|[^!])\[[^\]]*\]\(\s*<?([^)\s>]+)>?(?:\s+[^)]*)?\)").unwrap())
+    RE.get_or_init(|| {
+        Regex::new(r"(?:^|[^!])\[[^\]]*\]\(\s*<?([^)\s>]+)>?(?:\s+[^)]*)?\)").unwrap()
+    })
 }
 
 fn ref_def_re() -> &'static Regex {
@@ -97,7 +99,8 @@ fn normpath(p: &Path) -> String {
         match comp {
             Component::CurDir => {}
             Component::ParentDir => {
-                if matches!(out.last().map(String::as_str), Some(s) if s != "..") && !out.is_empty() {
+                if matches!(out.last().map(String::as_str), Some(s) if s != "..") && !out.is_empty()
+                {
                     out.pop();
                 } else {
                     out.push("..".into());
@@ -136,16 +139,30 @@ pub fn extract_markdown(path: impl AsRef<Path>) -> Extraction {
         .map(|s| s.to_string_lossy().into_owned())
         .unwrap_or_default();
     seen_ids.insert(file_nid.clone());
-    out.nodes.push(node(&file_nid, &file_label, "document", &str_path, Some("L1")));
+    out.nodes.push(node(
+        &file_nid,
+        &file_label,
+        "document",
+        &str_path,
+        Some("L1"),
+    ));
 
-    let add_link = |raw: &str, line: usize, out: &mut Extraction, linked: &mut std::collections::HashSet<String>| {
+    let add_link = |raw: &str,
+                    line: usize,
+                    out: &mut Extraction,
+                    linked: &mut std::collections::HashSet<String>| {
         if let Some(resolved) = resolve_link(raw, source_dir) {
             let tgt_nid = make_id([resolved.as_str()]);
             if tgt_nid == file_nid || !linked.insert(tgt_nid.clone()) {
                 return;
             }
-            out.edges
-                .push(edge(&file_nid, &tgt_nid, "references", &str_path, Some(&format!("L{line}"))));
+            out.edges.push(edge(
+                &file_nid,
+                &tgt_nid,
+                "references",
+                &str_path,
+                Some(&format!("L{line}")),
+            ));
         }
     };
 
@@ -183,8 +200,13 @@ pub fn extract_markdown(path: impl AsRef<Path>) -> Extraction {
                 h_nid = make_id([stem.as_str(), title, &line_num.to_string()]);
             }
             if seen_ids.insert(h_nid.clone()) {
-                out.nodes
-                    .push(node(&h_nid, title, "document", &str_path, Some(&format!("L{line_num}"))));
+                out.nodes.push(node(
+                    &h_nid,
+                    title,
+                    "document",
+                    &str_path,
+                    Some(&format!("L{line_num}")),
+                ));
             }
             while heading_stack.last().is_some_and(|(l, _)| *l >= level) {
                 heading_stack.pop();
@@ -193,8 +215,13 @@ pub fn extract_markdown(path: impl AsRef<Path>) -> Extraction {
                 .last()
                 .map(|(_, id)| id.clone())
                 .unwrap_or_else(|| file_nid.clone());
-            out.edges
-                .push(edge(&parent, &h_nid, "contains", &str_path, Some(&format!("L{line_num}"))));
+            out.edges.push(edge(
+                &parent,
+                &h_nid,
+                "contains",
+                &str_path,
+                Some(&format!("L{line_num}")),
+            ));
             heading_stack.push((level, h_nid));
         }
     }

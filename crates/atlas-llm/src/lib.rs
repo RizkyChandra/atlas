@@ -53,7 +53,10 @@ pub struct Backend {
 // ── env helpers ───────────────────────────────────────────────────────────────
 
 fn env_opt(key: &str) -> Option<String> {
-    env::var(key).ok().map(|s| s.trim().to_string()).filter(|s| !s.is_empty())
+    env::var(key)
+        .ok()
+        .map(|s| s.trim().to_string())
+        .filter(|s| !s.is_empty())
 }
 
 fn env_or(key: &str, default: &str) -> String {
@@ -98,7 +101,11 @@ fn resolve_ollama_base_url() -> Option<String> {
         h = format!("http://{h}");
     }
     let h = h.trim_end_matches('/').to_string();
-    Some(if h.ends_with("/v1") { h } else { format!("{h}/v1") })
+    Some(if h.ends_with("/v1") {
+        h
+    } else {
+        format!("{h}/v1")
+    })
 }
 
 // ── backend table (ports graphify BACKENDS) ────────────────────────────────────
@@ -120,7 +127,10 @@ pub fn build(name: &str) -> Result<Backend> {
     Ok(match name {
         "gemini" => mk(
             Kind::OpenAiCompat,
-            env_or("GEMINI_BASE_URL", "https://generativelanguage.googleapis.com/v1beta/openai/"),
+            env_or(
+                "GEMINI_BASE_URL",
+                "https://generativelanguage.googleapis.com/v1beta/openai/",
+            ),
             env_opt("GRAPHIFY_GEMINI_MODEL").unwrap_or_else(|| "gemini-3-flash-preview".into()),
             first_env(&["GEMINI_API_KEY", "GOOGLE_API_KEY"]).unwrap_or_default(),
             Some(0.0),
@@ -142,7 +152,8 @@ pub fn build(name: &str) -> Result<Backend> {
         "openai" => mk(
             Kind::OpenAiCompat,
             env_or("OPENAI_BASE_URL", "https://api.openai.com/v1"),
-            first_env(&["GRAPHIFY_OPENAI_MODEL", "OPENAI_MODEL"]).unwrap_or_else(|| "gpt-4.1-mini".into()),
+            first_env(&["GRAPHIFY_OPENAI_MODEL", "OPENAI_MODEL"])
+                .unwrap_or_else(|| "gpt-4.1-mini".into()),
             env_or("OPENAI_API_KEY", ""),
             Some(0.0),
         ),
@@ -165,7 +176,8 @@ pub fn build(name: &str) -> Result<Backend> {
             let mut b = mk(
                 Kind::Azure,
                 env_or("AZURE_OPENAI_ENDPOINT", ""),
-                first_env(&["GRAPHIFY_AZURE_MODEL", "AZURE_OPENAI_DEPLOYMENT"]).unwrap_or_else(|| "gpt-4o".into()),
+                first_env(&["GRAPHIFY_AZURE_MODEL", "AZURE_OPENAI_DEPLOYMENT"])
+                    .unwrap_or_else(|| "gpt-4o".into()),
                 env_or("AZURE_OPENAI_API_KEY", ""),
                 Some(0.0),
             );
@@ -180,7 +192,13 @@ pub fn build(name: &str) -> Result<Backend> {
             String::new(),
             Some(0.0),
         ),
-        "claude-cli" => mk(Kind::ClaudeCli, String::new(), "claude-code-plan".into(), String::new(), Some(0.0)),
+        "claude-cli" => mk(
+            Kind::ClaudeCli,
+            String::new(),
+            "claude-code-plan".into(),
+            String::new(),
+            Some(0.0),
+        ),
         other => bail!("unknown backend {other:?}"),
     })
 }
@@ -333,7 +351,11 @@ impl Backend {
 
 /// Parse `Retry-After` (delta-seconds only) into a delay.
 fn retry_after(resp: &reqwest::blocking::Response) -> Option<Duration> {
-    let raw = resp.headers().get(reqwest::header::RETRY_AFTER)?.to_str().ok()?;
+    let raw = resp
+        .headers()
+        .get(reqwest::header::RETRY_AFTER)?
+        .to_str()
+        .ok()?;
     let secs: f64 = raw.trim().parse().ok()?;
     Some(Duration::from_secs_f64(secs.max(0.0)))
 }
@@ -365,7 +387,9 @@ fn complete_claude_cli(system: &str, user: &str) -> Result<String> {
         .stdout(Stdio::piped())
         .stderr(Stdio::piped())
         .spawn()
-        .map_err(|e| anyhow!("claude CLI not found on $PATH ({e}); install from https://claude.ai/code"))?;
+        .map_err(|e| {
+            anyhow!("claude CLI not found on $PATH ({e}); install from https://claude.ai/code")
+        })?;
     child
         .stdin
         .take()

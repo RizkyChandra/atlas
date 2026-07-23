@@ -17,10 +17,10 @@ pub mod csv_reader;
 pub mod ipynb;
 pub mod markdown;
 
-#[cfg(feature = "pdf")]
-pub mod pdf;
 #[cfg(feature = "office")]
 pub mod office;
+#[cfg(feature = "pdf")]
+pub mod pdf;
 
 pub use chunk::{chunk_text, Chunk};
 
@@ -51,7 +51,13 @@ fn as_map(v: Value) -> Attrs {
 
 /// Build a doc/structural node. `location` is a graphify `source_location`
 /// (e.g. `"L1"`) or `None`.
-pub(crate) fn node(id: &str, label: &str, file_type: &str, source_file: &str, location: Option<&str>) -> Attrs {
+pub(crate) fn node(
+    id: &str,
+    label: &str,
+    file_type: &str,
+    source_file: &str,
+    location: Option<&str>,
+) -> Attrs {
     as_map(json!({
         "id": id,
         "label": label,
@@ -63,7 +69,13 @@ pub(crate) fn node(id: &str, label: &str, file_type: &str, source_file: &str, lo
 
 /// Build an EXTRACTED edge (weight 1.0), matching graphify's deterministic
 /// doc-edge shape.
-pub(crate) fn edge(source: &str, target: &str, relation: &str, source_file: &str, location: Option<&str>) -> Attrs {
+pub(crate) fn edge(
+    source: &str,
+    target: &str,
+    relation: &str,
+    source_file: &str,
+    location: Option<&str>,
+) -> Attrs {
     as_map(json!({
         "source": source,
         "target": target,

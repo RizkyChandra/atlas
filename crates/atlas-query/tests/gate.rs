@@ -58,8 +58,16 @@ fn path_connected_every_hop_is_a_real_edge() {
         .collect();
     // Chain is contiguous and each step is a genuine edge.
     for h in &p.hops {
-        let key = (h.from.clone().min(h.to.clone()), h.from.clone().max(h.to.clone()));
-        assert!(real.contains(&key), "hop {}->{} must be a real edge", h.from, h.to);
+        let key = (
+            h.from.clone().min(h.to.clone()),
+            h.from.clone().max(h.to.clone()),
+        );
+        assert!(
+            real.contains(&key),
+            "hop {}->{} must be a real edge",
+            h.from,
+            h.to
+        );
     }
     // Endpoints line up head-to-tail.
     for w in p.hops.windows(2) {
@@ -88,14 +96,26 @@ fn path_disconnected_returns_none() {
 fn query_returns_scoped_subgraph_within_budget() {
     let g = load();
     let r = g.query("client", 1500, false);
-    assert!(!r.nodes.is_empty(), "obvious term yields a non-empty subgraph");
-    assert!(r.seeds.contains(&"client".to_string()), "seeds on the matching node");
-    assert!(r.nodes.contains(&"client".to_string()), "subgraph contains the match");
+    assert!(
+        !r.nodes.is_empty(),
+        "obvious term yields a non-empty subgraph"
+    );
+    assert!(
+        r.seeds.contains(&"client".to_string()),
+        "seeds on the matching node"
+    );
+    assert!(
+        r.nodes.contains(&"client".to_string()),
+        "subgraph contains the match"
+    );
 
     // Budget cap is respected.
     let capped = g.query("client", 5, false);
     assert!(capped.nodes.len() <= 5, "subgraph honors the budget cap");
-    assert!(capped.nodes.contains(&"client".to_string()), "seed survives the cap");
+    assert!(
+        capped.nodes.contains(&"client".to_string()),
+        "seed survives the cap"
+    );
 
     // --dfs also works and stays within budget.
     let d = g.query("client", 20, true);

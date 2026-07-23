@@ -21,7 +21,11 @@ pub const DEFAULT_ROW_CAP: usize = 1000;
 /// rows are scanned (0 → [`DEFAULT_ROW_CAP`]).
 pub fn extract_csv(path: impl AsRef<Path>, row_cap: usize) -> Extraction {
     let path = path.as_ref();
-    let cap = if row_cap == 0 { DEFAULT_ROW_CAP } else { row_cap };
+    let cap = if row_cap == 0 {
+        DEFAULT_ROW_CAP
+    } else {
+        row_cap
+    };
     let str_path = path.to_string_lossy().into_owned();
     let stem = file_stem(path);
 
@@ -70,7 +74,8 @@ pub fn extract_csv(path: impl AsRef<Path>, row_cap: usize) -> Extraction {
         let mut col = node(&col_nid, header, "document", &str_path, None);
         col.insert("column_index".into(), json!(i));
         out.nodes.push(col);
-        out.edges.push(edge(&file_nid, &col_nid, "contains", &str_path, None));
+        out.edges
+            .push(edge(&file_nid, &col_nid, "contains", &str_path, None));
     }
 
     // Bounded row scan: stop as soon as we exceed the cap.
@@ -117,7 +122,10 @@ mod tests {
         assert_eq!(doc["column_count"], 3);
         assert_eq!(doc["row_count"], 4, "row scan must be capped");
         assert_eq!(doc["rows_truncated"], true);
-        let labels: Vec<&str> = ex.nodes[1..].iter().map(|n| n["label"].as_str().unwrap()).collect();
+        let labels: Vec<&str> = ex.nodes[1..]
+            .iter()
+            .map(|n| n["label"].as_str().unwrap())
+            .collect();
         assert_eq!(labels, ["name", "age", "city"]);
     }
 

@@ -56,7 +56,10 @@ fn parse_god_nodes(report: &str) -> Vec<(String, usize)> {
 }
 
 fn count_communities(report: &str) -> usize {
-    report.lines().filter(|l| l.starts_with("### Community")).count()
+    report
+        .lines()
+        .filter(|l| l.starts_with("### Community"))
+        .count()
 }
 
 #[test]
@@ -71,8 +74,7 @@ fn god_nodes_match_highest_degree_from_edges() {
     //    from the golden's edges.
     for g in &god {
         assert_eq!(
-            g.degree,
-            deg[&g.id],
+            g.degree, deg[&g.id],
             "god node {} degree disagrees with direct edge count",
             g.label
         );
@@ -96,8 +98,11 @@ fn cluster_assigns_every_node_with_good_modularity() {
     let c = cluster(&model, DEFAULT_RESOLUTION);
 
     // Every node gets a community.
-    let node_ids: std::collections::HashSet<&str> =
-        model.nodes.iter().filter_map(|n| n.get("id").and_then(|v| v.as_str())).collect();
+    let node_ids: std::collections::HashSet<&str> = model
+        .nodes
+        .iter()
+        .filter_map(|n| n.get("id").and_then(|v| v.as_str()))
+        .collect();
     assert_eq!(
         c.node_community.len(),
         node_ids.len(),

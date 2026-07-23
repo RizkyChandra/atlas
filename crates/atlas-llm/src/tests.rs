@@ -7,9 +7,19 @@ use std::sync::Arc;
 // ── detection / priority ───────────────────────────────────────────────────────
 
 const ALL_ENV: &[&str] = &[
-    "GEMINI_API_KEY", "GOOGLE_API_KEY", "MOONSHOT_API_KEY", "ANTHROPIC_API_KEY",
-    "OPENAI_API_KEY", "DEEPSEEK_API_KEY", "AZURE_OPENAI_API_KEY", "AZURE_OPENAI_ENDPOINT",
-    "AWS_PROFILE", "AWS_REGION", "AWS_DEFAULT_REGION", "OLLAMA_BASE_URL", "OLLAMA_HOST",
+    "GEMINI_API_KEY",
+    "GOOGLE_API_KEY",
+    "MOONSHOT_API_KEY",
+    "ANTHROPIC_API_KEY",
+    "OPENAI_API_KEY",
+    "DEEPSEEK_API_KEY",
+    "AZURE_OPENAI_API_KEY",
+    "AZURE_OPENAI_ENDPOINT",
+    "AWS_PROFILE",
+    "AWS_REGION",
+    "AWS_DEFAULT_REGION",
+    "OLLAMA_BASE_URL",
+    "OLLAMA_HOST",
 ];
 
 fn clear_all() {
@@ -26,7 +36,10 @@ fn detect_backend_priority_and_error() {
     // None set -> documented error listing the missing vars.
     let err = detect_backend().unwrap_err().to_string();
     assert!(err.contains("No LLM backend configured"), "{err}");
-    assert!(err.contains("GEMINI_API_KEY") && err.contains("AWS credentials"), "{err}");
+    assert!(
+        err.contains("GEMINI_API_KEY") && err.contains("AWS credentials"),
+        "{err}"
+    );
 
     // Ollama last: an incidental OLLAMA_BASE_URL alone selects ollama...
     env::set_var("OLLAMA_BASE_URL", "http://localhost:11434/v1");
@@ -80,7 +93,12 @@ fn mk(name: &str, kind: Kind, base_url: &str, model: &str) -> Backend {
 
 #[test]
 fn openai_family_body_shape() {
-    let b = mk("openai", Kind::OpenAiCompat, "https://api.openai.com/v1", "gpt-4.1-mini");
+    let b = mk(
+        "openai",
+        Kind::OpenAiCompat,
+        "https://api.openai.com/v1",
+        "gpt-4.1-mini",
+    );
     let body = b.build_body("SYS", "USR");
     assert_eq!(
         body,
@@ -100,15 +118,28 @@ fn openai_family_body_shape() {
 
 #[test]
 fn kimi_omits_temperature() {
-    let mut b = mk("kimi", Kind::OpenAiCompat, "https://api.moonshot.ai/v1", "kimi-k2.6");
+    let mut b = mk(
+        "kimi",
+        Kind::OpenAiCompat,
+        "https://api.moonshot.ai/v1",
+        "kimi-k2.6",
+    );
     b.temperature = None;
     let body = b.build_body("SYS", "USR");
-    assert!(body.get("temperature").is_none(), "kimi must omit temperature: {body}");
+    assert!(
+        body.get("temperature").is_none(),
+        "kimi must omit temperature: {body}"
+    );
 }
 
 #[test]
 fn anthropic_body_shape() {
-    let b = mk("claude", Kind::Anthropic, "https://api.anthropic.com", "claude-sonnet-4-6");
+    let b = mk(
+        "claude",
+        Kind::Anthropic,
+        "https://api.anthropic.com",
+        "claude-sonnet-4-6",
+    );
     let body = b.build_body("SYS", "USR");
     assert_eq!(
         body,
@@ -131,7 +162,12 @@ fn azure_url_and_bedrock_body() {
         "https://x.openai.azure.com/openai/deployments/gpt-4o/chat/completions?api-version=2024-12-01-preview"
     );
 
-    let bd = mk("bedrock", Kind::Bedrock, "", "anthropic.claude-3-5-sonnet-20241022-v2:0");
+    let bd = mk(
+        "bedrock",
+        Kind::Bedrock,
+        "",
+        "anthropic.claude-3-5-sonnet-20241022-v2:0",
+    );
     let body = bd.build_body("SYS", "USR");
     assert_eq!(
         body,
@@ -147,7 +183,11 @@ fn azure_url_and_bedrock_body() {
 
 /// A one-off HTTP stub: reply `first` to the first `repeat_first` requests, then
 /// `then` to the rest. Returns (base_url, request-counter). Threads self-clean.
-fn stub_server(first: &'static str, repeat_first: usize, then: &'static str) -> (String, Arc<AtomicUsize>) {
+fn stub_server(
+    first: &'static str,
+    repeat_first: usize,
+    then: &'static str,
+) -> (String, Arc<AtomicUsize>) {
     let listener = TcpListener::bind("127.0.0.1:0").unwrap();
     let port = listener.local_addr().unwrap().port();
     let hits = Arc::new(AtomicUsize::new(0));
@@ -194,7 +234,11 @@ fn retry_honors_max_cap() {
     let b = mk("openai", Kind::OpenAiCompat, &base, "m");
     let err = b.complete_with("s", "u", 1).unwrap_err().to_string();
     assert!(err.contains("rate limited"), "{err}");
-    assert_eq!(hits.load(Ordering::SeqCst), 2, "initial + 1 retry = 2 attempts");
+    assert_eq!(
+        hits.load(Ordering::SeqCst),
+        2,
+        "initial + 1 retry = 2 attempts"
+    );
 }
 
 #[test]

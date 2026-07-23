@@ -102,9 +102,9 @@ pub fn call_tool(qg: &QGraph, name: &str, args: &Value) -> Result<String, String
         "get_node" => Ok(tool_get_node(qg, args)),
         "get_neighbors" => Ok(tool_get_neighbors(qg, args)),
         "shortest_path" => Ok(tool_shortest_path(qg, args)),
-        "list_prs" | "get_pr_impact" | "triage_prs" => {
-            Ok(format!("{name}: not yet implemented in atlas (graphify PR tooling is not ported)."))
-        }
+        "list_prs" | "get_pr_impact" | "triage_prs" => Ok(format!(
+            "{name}: not yet implemented in atlas (graphify PR tooling is not ported)."
+        )),
         _ => Err(format!("Unknown tool: {name}")),
     }
 }
@@ -128,7 +128,9 @@ fn tool_get_neighbors(qg: &QGraph, args: &Value) -> String {
         Some(l) => l,
         None => return "error: missing required argument 'label'".into(),
     };
-    let rel_filter = str_arg(args, "relation_filter").unwrap_or("").to_lowercase();
+    let rel_filter = str_arg(args, "relation_filter")
+        .unwrap_or("")
+        .to_lowercase();
     let e = match qg.explain(label) {
         Some(e) => e,
         None => return format!("No node matching '{label}' found."),
@@ -139,7 +141,10 @@ fn tool_get_neighbors(qg: &QGraph, args: &Value) -> String {
             continue;
         }
         let arrow = if c.direction == "out" { "-->" } else { "<--" };
-        lines.push(format!("  {arrow} {} [{}] [{}]", c.neighbor, c.relation, c.confidence));
+        lines.push(format!(
+            "  {arrow} {} [{}] [{}]",
+            c.neighbor, c.relation, c.confidence
+        ));
     }
     lines.join("\n")
 }
@@ -182,7 +187,11 @@ fn tool_query_graph(qg: &QGraph, args: &Value) -> String {
         out.push_str(&format!("NODE {}\n", qg.label_for_id(id)));
     }
     for (u, v) in &r.edges {
-        out.push_str(&format!("EDGE {} --> {}\n", qg.label_for_id(u), qg.label_for_id(v)));
+        out.push_str(&format!(
+            "EDGE {} --> {}\n",
+            qg.label_for_id(u),
+            qg.label_for_id(v)
+        ));
     }
     out
 }
@@ -219,12 +228,21 @@ pub fn handle_request(qg: &QGraph, req: &Value) -> Option<Value> {
         "tools/call" => {
             let params = req.get("params").cloned().unwrap_or_else(|| json!({}));
             let name = params.get("name").and_then(Value::as_str).unwrap_or("");
-            let args = params.get("arguments").cloned().unwrap_or_else(|| json!({}));
+            let args = params
+                .get("arguments")
+                .cloned()
+                .unwrap_or_else(|| json!({}));
             match call_tool(qg, name, &args) {
-                Ok(text) => ok(id, json!({"content": [{"type": "text", "text": text}], "isError": false})),
+                Ok(text) => ok(
+                    id,
+                    json!({"content": [{"type": "text", "text": text}], "isError": false}),
+                ),
                 // Unknown tool / bad args surface as an isError result, per MCP:
                 // tool failures are results, not protocol errors.
-                Err(msg) => ok(id, json!({"content": [{"type": "text", "text": msg}], "isError": true})),
+                Err(msg) => ok(
+                    id,
+                    json!({"content": [{"type": "text", "text": msg}], "isError": true}),
+                ),
             }
         }
         _ => err(id, -32601, &format!("Method not found: {method}")),
@@ -256,14 +274,20 @@ mod tests {
         // From the golden graph, node `client` has 10 incident edges, and
         // imports_from client->models is one of them.
         assert!(out.starts_with("Neighbors of client.py:"), "got: {out}");
-        let n = out.lines().filter(|l| l.starts_with("  -->") || l.starts_with("  <--")).count();
+        let n = out
+            .lines()
+            .filter(|l| l.starts_with("  -->") || l.starts_with("  <--"))
+            .count();
         assert_eq!(n, 10, "expected 10 neighbours, got: {out}");
         assert!(out.contains("imports_from"), "got: {out}");
     }
 
     #[test]
     fn get_neighbors_relation_filter() {
-        let out = tool_get_neighbors(&qg(), &json!({"label": "client", "relation_filter": "contains"}));
+        let out = tool_get_neighbors(
+            &qg(),
+            &json!({"label": "client", "relation_filter": "contains"}),
+        );
         for l in out.lines().skip(1) {
             assert!(l.contains("contains"), "filter leaked: {l}");
         }
@@ -296,14 +320,28 @@ mod tests {
         let tools = tools_list();
         let arr = tools.as_array().unwrap();
         let names: Vec<&str> = arr.iter().map(|t| t["name"].as_str().unwrap()).collect();
-        for expected in ["query_graph", "get_node", "get_neighbors", "shortest_path", "list_prs", "get_pr_impact", "triage_prs"] {
+        for expected in [
+            "query_graph",
+            "get_node",
+            "get_neighbors",
+            "shortest_path",
+            "list_prs",
+            "get_pr_impact",
+            "triage_prs",
+        ] {
             assert!(names.contains(&expected), "missing tool {expected}");
         }
         for t in arr {
-            assert!(t["description"].is_string(), "tool missing description: {t}");
+            assert!(
+                t["description"].is_string(),
+                "tool missing description: {t}"
+            );
             let schema = &t["inputSchema"];
             assert_eq!(schema["type"], "object", "schema not object: {t}");
-            assert!(schema["properties"].is_object(), "schema missing properties: {t}");
+            assert!(
+                schema["properties"].is_object(),
+                "schema missing properties: {t}"
+            );
         }
     }
 
@@ -311,13 +349,25 @@ mod tests {
     fn jsonrpc_initialize_and_tools_call() {
         let g = qg();
         // initialize
-        let init = handle_request(&g, &json!({"jsonrpc": "2.0", "id": 1, "method": "initialize", "params": {}})).unwrap();
+        let init = handle_request(
+            &g,
+            &json!({"jsonrpc": "2.0", "id": 1, "method": "initialize", "params": {}}),
+        )
+        .unwrap();
         assert_eq!(init["result"]["protocolVersion"], PROTOCOL_VERSION);
         assert_eq!(init["result"]["serverInfo"]["name"], "atlas");
         // notification → no response
-        assert!(handle_request(&g, &json!({"jsonrpc": "2.0", "method": "notifications/initialized"})).is_none());
+        assert!(handle_request(
+            &g,
+            &json!({"jsonrpc": "2.0", "method": "notifications/initialized"})
+        )
+        .is_none());
         // tools/list
-        let list = handle_request(&g, &json!({"jsonrpc": "2.0", "id": 2, "method": "tools/list"})).unwrap();
+        let list = handle_request(
+            &g,
+            &json!({"jsonrpc": "2.0", "id": 2, "method": "tools/list"}),
+        )
+        .unwrap();
         assert!(list["result"]["tools"].as_array().unwrap().len() >= 4);
         // tools/call
         let call = handle_request(
@@ -329,7 +379,8 @@ mod tests {
         let text = call["result"]["content"][0]["text"].as_str().unwrap();
         assert!(text.contains("ID: client"), "got: {text}");
         // unknown method → error
-        let bad = handle_request(&g, &json!({"jsonrpc": "2.0", "id": 4, "method": "bogus"})).unwrap();
+        let bad =
+            handle_request(&g, &json!({"jsonrpc": "2.0", "id": 4, "method": "bogus"})).unwrap();
         assert_eq!(bad["error"]["code"], -32601);
     }
 }

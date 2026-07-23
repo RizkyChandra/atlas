@@ -76,8 +76,8 @@ impl Graph {
 
     pub fn from_file(path: impl AsRef<Path>) -> anyhow::Result<Graph> {
         let path = path.as_ref();
-        let bytes = std::fs::read(path)
-            .map_err(|e| anyhow::anyhow!("reading {}: {e}", path.display()))?;
+        let bytes =
+            std::fs::read(path).map_err(|e| anyhow::anyhow!("reading {}: {e}", path.display()))?;
         serde_json::from_slice(&bytes)
             .map_err(|e| anyhow::anyhow!("parsing {}: {e}", path.display()))
     }
