@@ -1,0 +1,109 @@
+{
+  "nodes": [
+    {
+      "id": "sample",
+      "label": "sample.sql",
+      "file_type": "code",
+      "source_file": "sample.sql",
+      "source_location": null,
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_organizations",
+      "label": "organizations",
+      "file_type": "code",
+      "source_file": "sample.sql",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_users",
+      "label": "users",
+      "file_type": "code",
+      "source_file": "sample.sql",
+      "source_location": "L6",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_active_users",
+      "label": "active_users",
+      "file_type": "code",
+      "source_file": "sample.sql",
+      "source_location": "L12",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_get_user",
+      "label": "get_user()",
+      "file_type": "code",
+      "source_file": "sample.sql",
+      "source_location": "L15",
+      "_origin": "ast"
+    }
+  ],
+  "edges": [
+    {
+      "source": "sample",
+      "target": "sample_organizations",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.sql",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "sample_users",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.sql",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_users",
+      "target": "sample_organizations",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.sql",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "sample_active_users",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.sql",
+      "source_location": "L12",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_active_users",
+      "target": "sample_users",
+      "relation": "reads_from",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.sql",
+      "source_location": "L13",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "sample_get_user",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.sql",
+      "source_location": "L15",
+      "weight": 1.0,
+      "_origin": "ast"
+    }
+  ],
+  "hyperedges": [],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

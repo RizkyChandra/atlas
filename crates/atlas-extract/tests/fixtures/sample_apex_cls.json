@@ -1,0 +1,289 @@
+{
+  "nodes": [
+    {
+      "id": "sample",
+      "label": "sample.cls",
+      "file_type": "code",
+      "source_file": "sample.cls",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_accountservice",
+      "label": "AccountService",
+      "file_type": "code",
+      "source_file": "sample.cls",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_notifiable",
+      "label": "Notifiable",
+      "file_type": "code",
+      "source_file": "sample.cls",
+      "source_location": "L5",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_accountservice_notify",
+      "label": ".notify()",
+      "file_type": "code",
+      "source_file": "sample.cls",
+      "source_location": "L6",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_accountstatus",
+      "label": "AccountStatus",
+      "file_type": "code",
+      "source_file": "sample.cls",
+      "source_location": "L9",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_accountservice_getaccounts",
+      "label": ".getAccounts()",
+      "file_type": "code",
+      "source_file": "sample.cls",
+      "source_location": "L12",
+      "_origin": "ast"
+    },
+    {
+      "id": "account",
+      "label": "Account",
+      "file_type": "code",
+      "source_file": "sample.cls",
+      "source_location": "L13",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_accountservice_updateaccountsasync",
+      "label": ".updateAccountsAsync()",
+      "file_type": "code",
+      "source_file": "sample.cls",
+      "source_location": "L17",
+      "_origin": "ast"
+    },
+    {
+      "id": "dml_update",
+      "label": "update",
+      "file_type": "code",
+      "source_file": "sample.cls",
+      "source_location": "L22",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_accountservice_createaccounts",
+      "label": ".createAccounts()",
+      "file_type": "code",
+      "source_file": "sample.cls",
+      "source_location": "L26",
+      "_origin": "ast"
+    },
+    {
+      "id": "dml_insert",
+      "label": "insert",
+      "file_type": "code",
+      "source_file": "sample.cls",
+      "source_location": "L31",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_accountservice_deleteoldaccounts",
+      "label": ".deleteOldAccounts()",
+      "file_type": "code",
+      "source_file": "sample.cls",
+      "source_location": "L39",
+      "_origin": "ast"
+    },
+    {
+      "id": "dml_delete",
+      "label": "delete",
+      "file_type": "code",
+      "source_file": "sample.cls",
+      "source_location": "L41",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_accountservice_testgetaccounts",
+      "label": ".testGetAccounts()",
+      "file_type": "code",
+      "source_file": "sample.cls",
+      "source_location": "L45",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_accountservice_testcreateaccounts",
+      "label": ".testCreateAccounts()",
+      "file_type": "code",
+      "source_file": "sample.cls",
+      "source_location": "L51",
+      "_origin": "ast"
+    }
+  ],
+  "edges": [
+    {
+      "source": "sample",
+      "target": "sample_accountservice",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.cls",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_accountservice",
+      "target": "sample_notifiable",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.cls",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_accountservice",
+      "target": "sample_accountservice_notify",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.cls",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_accountservice",
+      "target": "sample_accountstatus",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.cls",
+      "source_location": "L9",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_accountservice",
+      "target": "sample_accountservice_getaccounts",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.cls",
+      "source_location": "L12",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "sample_accountservice_getaccounts",
+      "relation": "contains",
+      "confidence": "INFERRED",
+      "source_file": "sample.cls",
+      "source_location": "L12",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_accountservice",
+      "target": "account",
+      "relation": "uses",
+      "confidence": "INFERRED",
+      "source_file": "sample.cls",
+      "source_location": "L13",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_accountservice",
+      "target": "sample_accountservice_updateaccountsasync",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.cls",
+      "source_location": "L17",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_accountservice",
+      "target": "dml_update",
+      "relation": "uses",
+      "confidence": "INFERRED",
+      "source_file": "sample.cls",
+      "source_location": "L22",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_accountservice",
+      "target": "sample_accountservice_createaccounts",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.cls",
+      "source_location": "L26",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "sample_accountservice_createaccounts",
+      "relation": "contains",
+      "confidence": "INFERRED",
+      "source_file": "sample.cls",
+      "source_location": "L26",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_accountservice",
+      "target": "dml_insert",
+      "relation": "uses",
+      "confidence": "INFERRED",
+      "source_file": "sample.cls",
+      "source_location": "L31",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_accountservice",
+      "target": "sample_accountservice_deleteoldaccounts",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.cls",
+      "source_location": "L39",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_accountservice",
+      "target": "dml_delete",
+      "relation": "uses",
+      "confidence": "INFERRED",
+      "source_file": "sample.cls",
+      "source_location": "L41",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_accountservice",
+      "target": "sample_accountservice_testgetaccounts",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.cls",
+      "source_location": "L45",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_accountservice",
+      "target": "sample_accountservice_testcreateaccounts",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.cls",
+      "source_location": "L51",
+      "weight": 1.0,
+      "_origin": "ast"
+    }
+  ],
+  "hyperedges": [],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

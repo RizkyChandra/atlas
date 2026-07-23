@@ -28,6 +28,7 @@ use serde_json::{json, Value};
 use std::collections::HashSet;
 use std::path::Path;
 
+mod apex;
 mod bash;
 mod dart;
 mod elixir;
@@ -36,9 +37,13 @@ mod fortran;
 mod go;
 mod julia;
 mod objc;
+mod pascal;
 mod powershell;
 mod resolve;
 mod rust_lang;
+mod sql;
+mod terraform;
+mod verilog;
 mod zig_lang;
 
 pub use engine::Lang;
@@ -92,6 +97,19 @@ pub fn extract_file(path: impl AsRef<Path>) -> std::io::Result<ExtractResult> {
             fortran::extract(path, &source)
         }
         "dart" => dart::extract(path, &source),
+        // Groovy/Gradle: engine-config (graphify `_GROOVY_CONFIG`). The Spock
+        // regex fallback (`def "feature"()` specs) is NOT ported — such files
+        // fall through to the tree-sitter pass; documented in tests/langs.rs.
+        "groovy" | "gradle" => engine::extract(path, &source, Lang::Groovy),
+        "sql" => sql::extract(path, &source),
+        "tf" | "hcl" => terraform::extract(path, &source),
+        // Verilog / SystemVerilog (tree-sitter walk + regex class augmentation).
+        "v" | "sv" | "svh" | "vh" => verilog::extract(path, &source),
+        // Pascal / Delphi (regex extractor — Rust grammar crate version does not
+        // match the oracle venv grammar; see src/pascal.rs).
+        "pas" | "pp" | "dpr" | "dpk" | "inc" | "lpr" => pascal::extract(path, &source),
+        // Apex (.cls / .trigger) — regex-based, no grammar (see src/apex.rs).
+        "cls" | "trigger" => apex::extract(path, &source),
         // Unknown extension: empty graph (graphify returns nothing for these).
         _ => ExtractResult {
             nodes: vec![],

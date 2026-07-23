@@ -444,6 +444,134 @@ fn dart_matches_oracle() {
     check("dart", &src, "sample_dart", vec![], vec![]);
 }
 
+/// Groovy (engine-config, tree-sitter-groovy 0.1.2 matching the oracle grammar).
+/// graphify routes `.groovy`/`.gradle` through `_GROOVY_CONFIG` (`_extract_generic`)
+/// and shares the Java extends/implements/annotation branch (engine.py `ts_module
+/// in (java, groovy)`) but NOT Java's param/return/field type-ref emission, so the
+/// oracle carries inherits/implements only — no `references` edges. EXACT match:
+/// classes/interfaces (`contains`), constructors + methods (`.name()`→`method`),
+/// `extends`→inherits, `implements`→implements, `import`→imports (last segment),
+/// and the in-file `processor.reset()` call — resolved by bare method name to the
+/// last-writer `reset` node (member calls are NEVER deferred for Groovy: the
+/// config's call-accessor set is empty, so the callee is read from the `name`
+/// field and no receiver is captured). Sample is graphify's `sample.groovy`.
+/// GAP (not ported): the Spock regex fallback (`def "feature"()` spec methods —
+/// graphify's `_extract_spock_fallback`); such files fall through to the plain
+/// tree-sitter pass here. This fixture is not a Spock spec, so it is unaffected.
+#[test]
+fn groovy_matches_oracle() {
+    let src = format!("{GFIX}/sample.groovy");
+    check("groovy", &src, "sample_groovy", vec![], vec![]);
+}
+
+/// SQL (standalone extractor, tree-sitter-sequel 0.3.11 = DerekStride's
+/// tree-sitter-sql 0.3.11, matching the oracle grammar). Object ids key off the
+/// file stem (FILE). EXACT match: tables (`create_table`→`contains`), FK inline
+/// `REFERENCES`→references, view (`create_view`→`contains`, `FROM`→reads_from),
+/// function (`create_function`→`contains`, label `name()`). Sample is graphify's
+/// `sample.sql`. The PL/pgSQL function body parses without FROM/JOIN clause nodes
+/// (dollar-quoted body), so `get_user` emits no reads_from — matching the oracle.
+/// GAP (not ported, documented in src/sql.rs): the dialect ERROR-recovery regex
+/// paths — PL/pgSQL `ERROR` CREATE FUNCTION/PROCEDURE scan and Firebird
+/// `fb_proc_or_trigger`/`set_term`/`declare_external_function`. The global CREATE
+/// TABLE ... REFERENCES regex sweep IS ported. This fixture parses cleanly (no
+/// ERROR nodes), so the un-ported fallbacks don't fire.
+#[test]
+fn sql_matches_oracle() {
+    let src = format!("{GFIX}/sample.sql");
+    check("sql", &src, "sample_sql", vec![], vec![]);
+}
+
+/// Terraform/HCL (standalone extractor, tree-sitter-hcl 1.1.0; oracle grammar is
+/// the same-major PyPI 1.2.0 — node names identical). Block ids scope by the
+/// parent DIRECTORY name (→DIR), like Go; the file node keys off the stem (FILE).
+/// EXACT match: resource/data/module/variable/output/locals blocks (`contains`),
+/// interpolation `references` (`var.`/`local.`/`data.x.y`/`aws_instance.web`),
+/// and `depends_on`. Fixture is atlas-owned (graphify ships no `sample.tf`);
+/// oracle generated in a fixed temp dir `atlas_ora_tf` so its DIR prefix is a
+/// stable constant. Out of scope: `provider`/`terraform` meta-arg heads
+/// (count/each/self/path/terraform) are filtered, matching graphify.
+#[test]
+fn terraform_matches_oracle() {
+    let src = format!("{}/tests/fixtures/sample.tf", env!("CARGO_MANIFEST_DIR"));
+    let dir = make_id([Path::new(&src)
+        .parent()
+        .unwrap()
+        .file_name()
+        .unwrap()
+        .to_string_lossy()
+        .as_ref()]);
+    check(
+        "tf",
+        &src,
+        "sample_tf",
+        vec![(dir, "DIR")],
+        vec![("atlas_ora_tf".into(), "DIR")],
+    );
+}
+
+/// Verilog / SystemVerilog (tree-sitter-verilog 1.0.3, matching the oracle
+/// grammar) + regex class augmentation. Fixture is graphify's `sample.sv`. EXACT
+/// match: modules (`defines`), functions (`add()`)/tasks (`contains`),
+/// `import math_pkg::*`→`imports_from`, `leaf u_leaf()`→`instantiates` (bare
+/// sourced `leaf` node distinct from the defined `sample_leaf` module), and the
+/// SystemVerilog class pass — class nodes (`defines`), `extends`→`inherits`,
+/// `implements`→`implements`, field/return type refs (`Result`/`Config`/
+/// `BaseProcessor`, generics like `Payload` as `generic_arg`), and the `build`
+/// method. The `build(Payload input)` parameter_type ref to `Payload` collapses
+/// onto the earlier generic_arg ref by `(src,tgt,relation)` dedupe — matching the
+/// oracle. Nodes/edges carry `confidence_score: 1.0`. Out of scope: cross-file
+/// module/package resolution.
+#[test]
+fn verilog_matches_oracle() {
+    let src = format!("{GFIX}/sample.sv");
+    check("sv", &src, "sample_verilog", vec![], vec![]);
+}
+
+/// Pascal / Delphi (regex extractor — the Rust `tree-sitter-pascal` crate is
+/// 0.10.2 vs the oracle venv's 0.11.0, so per the milestone rules we take
+/// graphify's sanctioned regex fallback path). Fixture is graphify's
+/// `sample.pas`. EXACT match: file→`contains`→unit, `uses`→`imports` (bare
+/// `sysutils`/`classes` targets — cross-file unit resolution out of scope),
+/// class/interface type nodes (`contains`), `TBaseProcessor(TObject)`→`inherits`
+/// (bare sourced `tobject` stub) and `TDataProcessor(TBaseProcessor,IProcessor)`
+/// →two `inherits`, method implementations (`method`, keyed to the IMPL line to
+/// match the oracle), and the `Process→Reset` in-file `calls`. DELTA (documented
+/// in src/pascal.rs): method nodes come from implementation headers only, so an
+/// in-class method DECLARED but never IMPLEMENTED in-file (e.g. interface
+/// methods) emits no node — exactly as the tree-sitter oracle does on this
+/// grammar (the regex fallback's forward-decl nodes would otherwise over-emit
+/// and land on the wrong line).
+#[test]
+fn pascal_matches_oracle() {
+    let src = format!("{GFIX}/sample.pas");
+    check("pas", &src, "sample_pascal", vec![], vec![]);
+}
+
+/// Apex `.cls` (regex extractor — no tree-sitter grammar on PyPI, matching
+/// graphify). Fixture is graphify's `sample.cls`. EXACT match: outer class
+/// (`contains`), nested interface/enum (`contains`), methods (`.name()`→
+/// `method`, plus file-level INFERRED `contains` for `@AuraEnabled`/
+/// `@InvocableMethod`), SOQL `FROM Account`→`uses` (INFERRED, deduped to one),
+/// and DML `update`/`insert`/`delete`→`dml_<op>` `uses` (INFERRED). Note methods
+/// bind to the enclosing class scope (`Notifiable.notify` attaches to
+/// `AccountService`), matching graphify's flat current-class tracking.
+#[test]
+fn apex_cls_matches_oracle() {
+    let src = format!("{GFIX}/sample.cls");
+    check("cls", &src, "sample_apex_cls", vec![], vec![]);
+}
+
+/// Apex `.trigger` (regex extractor). Fixture is graphify's `sample.trigger`.
+/// EXACT match: `trigger AccountTrigger on Account`→trigger node (`contains`) +
+/// `uses` the `Account` SObject (INFERRED). The in-body `AccountService.xxx(...)`
+/// calls are not method declarations and emit nothing — matching the oracle.
+#[test]
+fn apex_trigger_matches_oracle() {
+    let src = format!("{GFIX}/sample.trigger");
+    check("trigger", &src, "sample_apex_trigger", vec![], vec![]);
+}
+
 // ── Bash backlog #2141: calls to functions defined in a sourced file ─────────
 //
 // `sourced/main.sh` does `source ./helpers.sh` then calls `greet` — a function

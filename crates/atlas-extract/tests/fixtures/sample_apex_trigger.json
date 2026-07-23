@@ -1,0 +1,53 @@
+{
+  "nodes": [
+    {
+      "id": "sample",
+      "label": "sample.trigger",
+      "file_type": "code",
+      "source_file": "sample.trigger",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_accounttrigger",
+      "label": "AccountTrigger",
+      "file_type": "code",
+      "source_file": "sample.trigger",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "account",
+      "label": "Account",
+      "file_type": "code",
+      "source_file": "sample.trigger",
+      "source_location": "L1",
+      "_origin": "ast"
+    }
+  ],
+  "edges": [
+    {
+      "source": "sample",
+      "target": "sample_accounttrigger",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.trigger",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_accounttrigger",
+      "target": "account",
+      "relation": "uses",
+      "confidence": "INFERRED",
+      "source_file": "sample.trigger",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    }
+  ],
+  "hyperedges": [],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

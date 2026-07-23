@@ -1,0 +1,286 @@
+{
+  "nodes": [
+    {
+      "id": "sample",
+      "label": "sample.pas",
+      "file_type": "code",
+      "source_file": "sample.pas",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_sampleunit",
+      "label": "SampleUnit",
+      "file_type": "code",
+      "source_file": "sample.pas",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_iprocessor",
+      "label": "IProcessor",
+      "file_type": "code",
+      "source_file": "sample.pas",
+      "source_location": "L9",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_tbaseprocessor",
+      "label": "TBaseProcessor",
+      "file_type": "code",
+      "source_file": "sample.pas",
+      "source_location": "L14",
+      "_origin": "ast"
+    },
+    {
+      "id": "tobject",
+      "label": "TObject",
+      "file_type": "code",
+      "source_file": "sample.pas",
+      "source_location": "L14",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_tdataprocessor",
+      "label": "TDataProcessor",
+      "file_type": "code",
+      "source_file": "sample.pas",
+      "source_location": "L20",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_tbaseprocessor_initialize",
+      "label": "Initialize()",
+      "file_type": "code",
+      "source_file": "sample.pas",
+      "source_location": "L33",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_tbaseprocessor_getcount",
+      "label": "GetCount()",
+      "file_type": "code",
+      "source_file": "sample.pas",
+      "source_location": "L38",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_tdataprocessor_create",
+      "label": "Create()",
+      "file_type": "code",
+      "source_file": "sample.pas",
+      "source_location": "L43",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_tdataprocessor_initialize",
+      "label": "Initialize()",
+      "file_type": "code",
+      "source_file": "sample.pas",
+      "source_location": "L49",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_tdataprocessor_process",
+      "label": "Process()",
+      "file_type": "code",
+      "source_file": "sample.pas",
+      "source_location": "L55",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_tdataprocessor_getcount",
+      "label": "GetCount()",
+      "file_type": "code",
+      "source_file": "sample.pas",
+      "source_location": "L61",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_tdataprocessor_reset",
+      "label": "Reset()",
+      "file_type": "code",
+      "source_file": "sample.pas",
+      "source_location": "L66",
+      "_origin": "ast"
+    }
+  ],
+  "edges": [
+    {
+      "source": "sample",
+      "target": "sample_sampleunit",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.pas",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_sampleunit",
+      "target": "sysutils",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.pas",
+      "source_location": "L5",
+      "weight": 1.0,
+      "context": "import",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_sampleunit",
+      "target": "classes",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.pas",
+      "source_location": "L5",
+      "weight": 1.0,
+      "context": "import",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_sampleunit",
+      "target": "sample_iprocessor",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.pas",
+      "source_location": "L9",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_sampleunit",
+      "target": "sample_tbaseprocessor",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.pas",
+      "source_location": "L14",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_tbaseprocessor",
+      "target": "tobject",
+      "relation": "inherits",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.pas",
+      "source_location": "L14",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_sampleunit",
+      "target": "sample_tdataprocessor",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.pas",
+      "source_location": "L20",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_tdataprocessor",
+      "target": "sample_tbaseprocessor",
+      "relation": "inherits",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.pas",
+      "source_location": "L20",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_tdataprocessor",
+      "target": "sample_iprocessor",
+      "relation": "inherits",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.pas",
+      "source_location": "L20",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_tbaseprocessor",
+      "target": "sample_tbaseprocessor_initialize",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.pas",
+      "source_location": "L33",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_tbaseprocessor",
+      "target": "sample_tbaseprocessor_getcount",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.pas",
+      "source_location": "L38",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_tdataprocessor",
+      "target": "sample_tdataprocessor_create",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.pas",
+      "source_location": "L43",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_tdataprocessor",
+      "target": "sample_tdataprocessor_initialize",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.pas",
+      "source_location": "L49",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_tdataprocessor",
+      "target": "sample_tdataprocessor_process",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.pas",
+      "source_location": "L55",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_tdataprocessor",
+      "target": "sample_tdataprocessor_getcount",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.pas",
+      "source_location": "L61",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_tdataprocessor",
+      "target": "sample_tdataprocessor_reset",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.pas",
+      "source_location": "L66",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_tdataprocessor_process",
+      "target": "sample_tdataprocessor_reset",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.pas",
+      "source_location": "L58",
+      "weight": 1.0,
+      "context": "call",
+      "_origin": "ast"
+    }
+  ],
+  "hyperedges": [],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

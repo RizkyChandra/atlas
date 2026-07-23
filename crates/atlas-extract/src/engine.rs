@@ -32,6 +32,7 @@ pub enum Lang {
     Kotlin,
     Scala,
     Lua,
+    Groovy,
 }
 
 struct LanguageConfig {
@@ -319,6 +320,30 @@ fn config_for(lang: Lang) -> LanguageConfig {
             call_accessor_object_field: "",
             function_boundary_types: &["function_declaration"],
         },
+        // graphify `_GROOVY_CONFIG` (tree_sitter_groovy). Like Java but no
+        // record/enum/annotation type nodes and no object_creation call type.
+        // graphify shares the Java extends/implements/annotation branch for
+        // tree_sitter_groovy (engine.py `ts_module in (java, groovy)`) but NOT
+        // the Java param/return/field type-ref emission, so Groovy emits inherits/
+        // implements only — no `references` edges. Call accessor types are empty:
+        // a `recv.m()` method_invocation reads the callee from its `name` field
+        // and never records a member receiver, so member calls resolve by bare
+        // method name (never deferred) — matching graphify's generic path.
+        Lang::Groovy => LanguageConfig {
+            class_types: &["class_declaration", "interface_declaration"],
+            function_types: &["method_declaration", "constructor_declaration"],
+            import_types: &["import_declaration"],
+            call_types: &["method_invocation"],
+            name_field: "name",
+            name_fallback: &[],
+            body_field: "body",
+            body_fallback: &[],
+            call_function_field: "name",
+            call_accessor_node_types: &[],
+            call_accessor_field: "",
+            call_accessor_object_field: "",
+            function_boundary_types: &["method_declaration", "constructor_declaration"],
+        },
     }
 }
 
@@ -337,6 +362,7 @@ fn language(lang: Lang) -> tree_sitter::Language {
         Lang::Kotlin => tree_sitter_kotlin_ng::LANGUAGE.into(),
         Lang::Scala => tree_sitter_scala::LANGUAGE.into(),
         Lang::Lua => tree_sitter_lua::LANGUAGE.into(),
+        Lang::Groovy => tree_sitter_groovy::LANGUAGE.into(),
     }
 }
 
@@ -753,7 +779,9 @@ impl<'a> Extractor<'a> {
 
         match self.lang {
             Lang::Python => self.python_inheritance(node, &class_nid, line),
-            Lang::Java => self.java_inheritance(node, node.kind(), &class_nid, line),
+            // graphify shares the Java extends/implements/annotation branch for
+            // tree_sitter_groovy, so Groovy routes here too.
+            Lang::Java | Lang::Groovy => self.java_inheritance(node, node.kind(), &class_nid, line),
             Lang::Cpp => self.cpp_inheritance(node, &class_nid, line),
             Lang::CSharp => self.csharp_inheritance(node, &class_nid, line),
             Lang::Php => self.php_inheritance(node, &class_nid, line),
@@ -1911,7 +1939,7 @@ impl<'a> Extractor<'a> {
         match self.lang {
             Lang::Python => self.import_python(node),
             Lang::Js | Lang::Ts => self.import_js(node),
-            Lang::Java => self.import_java(node),
+            Lang::Java | Lang::Groovy => self.import_java(node),
             Lang::C | Lang::Cpp => self.import_c(node),
             Lang::CSharp => self.import_csharp(node),
             Lang::Php => self.import_php(node),

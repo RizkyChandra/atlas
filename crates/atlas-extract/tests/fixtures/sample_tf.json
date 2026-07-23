@@ -1,0 +1,213 @@
+{
+  "nodes": [
+    {
+      "id": "sample",
+      "label": "sample.tf",
+      "file_type": "code",
+      "source_file": "sample.tf",
+      "source_location": null,
+      "_origin": "ast"
+    },
+    {
+      "id": "atlas_ora_tf_var_region",
+      "label": "var.region",
+      "file_type": "code",
+      "source_file": "sample.tf",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "atlas_ora_tf_local_bucket_name",
+      "label": "local.bucket_name",
+      "file_type": "code",
+      "source_file": "sample.tf",
+      "source_location": "L7",
+      "_origin": "ast"
+    },
+    {
+      "id": "atlas_ora_tf_data_aws_ami_ubuntu",
+      "label": "data.aws_ami.ubuntu",
+      "file_type": "code",
+      "source_file": "sample.tf",
+      "source_location": "L10",
+      "_origin": "ast"
+    },
+    {
+      "id": "atlas_ora_tf_aws_instance_web",
+      "label": "aws_instance.web",
+      "file_type": "code",
+      "source_file": "sample.tf",
+      "source_location": "L15",
+      "_origin": "ast"
+    },
+    {
+      "id": "atlas_ora_tf_aws_eip_web_ip",
+      "label": "aws_eip.web_ip",
+      "file_type": "code",
+      "source_file": "sample.tf",
+      "source_location": "L23",
+      "_origin": "ast"
+    },
+    {
+      "id": "atlas_ora_tf_module_network",
+      "label": "module.network",
+      "file_type": "code",
+      "source_file": "sample.tf",
+      "source_location": "L28",
+      "_origin": "ast"
+    },
+    {
+      "id": "atlas_ora_tf_output_instance_id",
+      "label": "output.instance_id",
+      "file_type": "code",
+      "source_file": "sample.tf",
+      "source_location": "L33",
+      "_origin": "ast"
+    }
+  ],
+  "edges": [
+    {
+      "source": "sample",
+      "target": "atlas_ora_tf_var_region",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.tf",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "atlas_ora_tf_local_bucket_name",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.tf",
+      "source_location": "L7",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "atlas_ora_tf_local_bucket_name",
+      "target": "atlas_ora_tf_var_region",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.tf",
+      "source_location": "L7",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "atlas_ora_tf_data_aws_ami_ubuntu",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.tf",
+      "source_location": "L10",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "atlas_ora_tf_aws_instance_web",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.tf",
+      "source_location": "L15",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "atlas_ora_tf_aws_instance_web",
+      "target": "atlas_ora_tf_data_aws_ami_ubuntu",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.tf",
+      "source_location": "L16",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "atlas_ora_tf_aws_instance_web",
+      "target": "atlas_ora_tf_local_bucket_name",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.tf",
+      "source_location": "L19",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "atlas_ora_tf_aws_eip_web_ip",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.tf",
+      "source_location": "L23",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "atlas_ora_tf_aws_eip_web_ip",
+      "target": "atlas_ora_tf_aws_instance_web",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.tf",
+      "source_location": "L24",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "atlas_ora_tf_aws_eip_web_ip",
+      "target": "atlas_ora_tf_aws_instance_web",
+      "relation": "depends_on",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.tf",
+      "source_location": "L25",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "atlas_ora_tf_module_network",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.tf",
+      "source_location": "L28",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "atlas_ora_tf_module_network",
+      "target": "atlas_ora_tf_var_region",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.tf",
+      "source_location": "L30",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "atlas_ora_tf_output_instance_id",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.tf",
+      "source_location": "L33",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "atlas_ora_tf_output_instance_id",
+      "target": "atlas_ora_tf_aws_instance_web",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.tf",
+      "source_location": "L34",
+      "weight": 1.0,
+      "_origin": "ast"
+    }
+  ],
+  "hyperedges": [],
+  "input_tokens": 0,
+  "output_tokens": 0
+}
