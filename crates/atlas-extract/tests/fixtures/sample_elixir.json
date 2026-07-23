@@ -1,0 +1,141 @@
+{
+  "nodes": [
+    {
+      "id": "sample",
+      "label": "sample.ex",
+      "file_type": "code",
+      "source_file": "sample.ex",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_myapp_accounts_user",
+      "label": "MyApp.Accounts.User",
+      "file_type": "code",
+      "source_file": "sample.ex",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_myapp_accounts_user_create",
+      "label": "create()",
+      "file_type": "code",
+      "source_file": "sample.ex",
+      "source_location": "L12",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_myapp_accounts_user_find",
+      "label": "find()",
+      "file_type": "code",
+      "source_file": "sample.ex",
+      "source_location": "L18",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_myapp_accounts_user_validate",
+      "label": "validate()",
+      "file_type": "code",
+      "source_file": "sample.ex",
+      "source_location": "L22",
+      "_origin": "ast"
+    }
+  ],
+  "edges": [
+    {
+      "source": "sample",
+      "target": "sample_myapp_accounts_user",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.ex",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "myapp_repo",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.ex",
+      "source_location": "L6",
+      "weight": 1.0,
+      "context": "import",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "myapp_schemas_account",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.ex",
+      "source_location": "L7",
+      "weight": 1.0,
+      "context": "import",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "myapp_schemas_token",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.ex",
+      "source_location": "L7",
+      "weight": 1.0,
+      "context": "import",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "ecto_query",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.ex",
+      "source_location": "L8",
+      "weight": 1.0,
+      "context": "import",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_myapp_accounts_user",
+      "target": "sample_myapp_accounts_user_create",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.ex",
+      "source_location": "L12",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_myapp_accounts_user",
+      "target": "sample_myapp_accounts_user_find",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.ex",
+      "source_location": "L18",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_myapp_accounts_user",
+      "target": "sample_myapp_accounts_user_validate",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.ex",
+      "source_location": "L22",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_myapp_accounts_user_create",
+      "target": "sample_myapp_accounts_user_validate",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.ex",
+      "source_location": "L14",
+      "weight": 1.0,
+      "context": "call",
+      "_origin": "ast"
+    }
+  ]
+}

@@ -1,0 +1,451 @@
+{
+  "nodes": [
+    {
+      "id": "sample",
+      "label": "sample.php",
+      "file_type": "code",
+      "source_file": "sample.php",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_apiclient",
+      "label": "ApiClient",
+      "file_type": "code",
+      "source_file": "sample.php",
+      "source_location": "L8",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_apiclient_construct",
+      "label": ".__construct()",
+      "file_type": "code",
+      "source_file": "sample.php",
+      "source_location": "L13",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_apiclient_get",
+      "label": ".get()",
+      "file_type": "code",
+      "source_file": "sample.php",
+      "source_location": "L19",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_apiclient_post",
+      "label": ".post()",
+      "file_type": "code",
+      "source_file": "sample.php",
+      "source_location": "L24",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_apiclient_fetch",
+      "label": ".fetch()",
+      "file_type": "code",
+      "source_file": "sample.php",
+      "source_location": "L29",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_log",
+      "label": "log()",
+      "file_type": "code",
+      "source_file": "sample.php",
+      "source_location": "L38",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_getname",
+      "label": "getName()",
+      "file_type": "code",
+      "source_file": "sample.php",
+      "source_location": "L43",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_baseprocessor",
+      "label": "BaseProcessor",
+      "file_type": "code",
+      "source_file": "sample.php",
+      "source_location": "L49",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_result",
+      "label": "Result",
+      "file_type": "code",
+      "source_file": "sample.php",
+      "source_location": "L51",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_dataprocessor",
+      "label": "DataProcessor",
+      "file_type": "code",
+      "source_file": "sample.php",
+      "source_location": "L53",
+      "_origin": "ast"
+    },
+    {
+      "id": "loggable",
+      "label": "Loggable",
+      "file_type": "code",
+      "source_file": "",
+      "source_location": "",
+      "_origin": "ast"
+    },
+    {
+      "id": "hasname",
+      "label": "HasName",
+      "file_type": "code",
+      "source_file": "",
+      "source_location": "",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_dataprocessor_run",
+      "label": ".run()",
+      "file_type": "code",
+      "source_file": "sample.php",
+      "source_location": "L59",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_dataprocessor_log",
+      "label": ".log()",
+      "file_type": "code",
+      "source_file": "sample.php",
+      "source_location": "L64",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_service",
+      "label": "Service",
+      "file_type": "code",
+      "source_file": "sample.php",
+      "source_location": "L69",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_service_construct",
+      "label": ".__construct()",
+      "file_type": "code",
+      "source_file": "sample.php",
+      "source_location": "L71",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_parseresponse",
+      "label": "parseResponse()",
+      "file_type": "code",
+      "source_file": "sample.php",
+      "source_location": "L76",
+      "_origin": "ast"
+    },
+    {
+      "id": "app_auth_authenticator",
+      "label": "App\\Auth\\Authenticator",
+      "file_type": "code",
+      "source_file": "",
+      "source_location": "",
+      "_origin": "ast"
+    }
+  ],
+  "edges": [
+    {
+      "source": "sample",
+      "target": "app_auth_authenticator",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.php",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "cachemanager",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.php",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "sample_apiclient",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.php",
+      "source_location": "L8",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_apiclient",
+      "target": "app_auth_authenticator",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.php",
+      "source_location": "L11",
+      "weight": 1.0,
+      "context": "field",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_apiclient",
+      "target": "sample_apiclient_construct",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.php",
+      "source_location": "L13",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_apiclient",
+      "target": "sample_apiclient_get",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.php",
+      "source_location": "L19",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_apiclient",
+      "target": "sample_apiclient_post",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.php",
+      "source_location": "L24",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_apiclient",
+      "target": "sample_apiclient_fetch",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.php",
+      "source_location": "L29",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "sample_log",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.php",
+      "source_location": "L38",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "sample_getname",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.php",
+      "source_location": "L43",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "sample_baseprocessor",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.php",
+      "source_location": "L49",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "sample_result",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.php",
+      "source_location": "L51",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "sample_dataprocessor",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.php",
+      "source_location": "L53",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_dataprocessor",
+      "target": "sample_baseprocessor",
+      "relation": "inherits",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.php",
+      "source_location": "L53",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_dataprocessor",
+      "target": "loggable",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.php",
+      "source_location": "L53",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_dataprocessor",
+      "target": "hasname",
+      "relation": "mixes_in",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.php",
+      "source_location": "L55",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_dataprocessor",
+      "target": "sample_result",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.php",
+      "source_location": "L57",
+      "weight": 1.0,
+      "context": "field",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_dataprocessor",
+      "target": "sample_dataprocessor_run",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.php",
+      "source_location": "L59",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_dataprocessor_run",
+      "target": "sample_dataprocessor",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.php",
+      "source_location": "L59",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_dataprocessor_run",
+      "target": "sample_result",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.php",
+      "source_location": "L59",
+      "weight": 1.0,
+      "context": "return_type",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_dataprocessor",
+      "target": "sample_dataprocessor_log",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.php",
+      "source_location": "L64",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "sample_service",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.php",
+      "source_location": "L69",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_service",
+      "target": "sample_service_construct",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.php",
+      "source_location": "L71",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_service_construct",
+      "target": "sample_result",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.php",
+      "source_location": "L71",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_service",
+      "target": "sample_result",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.php",
+      "source_location": "L71",
+      "weight": 1.0,
+      "context": "field",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "sample_parseresponse",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.php",
+      "source_location": "L76",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_apiclient_get",
+      "target": "sample_apiclient_fetch",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.php",
+      "source_location": "L21",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_apiclient_post",
+      "target": "sample_apiclient_fetch",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.php",
+      "source_location": "L26",
+      "weight": 1.0,
+      "_origin": "ast"
+    }
+  ],
+  "hyperedges": [],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

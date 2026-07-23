@@ -1,0 +1,741 @@
+{
+  "nodes": [
+    {
+      "id": "sample",
+      "label": "sample.swift",
+      "file_type": "code",
+      "source_file": "sample.swift",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "foundation",
+      "label": "Foundation",
+      "file_type": "code",
+      "type": "module",
+      "source_file": "sample.swift",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "uikit",
+      "label": "UIKit",
+      "file_type": "code",
+      "type": "module",
+      "source_file": "sample.swift",
+      "source_location": "L2",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_processor",
+      "label": "Processor",
+      "file_type": "code",
+      "source_file": "sample.swift",
+      "source_location": "L4",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_loggable",
+      "label": "Loggable",
+      "file_type": "code",
+      "source_file": "sample.swift",
+      "source_location": "L8",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_baseprocessor",
+      "label": "BaseProcessor",
+      "file_type": "code",
+      "source_file": "sample.swift",
+      "source_location": "L12",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_result",
+      "label": "Result",
+      "file_type": "code",
+      "source_file": "sample.swift",
+      "source_location": "L14",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_dataprocessor",
+      "label": "DataProcessor",
+      "file_type": "code",
+      "source_file": "sample.swift",
+      "source_location": "L16",
+      "_origin": "ast"
+    },
+    {
+      "id": "string",
+      "label": "String",
+      "file_type": "code",
+      "source_file": "",
+      "source_location": "",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_dataprocessor_init",
+      "label": ".init()",
+      "file_type": "code",
+      "source_file": "sample.swift",
+      "source_location": "L20",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_dataprocessor_deinit",
+      "label": ".deinit()",
+      "file_type": "code",
+      "source_file": "sample.swift",
+      "source_location": "L22",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_dataprocessor_additem",
+      "label": ".addItem()",
+      "file_type": "code",
+      "source_file": "sample.swift",
+      "source_location": "L24",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_dataprocessor_process",
+      "label": ".process()",
+      "file_type": "code",
+      "source_file": "sample.swift",
+      "source_location": "L28",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_dataprocessor_run",
+      "label": ".run()",
+      "file_type": "code",
+      "source_file": "sample.swift",
+      "source_location": "L32",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_dataprocessor_validate",
+      "label": ".validate()",
+      "file_type": "code",
+      "source_file": "sample.swift",
+      "source_location": "L36",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_config",
+      "label": "Config",
+      "file_type": "code",
+      "source_file": "sample.swift",
+      "source_location": "L41",
+      "_origin": "ast"
+    },
+    {
+      "id": "int",
+      "label": "Int",
+      "file_type": "code",
+      "source_file": "",
+      "source_location": "",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_config_subscript",
+      "label": ".subscript()",
+      "file_type": "code",
+      "source_file": "sample.swift",
+      "source_location": "L45",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_networkerror",
+      "label": "NetworkError",
+      "file_type": "code",
+      "source_file": "sample.swift",
+      "source_location": "L50",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_networkerror_timeout",
+      "label": "timeout",
+      "file_type": "code",
+      "source_file": "sample.swift",
+      "source_location": "L51",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_networkerror_connectionfailed",
+      "label": "connectionFailed",
+      "file_type": "code",
+      "source_file": "sample.swift",
+      "source_location": "L52",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_networkerror_unauthorized",
+      "label": "unauthorized",
+      "file_type": "code",
+      "source_file": "sample.swift",
+      "source_location": "L53",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_networkerror_failed",
+      "label": "failed",
+      "file_type": "code",
+      "source_file": "sample.swift",
+      "source_location": "L54",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_networkerror_describe",
+      "label": ".describe()",
+      "file_type": "code",
+      "source_file": "sample.swift",
+      "source_location": "L56",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_cachemanager",
+      "label": "CacheManager",
+      "file_type": "code",
+      "source_file": "sample.swift",
+      "source_location": "L61",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_cachemanager_get",
+      "label": ".get()",
+      "file_type": "code",
+      "source_file": "sample.swift",
+      "source_location": "L64",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_dataprocessor_log",
+      "label": ".log()",
+      "file_type": "code",
+      "source_file": "sample.swift",
+      "source_location": "L70",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_config_isvalid",
+      "label": ".isValid()",
+      "file_type": "code",
+      "source_file": "sample.swift",
+      "source_location": "L76",
+      "_origin": "ast"
+    },
+    {
+      "id": "bool",
+      "label": "Bool",
+      "file_type": "code",
+      "source_file": "",
+      "source_location": "",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_createprocessor",
+      "label": "createProcessor()",
+      "file_type": "code",
+      "source_file": "sample.swift",
+      "source_location": "L81",
+      "_origin": "ast"
+    }
+  ],
+  "edges": [
+    {
+      "source": "sample",
+      "target": "foundation",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.swift",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "uikit",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.swift",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "sample_processor",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.swift",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "sample_loggable",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.swift",
+      "source_location": "L8",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "sample_baseprocessor",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.swift",
+      "source_location": "L12",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "sample_result",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.swift",
+      "source_location": "L14",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "sample_dataprocessor",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.swift",
+      "source_location": "L16",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_dataprocessor",
+      "target": "sample_baseprocessor",
+      "relation": "inherits",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.swift",
+      "source_location": "L16",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_dataprocessor",
+      "target": "sample_processor",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.swift",
+      "source_location": "L16",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_dataprocessor",
+      "target": "string",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.swift",
+      "source_location": "L17",
+      "weight": 1.0,
+      "context": "field",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_dataprocessor",
+      "target": "sample_result",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.swift",
+      "source_location": "L18",
+      "weight": 1.0,
+      "context": "field",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_dataprocessor",
+      "target": "sample_dataprocessor_init",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.swift",
+      "source_location": "L20",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_dataprocessor",
+      "target": "sample_dataprocessor_deinit",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.swift",
+      "source_location": "L22",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_dataprocessor",
+      "target": "sample_dataprocessor_additem",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.swift",
+      "source_location": "L24",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_dataprocessor_additem",
+      "target": "string",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.swift",
+      "source_location": "L24",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_dataprocessor",
+      "target": "sample_dataprocessor_process",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.swift",
+      "source_location": "L28",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_dataprocessor_process",
+      "target": "string",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.swift",
+      "source_location": "L28",
+      "weight": 1.0,
+      "context": "return_type",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_dataprocessor",
+      "target": "sample_dataprocessor_run",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.swift",
+      "source_location": "L32",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_dataprocessor_run",
+      "target": "sample_dataprocessor",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.swift",
+      "source_location": "L32",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_dataprocessor_run",
+      "target": "sample_result",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.swift",
+      "source_location": "L32",
+      "weight": 1.0,
+      "context": "return_type",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_dataprocessor",
+      "target": "sample_dataprocessor_validate",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.swift",
+      "source_location": "L36",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_dataprocessor_validate",
+      "target": "string",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.swift",
+      "source_location": "L36",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "sample_config",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.swift",
+      "source_location": "L41",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_config",
+      "target": "string",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.swift",
+      "source_location": "L42",
+      "weight": 1.0,
+      "context": "field",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_config",
+      "target": "int",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.swift",
+      "source_location": "L43",
+      "weight": 1.0,
+      "context": "field",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_config",
+      "target": "sample_config_subscript",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.swift",
+      "source_location": "L45",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_config_subscript",
+      "target": "string",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.swift",
+      "source_location": "L45",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "sample_networkerror",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.swift",
+      "source_location": "L50",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_networkerror",
+      "target": "sample_networkerror_timeout",
+      "relation": "case_of",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.swift",
+      "source_location": "L51",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_networkerror",
+      "target": "sample_networkerror_connectionfailed",
+      "relation": "case_of",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.swift",
+      "source_location": "L52",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_networkerror",
+      "target": "sample_networkerror_unauthorized",
+      "relation": "case_of",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.swift",
+      "source_location": "L53",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_networkerror",
+      "target": "sample_networkerror_failed",
+      "relation": "case_of",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.swift",
+      "source_location": "L54",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_networkerror",
+      "target": "sample_config",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.swift",
+      "source_location": "L54",
+      "weight": 1.0,
+      "context": "type",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_networkerror",
+      "target": "sample_networkerror_describe",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.swift",
+      "source_location": "L56",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_networkerror_describe",
+      "target": "string",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.swift",
+      "source_location": "L56",
+      "weight": 1.0,
+      "context": "return_type",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "sample_cachemanager",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.swift",
+      "source_location": "L61",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_cachemanager",
+      "target": "string",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.swift",
+      "source_location": "L62",
+      "weight": 1.0,
+      "context": "field",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_cachemanager",
+      "target": "sample_cachemanager_get",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.swift",
+      "source_location": "L64",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_cachemanager_get",
+      "target": "string",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.swift",
+      "source_location": "L64",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_dataprocessor",
+      "target": "sample_loggable",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.swift",
+      "source_location": "L69",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_dataprocessor",
+      "target": "sample_dataprocessor_log",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.swift",
+      "source_location": "L70",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_config",
+      "target": "sample_config_isvalid",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.swift",
+      "source_location": "L76",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_config_isvalid",
+      "target": "bool",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.swift",
+      "source_location": "L76",
+      "weight": 1.0,
+      "context": "return_type",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "sample_createprocessor",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.swift",
+      "source_location": "L81",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_createprocessor",
+      "target": "sample_dataprocessor",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.swift",
+      "source_location": "L81",
+      "weight": 1.0,
+      "context": "return_type",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_dataprocessor_process",
+      "target": "sample_dataprocessor_validate",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.swift",
+      "source_location": "L29",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_createprocessor",
+      "target": "sample_dataprocessor",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.swift",
+      "source_location": "L82",
+      "weight": 1.0,
+      "_origin": "ast"
+    }
+  ],
+  "hyperedges": [],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

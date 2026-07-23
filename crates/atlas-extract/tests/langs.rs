@@ -65,7 +65,7 @@ fn basename(s: &str) -> String {
 fn canon(m: &Map<String, Value>, r: &Remap) -> String {
     let mut out: BTreeMap<String, Value> = BTreeMap::new();
     for (k, v) in m {
-        if k == "_origin" {
+        if k == "_origin" || k == "metadata" || k == "type" {
             continue;
         }
         let nv = match (k.as_str(), v.as_str()) {
@@ -248,4 +248,185 @@ fn c_matches_oracle() {
 fn cpp_matches_oracle() {
     let src = format!("{GFIX}/sample.cpp");
     check("cpp", &src, "sample_cpp", vec![], vec![]);
+}
+
+/// Ruby. EXACT match: classes (`contains`), methods (`.name()`→`method`), free
+/// functions (`contains`), `class X < Y`→inherits, and in-file direct calls.
+#[test]
+fn ruby_matches_oracle() {
+    let src = format!("{GFIX}/sample.rb");
+    check("rb", &src, "sample_ruby", vec![], vec![]);
+}
+
+/// Kotlin (tree-sitter-kotlin-ng 1.1.0, matching the oracle grammar). EXACT
+/// match: classes/objects/interfaces, methods, `: Base()`→inherits vs
+/// `: Iface`→implements, delegation generic args→generic_arg, property/param/
+/// return type refs, enum entries→case_of, and in-file calls.
+#[test]
+fn kotlin_matches_oracle() {
+    let src = format!("{GFIX}/sample.kt");
+    check("kt", &src, "sample_kotlin", vec![], vec![]);
+}
+
+/// Scala (tree-sitter-scala 0.26.0, matching the oracle grammar). EXACT match:
+/// classes/objects, `extends`→inherits + each `with`→mixes_in, class-parameter
+/// and val/var field type refs, param/return type refs, `import`→imports, and
+/// in-file calls.
+#[test]
+fn scala_matches_oracle() {
+    let src = format!("{GFIX}/sample.scala");
+    check("scala", &src, "sample_scala", vec![], vec![]);
+}
+
+/// C#. EXACT match: classes/interfaces/enums/structs/records, namespaces
+/// (`csharp_namespace:` ids), base list (inherits/implements via interface
+/// pre-scan + `I`-prefix heuristic), field/property/param/return type refs
+/// (generics as generic_arg), `using`→imports, and in-file direct calls. Member
+/// calls with a captured receiver defer to receiver-typed resolution (out of
+/// scope) and emit no edge — matching the oracle. graphify-internal node/edge
+/// `metadata` and `type` are ignored by `canon`.
+#[test]
+fn csharp_matches_oracle() {
+    let src = format!("{GFIX}/sample.cs");
+    check("cs", &src, "sample_cs", vec![], vec![]);
+}
+
+/// PHP. EXACT match: classes, methods/free functions, extends→inherits,
+/// implements→implements, `use Trait`→mixes_in, property/promoted-param/param/
+/// return type refs, `use` imports (last segment), `$this->m()` in-file calls.
+/// A `use FQN` import whose bare name is referenced in-file repoints its
+/// sourceless stub to an FQN-labeled stub (`_resolve_php_type_references`,
+/// use-alias branch).
+#[test]
+fn php_matches_oracle() {
+    let src = format!("{GFIX}/sample.php");
+    check("php", &src, "sample_php", vec![], vec![]);
+}
+
+/// Swift. EXACT match: classes/protocols/structs/enums/actors, base conformance
+/// via protocol/class pre-scan (inherits vs implements), extensions collapsing
+/// onto the extended type, init/deinit/subscript methods, property/param/return
+/// type refs, enum cases→case_of (+ associated-value type refs), `import`→module
+/// anchor node + imports edge, and in-file direct + constructor calls.
+#[test]
+fn swift_matches_oracle() {
+    let src = format!("{GFIX}/sample.swift");
+    check("swift", &src, "sample_swift", vec![], vec![]);
+}
+
+/// Lua. graphify's `sample.luau` (tree-sitter-lua ignores the type annotations).
+/// EXACT match: all functions are top-level `contains`, and the in-file
+/// `Server.new(...)` call inside `main` reproduces the one `calls` edge. Method
+/// calls (`s:start()`) resolve to no callee — matching the oracle.
+#[test]
+fn lua_matches_oracle() {
+    let src = format!("{GFIX}/sample.luau");
+    check("luau", &src, "sample_lua", vec![], vec![]);
+}
+
+/// Bash (standalone extractor). Sample is graphify's `sample.sh`. EXACT match:
+/// file + `__entry` nodes, functions (`bash_function`), program-level var
+/// `defines`, and cross-function `calls`. The `source ./helpers.sh` emits no edge
+/// because helpers.sh is absent on disk — matching the oracle's existence gate.
+#[test]
+fn bash_matches_oracle() {
+    let src = format!("{GFIX}/sample.sh");
+    check("sh", &src, "sample_bash", vec![], vec![]);
+}
+
+/// Elixir (standalone extractor). Sample is graphify's `sample.ex`. EXACT match:
+/// module (`contains`), functions (`method`), aliases/import (including the
+/// `Foo.{Bar, Baz}` multi-alias form), and the in-file `create→validate` call.
+/// Member calls resolve to no in-file label and emit no edge, matching the oracle.
+#[test]
+fn elixir_matches_oracle() {
+    let src = format!("{GFIX}/sample.ex");
+    check("ex", &src, "sample_elixir", vec![], vec![]);
+}
+
+// ── Bash backlog #2141: calls to functions defined in a sourced file ─────────
+//
+// `sourced/main.sh` does `source ./helpers.sh` then calls `greet` — a function
+// defined ONLY in helpers.sh. Resolving that call needs cross-file resolution,
+// out of atlas's single-file extract scope (and current graphify — the oracle —
+// drops it too).
+
+fn edges_by_relation<'a>(edges: &'a [atlas_core::Attrs], rel: &str) -> Vec<&'a atlas_core::Attrs> {
+    edges
+        .iter()
+        .filter(|e| e.get("relation").and_then(Value::as_str) == Some(rel))
+        .collect()
+}
+
+/// REGRESSION (documents #2141 / current behavior): extracting `main.sh` alone —
+/// with `helpers.sh` present on disk — emits the `source` `imports_from` edge but
+/// NO cross-function `calls` edge for `greet`. This matches the oracle.
+#[test]
+fn bash_2141_sourced_call_regression() {
+    let src = format!(
+        "{}/tests/fixtures/sourced/main.sh",
+        env!("CARGO_MANIFEST_DIR")
+    );
+    let got = atlas_extract::extract_file(&src).expect("extract");
+
+    assert!(
+        !edges_by_relation(&got.edges, "imports_from").is_empty(),
+        "expected a `source ./helpers.sh` imports_from edge"
+    );
+    assert!(
+        edges_by_relation(&got.edges, "calls").is_empty(),
+        "#2141: sourced-function call should NOT resolve in single-file scope (matches oracle), got: {:?}",
+        edges_by_relation(&got.edges, "calls")
+    );
+}
+
+/// DESIRED POST-FIX behavior for #2141 (cross-file resolution — OUT OF SCOPE for
+/// single-file extraction, hence `#[ignore]`).
+#[test]
+#[ignore = "#2141: requires cross-file resolution; out of atlas single-file extract scope"]
+fn bash_2141_desired_postfix_behavior() {
+    let src = format!(
+        "{}/tests/fixtures/sourced/main.sh",
+        env!("CARGO_MANIFEST_DIR")
+    );
+    let got = atlas_extract::extract_file(&src).expect("extract");
+    let has_greet_call = edges_by_relation(&got.edges, "calls").iter().any(|e| {
+        e.get("target")
+            .and_then(Value::as_str)
+            .map(|t| t.contains("greet"))
+            .unwrap_or(false)
+    });
+    assert!(
+        has_greet_call,
+        "desired: `run` should call sourced `greet` (needs cross-file resolution)"
+    );
+}
+
+/// Lua `require()` import resolution (not exercised by `sample.luau`). A
+/// `require("some.module")` with no file on disk falls back to
+/// `make_id("some.module")` → `some_module`, emitting a file `imports` edge.
+#[test]
+fn lua_require_import() {
+    use std::io::Write;
+    let dir = format!("{}/target/tmp_lua_require", env!("CARGO_MANIFEST_DIR"));
+    std::fs::create_dir_all(&dir).unwrap();
+    let src = format!("{dir}/mod.lua");
+    let mut f = std::fs::File::create(&src).unwrap();
+    write!(
+        f,
+        "local dep = require(\"some.module\")\n\nlocal function go()\n  dep.run()\nend\n"
+    )
+    .unwrap();
+    drop(f);
+
+    let got = atlas_extract::extract_file(&src).expect("extract");
+    let imports = edges_by_relation(&got.edges, "imports");
+    assert!(
+        imports
+            .iter()
+            .any(|e| e.get("target").and_then(Value::as_str) == Some("some_module")),
+        "expected imports edge to `some_module`, got: {:?}",
+        imports
+    );
+    let _ = std::fs::remove_dir_all(&dir);
 }

@@ -1,0 +1,161 @@
+{
+  "nodes": [
+    {
+      "id": "sample",
+      "label": "sample.sh",
+      "file_type": "code",
+      "source_file": "sample.sh",
+      "source_location": "L1",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_sh__entry",
+      "label": "sample.sh script",
+      "file_type": "code",
+      "source_file": "sample.sh",
+      "source_location": "L1",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_app_env",
+      "label": "APP_ENV",
+      "file_type": "code",
+      "source_file": "sample.sh",
+      "source_location": "L6",
+      "metadata": {
+        "language": "bash",
+        "kind": "code"
+      },
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_build",
+      "label": "build()",
+      "file_type": "code",
+      "source_file": "sample.sh",
+      "source_location": "L8",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_test_suite",
+      "label": "test_suite()",
+      "file_type": "code",
+      "source_file": "sample.sh",
+      "source_location": "L14",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_deploy",
+      "label": "deploy()",
+      "file_type": "code",
+      "source_file": "sample.sh",
+      "source_location": "L19",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_function"
+      },
+      "_origin": "ast"
+    }
+  ],
+  "edges": [
+    {
+      "source": "sample",
+      "target": "sample_sh__entry",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.sh",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "sample_app_env",
+      "relation": "defines",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.sh",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "sample_build",
+      "relation": "defines",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.sh",
+      "source_location": "L8",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "sample_test_suite",
+      "relation": "defines",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.sh",
+      "source_location": "L14",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "sample_deploy",
+      "relation": "defines",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.sh",
+      "source_location": "L19",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_test_suite",
+      "target": "sample_build",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.sh",
+      "source_location": "L16",
+      "weight": 1.0,
+      "context": "call",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_deploy",
+      "target": "sample_build",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.sh",
+      "source_location": "L20",
+      "weight": 1.0,
+      "context": "call",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_deploy",
+      "target": "sample_test_suite",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.sh",
+      "source_location": "L21",
+      "weight": 1.0,
+      "context": "call",
+      "_origin": "ast"
+    }
+  ]
+}

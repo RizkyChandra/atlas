@@ -1,0 +1,459 @@
+{
+  "nodes": [
+    {
+      "id": "sample",
+      "label": "sample.cs",
+      "file_type": "code",
+      "source_file": "sample.cs",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "csharp_namespace:f365dbd5e0318773",
+      "label": "GraphifyDemo",
+      "file_type": "code",
+      "source_file": "sample.cs",
+      "source_location": "L5",
+      "type": "namespace",
+      "metadata": {
+        "kind": "csharp_namespace",
+        "namespace": "GraphifyDemo"
+      },
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_graphifydemo_iprocessor",
+      "label": "IProcessor",
+      "file_type": "code",
+      "source_file": "sample.cs",
+      "source_location": "L7",
+      "metadata": {
+        "namespace": "GraphifyDemo",
+        "scope_chain": [
+          "s72"
+        ]
+      },
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_graphifydemo_iprocessor_process",
+      "label": ".Process()",
+      "file_type": "code",
+      "source_file": "sample.cs",
+      "source_location": "L9",
+      "metadata": {
+        "namespace": "GraphifyDemo",
+        "scope_chain": [
+          "s72"
+        ]
+      },
+      "_origin": "ast"
+    },
+    {
+      "id": "list",
+      "label": "List",
+      "file_type": "code",
+      "source_file": "",
+      "source_location": "",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_graphifydemo_processor",
+      "label": "Processor",
+      "file_type": "code",
+      "source_file": "sample.cs",
+      "source_location": "L12",
+      "metadata": {
+        "namespace": "GraphifyDemo",
+        "scope_chain": [
+          "s72"
+        ]
+      },
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_graphifydemo_result",
+      "label": "Result",
+      "file_type": "code",
+      "source_file": "sample.cs",
+      "source_location": "L16",
+      "metadata": {
+        "namespace": "GraphifyDemo",
+        "scope_chain": [
+          "s72"
+        ]
+      },
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_graphifydemo_dataprocessor",
+      "label": "DataProcessor",
+      "file_type": "code",
+      "source_file": "sample.cs",
+      "source_location": "L20",
+      "metadata": {
+        "namespace": "GraphifyDemo",
+        "scope_chain": [
+          "s72"
+        ]
+      },
+      "_origin": "ast"
+    },
+    {
+      "id": "httpclient",
+      "label": "HttpClient",
+      "file_type": "code",
+      "source_file": "",
+      "source_location": "",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_graphifydemo_dataprocessor_process",
+      "label": ".Process()",
+      "file_type": "code",
+      "source_file": "sample.cs",
+      "source_location": "L33",
+      "metadata": {
+        "namespace": "GraphifyDemo",
+        "scope_chain": [
+          "s72"
+        ]
+      },
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_graphifydemo_dataprocessor_build",
+      "label": ".Build()",
+      "file_type": "code",
+      "source_file": "sample.cs",
+      "source_location": "L38",
+      "metadata": {
+        "namespace": "GraphifyDemo",
+        "scope_chain": [
+          "s72"
+        ]
+      },
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_graphifydemo_dataprocessor_validate",
+      "label": ".Validate()",
+      "file_type": "code",
+      "source_file": "sample.cs",
+      "source_location": "L43",
+      "metadata": {
+        "namespace": "GraphifyDemo",
+        "scope_chain": [
+          "s72"
+        ]
+      },
+      "_origin": "ast"
+    }
+  ],
+  "edges": [
+    {
+      "source": "sample",
+      "target": "system",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.cs",
+      "source_location": "L1",
+      "weight": 1.0,
+      "metadata": {
+        "using_kind": "namespace",
+        "target_fqn": "System",
+        "scope_kind": "file"
+      },
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "system_collections_generic",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.cs",
+      "source_location": "L2",
+      "weight": 1.0,
+      "metadata": {
+        "using_kind": "namespace",
+        "target_fqn": "System.Collections.Generic",
+        "scope_kind": "file"
+      },
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "system_net_http",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.cs",
+      "source_location": "L3",
+      "weight": 1.0,
+      "metadata": {
+        "using_kind": "namespace",
+        "target_fqn": "System.Net.Http",
+        "scope_kind": "file"
+      },
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "csharp_namespace:f365dbd5e0318773",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.cs",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "sample_graphifydemo_iprocessor",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.cs",
+      "source_location": "L7",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_graphifydemo_iprocessor",
+      "target": "sample_graphifydemo_iprocessor_process",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.cs",
+      "source_location": "L9",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_graphifydemo_iprocessor_process",
+      "target": "list",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.cs",
+      "source_location": "L9",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "metadata": {
+        "ref_token": "List"
+      },
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "sample_graphifydemo_processor",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.cs",
+      "source_location": "L12",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "sample_graphifydemo_result",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.cs",
+      "source_location": "L16",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "sample_graphifydemo_dataprocessor",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.cs",
+      "source_location": "L20",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_graphifydemo_dataprocessor",
+      "target": "sample_graphifydemo_processor",
+      "relation": "inherits",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.cs",
+      "source_location": "L20",
+      "weight": 1.0,
+      "metadata": {
+        "ref_token": "Processor"
+      },
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_graphifydemo_dataprocessor",
+      "target": "sample_graphifydemo_iprocessor",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.cs",
+      "source_location": "L20",
+      "weight": 1.0,
+      "metadata": {
+        "ref_token": "IProcessor"
+      },
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_graphifydemo_dataprocessor",
+      "target": "httpclient",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.cs",
+      "source_location": "L22",
+      "weight": 1.0,
+      "context": "field",
+      "metadata": {
+        "ref_token": "HttpClient"
+      },
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_graphifydemo_dataprocessor",
+      "target": "sample_graphifydemo_processor",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.cs",
+      "source_location": "L24",
+      "weight": 1.0,
+      "context": "field",
+      "metadata": {
+        "ref_token": "Processor"
+      },
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_graphifydemo_dataprocessor",
+      "target": "list",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.cs",
+      "source_location": "L26",
+      "weight": 1.0,
+      "context": "field",
+      "metadata": {
+        "ref_token": "List"
+      },
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_graphifydemo_dataprocessor",
+      "target": "sample_graphifydemo_dataprocessor_process",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.cs",
+      "source_location": "L33",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_graphifydemo_dataprocessor_process",
+      "target": "list",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.cs",
+      "source_location": "L33",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "metadata": {
+        "ref_token": "List"
+      },
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_graphifydemo_dataprocessor",
+      "target": "sample_graphifydemo_dataprocessor_build",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.cs",
+      "source_location": "L38",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_graphifydemo_dataprocessor_build",
+      "target": "httpclient",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.cs",
+      "source_location": "L38",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "metadata": {
+        "ref_token": "HttpClient"
+      },
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_graphifydemo_dataprocessor_build",
+      "target": "sample_graphifydemo_result",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.cs",
+      "source_location": "L38",
+      "weight": 1.0,
+      "context": "return_type",
+      "metadata": {
+        "ref_token": "Result"
+      },
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_graphifydemo_dataprocessor_build",
+      "target": "sample_graphifydemo_dataprocessor",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.cs",
+      "source_location": "L38",
+      "weight": 1.0,
+      "context": "generic_arg",
+      "metadata": {
+        "ref_token": "DataProcessor"
+      },
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_graphifydemo_dataprocessor",
+      "target": "sample_graphifydemo_dataprocessor_validate",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.cs",
+      "source_location": "L43",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_graphifydemo_dataprocessor_validate",
+      "target": "list",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.cs",
+      "source_location": "L43",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "metadata": {
+        "ref_token": "List"
+      },
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_graphifydemo_dataprocessor_process",
+      "target": "sample_graphifydemo_dataprocessor_validate",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.cs",
+      "source_location": "L35",
+      "weight": 1.0,
+      "_origin": "ast"
+    }
+  ],
+  "hyperedges": [],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

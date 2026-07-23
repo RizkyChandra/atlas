@@ -28,6 +28,8 @@ use serde_json::{json, Value};
 use std::collections::HashSet;
 use std::path::Path;
 
+mod bash;
+mod elixir;
 mod engine;
 mod go;
 mod rust_lang;
@@ -59,6 +61,17 @@ pub fn extract_file(path: impl AsRef<Path>) -> std::io::Result<ExtractResult> {
         "cpp" | "cc" | "cxx" | "hpp" | "hh" | "hxx" => engine::extract(path, &source, Lang::Cpp),
         "go" => go::extract(path, &source),
         "rs" => rust_lang::extract(path, &source),
+        "rb" | "rake" => engine::extract(path, &source, Lang::Ruby),
+        "kt" | "kts" => engine::extract(path, &source, Lang::Kotlin),
+        "scala" | "sc" => engine::extract(path, &source, Lang::Scala),
+        "cs" => engine::extract(path, &source, Lang::CSharp),
+        "php" | "phtml" | "php3" | "php4" | "php5" | "php7" | "phps" => {
+            engine::extract(path, &source, Lang::Php)
+        }
+        "swift" => engine::extract(path, &source, Lang::Swift),
+        "lua" | "luau" | "toc" => engine::extract(path, &source, Lang::Lua),
+        "sh" | "bash" => bash::extract(path, &source),
+        "ex" | "exs" => elixir::extract(path, &source),
         // Unknown extension: empty graph (graphify returns nothing for these).
         _ => ExtractResult {
             nodes: vec![],
