@@ -37,10 +37,12 @@ mod go;
 mod julia;
 mod objc;
 mod powershell;
+mod resolve;
 mod rust_lang;
 mod zig_lang;
 
 pub use engine::Lang;
+pub use resolve::resolve_corpus;
 
 /// Raw extraction output: node and edge attribute maps, in emission order,
 /// after the build-time node/edge collapse.

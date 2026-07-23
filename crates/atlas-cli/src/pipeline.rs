@@ -23,7 +23,10 @@ const IGNORE_DIRS: &[&str] = &[".git", "target", "node_modules"];
 ///
 /// `code_only` is accepted for graphify parity; atlas only does code (AST)
 /// extraction today, so the flag currently changes nothing.
-// ponytail: per-file merge only — cross-file symbol resolution is deferred (M2+).
+///
+/// After the per-file merge, `atlas_extract::resolve_corpus` runs graphify's
+/// build-time cross-file symbol resolution (import-stub collapse, Python
+/// import/uses edges, import-guided cross-file calls).
 pub fn extract(dir: &str, _code_only: bool, no_viz: bool) -> Result<()> {
     let root = Path::new(dir);
     if !root.is_dir() {
@@ -43,6 +46,9 @@ pub fn extract(dir: &str, _code_only: bool, no_viz: bool) -> Result<()> {
     }
     let nodes = atlas_extract::dedupe_nodes(all_nodes);
     let links = atlas_extract::dedupe_edges(all_edges);
+    // Cross-file resolution: rewire import stubs and resolve cross-file calls
+    // across the merged corpus (graphify's build-time symbol resolution).
+    let (nodes, links) = atlas_extract::resolve_corpus(nodes, links);
 
     let mut g = Graph {
         directed: false,
