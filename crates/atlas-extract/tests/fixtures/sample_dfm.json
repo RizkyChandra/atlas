@@ -1,0 +1,202 @@
+{
+  "nodes": [
+    {
+      "id": "sample",
+      "label": "sample.dfm",
+      "file_type": "code",
+      "source_file": "sample.dfm",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_tmainform",
+      "label": "TMainForm",
+      "file_type": "code",
+      "source_file": "sample.dfm",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_formcreate",
+      "label": "FormCreate()",
+      "file_type": "code",
+      "source_file": "sample.dfm",
+      "source_location": "L7",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_formdestroy",
+      "label": "FormDestroy()",
+      "file_type": "code",
+      "source_file": "sample.dfm",
+      "source_location": "L8",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_tpanel",
+      "label": "TPanel",
+      "file_type": "code",
+      "source_file": "sample.dfm",
+      "source_location": "L9",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_tbutton",
+      "label": "TButton",
+      "file_type": "code",
+      "source_file": "sample.dfm",
+      "source_location": "L12",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_buttonokclick",
+      "label": "ButtonOKClick()",
+      "file_type": "code",
+      "source_file": "sample.dfm",
+      "source_location": "L14",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_buttoncancelclick",
+      "label": "ButtonCancelClick()",
+      "file_type": "code",
+      "source_file": "sample.dfm",
+      "source_location": "L18",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_tmemo",
+      "label": "TMemo",
+      "file_type": "code",
+      "source_file": "sample.dfm",
+      "source_location": "L21",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_memo1change",
+      "label": "Memo1Change()",
+      "file_type": "code",
+      "source_file": "sample.dfm",
+      "source_location": "L23",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_tstatusbar",
+      "label": "TStatusBar",
+      "file_type": "code",
+      "source_file": "sample.dfm",
+      "source_location": "L25",
+      "_origin": "ast"
+    }
+  ],
+  "edges": [
+    {
+      "source": "sample",
+      "target": "sample_tmainform",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.dfm",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_tmainform",
+      "target": "sample_formcreate",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.dfm",
+      "source_location": "L7",
+      "weight": 1.0,
+      "context": "event",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_tmainform",
+      "target": "sample_formdestroy",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.dfm",
+      "source_location": "L8",
+      "weight": 1.0,
+      "context": "event",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_tmainform",
+      "target": "sample_tpanel",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.dfm",
+      "source_location": "L9",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_tpanel",
+      "target": "sample_tbutton",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.dfm",
+      "source_location": "L12",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_tbutton",
+      "target": "sample_buttonokclick",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.dfm",
+      "source_location": "L14",
+      "weight": 1.0,
+      "context": "event",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_tbutton",
+      "target": "sample_buttoncancelclick",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.dfm",
+      "source_location": "L18",
+      "weight": 1.0,
+      "context": "event",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_tmainform",
+      "target": "sample_tmemo",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.dfm",
+      "source_location": "L21",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_tmemo",
+      "target": "sample_memo1change",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.dfm",
+      "source_location": "L23",
+      "weight": 1.0,
+      "context": "event",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_tmainform",
+      "target": "sample_tstatusbar",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.dfm",
+      "source_location": "L25",
+      "weight": 1.0,
+      "_origin": "ast"
+    }
+  ],
+  "hyperedges": [],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

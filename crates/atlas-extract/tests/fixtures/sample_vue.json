@@ -1,0 +1,131 @@
+{
+  "nodes": [
+    {
+      "id": "sample",
+      "label": "sample.vue",
+      "file_type": "code",
+      "source_file": "sample.vue",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_props",
+      "label": "Props",
+      "file_type": "code",
+      "source_file": "sample.vue",
+      "source_location": "L5",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_greet",
+      "label": "greet()",
+      "file_type": "code",
+      "source_file": "sample.vue",
+      "source_location": "L11",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_bump",
+      "label": "bump()",
+      "file_type": "code",
+      "source_file": "sample.vue",
+      "source_location": "L15",
+      "_origin": "ast"
+    },
+    {
+      "id": "tmp_tmp_atlas_ora_vue_lazywidget_vue",
+      "label": "./LazyWidget.vue",
+      "file_type": "code",
+      "source_file": "LazyWidget.vue",
+      "confidence": "EXTRACTED",
+      "_origin": "ast"
+    }
+  ],
+  "edges": [
+    {
+      "source": "sample",
+      "target": "ref_axios",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.vue",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "tmp_tmp_atlas_ora_vue_helper",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.vue",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "tmp_tmp_atlas_ora_vue_helper_formatname",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.vue",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "sample_props",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.vue",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "sample_greet",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.vue",
+      "source_location": "L11",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "sample_bump",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.vue",
+      "source_location": "L15",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_bump",
+      "target": "sample_greet",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.vue",
+      "source_location": "L16",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "tmp_tmp_atlas_ora_vue_lazywidget_vue",
+      "relation": "dynamic_import",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.vue",
+      "_origin": "ast"
+    }
+  ],
+  "hyperedges": [],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

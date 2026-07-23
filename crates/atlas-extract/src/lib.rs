@@ -28,22 +28,36 @@ use serde_json::{json, Value};
 use std::collections::HashSet;
 use std::path::Path;
 
+mod ada;
 mod apex;
+mod astro;
 mod bash;
+mod blade;
 mod dart;
 mod elixir;
 mod engine;
 mod fortran;
 mod go;
+mod json_config;
 mod julia;
+mod nix;
 mod objc;
 mod pascal;
+mod pascal_forms;
 mod powershell;
+mod r_lang;
+mod razor;
 mod resolve;
 mod rust_lang;
+mod sfc;
+mod sln;
+mod solidity;
 mod sql;
+mod svelte;
 mod terraform;
 mod verilog;
+mod vue;
+mod xaml;
 mod zig_lang;
 
 pub use engine::Lang;
@@ -65,13 +79,34 @@ pub fn extract_file(path: impl AsRef<Path>) -> std::io::Result<ExtractResult> {
         .map(|s| s.to_string_lossy().to_ascii_lowercase())
         .unwrap_or_default();
 
+    // Blade uses the compound `.blade.php` extension — dispatch it before the
+    // plain `.php` arm (which `path.extension()` alone would route to).
+    let name_lc = path
+        .file_name()
+        .map(|s| s.to_string_lossy().to_ascii_lowercase())
+        .unwrap_or_default();
+    if name_lc.ends_with(".blade.php") {
+        let raw = blade::extract(path, &source);
+        let (nodes, edges) = rewire_infile_stubs(raw.nodes, raw.edges);
+        return Ok(ExtractResult {
+            nodes: dedupe_nodes(nodes),
+            edges: dedupe_edges(edges),
+        });
+    }
+
     let raw = match ext.as_str() {
         "py" | "pyi" => engine::extract(path, &source, Lang::Python),
         "js" | "jsx" | "mjs" | "cjs" => engine::extract(path, &source, Lang::Js),
         "ts" | "mts" | "cts" => engine::extract(path, &source, Lang::Ts),
+        // .tsx: TS config, JSX-aware grammar (graphify routes .tsx → language_tsx).
+        "tsx" => engine::extract(path, &source, Lang::Tsx),
         "java" => engine::extract(path, &source, Lang::Java),
         "c" | "h" => engine::extract(path, &source, Lang::C),
-        "cpp" | "cc" | "cxx" | "hpp" | "hh" | "hxx" => engine::extract(path, &source, Lang::Cpp),
+        // CUDA (.cu/.cuh) and Metal (.metal) reuse the C++ grammar/config, exactly
+        // as graphify routes them to its cpp extractor.
+        "cpp" | "cc" | "cxx" | "hpp" | "hh" | "hxx" | "cu" | "cuh" | "metal" => {
+            engine::extract(path, &source, Lang::Cpp)
+        }
         "go" => go::extract(path, &source),
         "rs" => rust_lang::extract(path, &source),
         "rb" | "rake" => engine::extract(path, &source, Lang::Ruby),
@@ -87,6 +122,9 @@ pub fn extract_file(path: impl AsRef<Path>) -> std::io::Result<ExtractResult> {
         "ex" | "exs" => elixir::extract(path, &source),
         "zig" => zig_lang::extract(path, &source),
         "ps1" | "psm1" => powershell::extract(path, &source),
+        // .psd1 PowerShell module manifest — dedicated extractor (graphify
+        // `extract_powershell_manifest`), not the script pass.
+        "psd1" => powershell::extract_manifest(path, &source),
         "m" | "mm" => objc::extract(path, &source),
         "jl" => julia::extract(path, &source),
         // Fortran. Lowercase .f* are unpreprocessed (clean anchors). Capital .F*
@@ -102,12 +140,35 @@ pub fn extract_file(path: impl AsRef<Path>) -> std::io::Result<ExtractResult> {
         // fall through to the tree-sitter pass; documented in tests/langs.rs.
         "groovy" | "gradle" => engine::extract(path, &source, Lang::Groovy),
         "sql" => sql::extract(path, &source),
-        "tf" | "hcl" => terraform::extract(path, &source),
+        // .tf/.hcl blocks; .tfvars is Terraform's values store (same extractor —
+        // top-level attributes only, so the graph is just the file node).
+        "tf" | "hcl" | "tfvars" => terraform::extract(path, &source),
         // Verilog / SystemVerilog (tree-sitter walk + regex class augmentation).
         "v" | "sv" | "svh" | "vh" => verilog::extract(path, &source),
         // Pascal / Delphi (regex extractor — Rust grammar crate version does not
         // match the oracle venv grammar; see src/pascal.rs).
         "pas" | "pp" | "dpr" | "dpk" | "inc" | "lpr" => pascal::extract(path, &source),
+        // Component single-file components: embedded <script> parsed via the
+        // JS/TS engine (Vue masks non-script; Svelte/Astro feed the raw file)
+        // plus a regex rescue for template/frontmatter/dynamic imports.
+        "vue" => vue::extract(path, &source),
+        "svelte" => svelte::extract(path, &source),
+        "astro" => astro::extract(path, &source),
+        // ASP.NET Razor (`.razor`/`.cshtml`) and WPF/XAML — pure-regex / XML ports.
+        "razor" | "cshtml" => razor::extract(path, &source),
+        "xaml" => xaml::extract(path, &source),
+        // .NET solution/project files (see src/sln.rs).
+        "sln" | "slnx" | "csproj" | "fsproj" | "vbproj" => sln::extract(path, &source),
+        // Pascal forms (.dfm/.lfm) and Lazarus packages (.lpk) (see src/pascal_forms.rs).
+        "dfm" | "lfm" | "lpk" => pascal_forms::extract(path, &source),
+        // JSON: only recognized MCP/config/manifest shapes emit nodes; plain data
+        // JSON is skipped (graphify #1224/#2107/#2108). See src/json_config.rs.
+        "json" => json_config::extract(path, &source),
+        // BACKLOG new languages (M2) — no graphify oracle; tree-sitter grammars.
+        "r" => r_lang::extract(path, &source),
+        "nix" => nix::extract(path, &source),
+        "sol" => solidity::extract(path, &source),
+        "adb" | "ads" => ada::extract(path, &source),
         // Apex (.cls / .trigger) — regex-based, no grammar (see src/apex.rs).
         "cls" | "trigger" => apex::extract(path, &source),
         // Unknown extension: empty graph (graphify returns nothing for these).

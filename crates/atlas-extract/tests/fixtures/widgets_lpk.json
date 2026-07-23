@@ -1,0 +1,109 @@
+{
+  "nodes": [
+    {
+      "id": "widgets",
+      "label": "widgets.lpk",
+      "file_type": "code",
+      "source_file": "widgets.lpk",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "widgets_widgetspkg",
+      "label": "WidgetsPkg",
+      "file_type": "code",
+      "source_file": "widgets.lpk",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "fcl",
+      "label": "FCL",
+      "file_type": "code",
+      "source_file": "widgets.lpk",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "lcl",
+      "label": "LCL",
+      "file_type": "code",
+      "source_file": "widgets.lpk",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "widgeta",
+      "label": "widgeta",
+      "file_type": "code",
+      "source_file": "widgets.lpk",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "widgetb",
+      "label": "widgetb",
+      "file_type": "code",
+      "source_file": "widgets.lpk",
+      "source_location": "L1",
+      "_origin": "ast"
+    }
+  ],
+  "edges": [
+    {
+      "source": "widgets",
+      "target": "widgets_widgetspkg",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "widgets.lpk",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "widgets_widgetspkg",
+      "target": "fcl",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "widgets.lpk",
+      "source_location": "L1",
+      "weight": 1.0,
+      "context": "import",
+      "_origin": "ast"
+    },
+    {
+      "source": "widgets_widgetspkg",
+      "target": "lcl",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "widgets.lpk",
+      "source_location": "L1",
+      "weight": 1.0,
+      "context": "import",
+      "_origin": "ast"
+    },
+    {
+      "source": "widgets_widgetspkg",
+      "target": "widgeta",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "widgets.lpk",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "widgets_widgetspkg",
+      "target": "widgetb",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "widgets.lpk",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    }
+  ],
+  "hyperedges": [],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

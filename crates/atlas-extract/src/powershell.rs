@@ -8,9 +8,10 @@
 //! `calls` edges (a command whose name matches a defined function/method label).
 //!
 //! Node ids key off the file stem to match graphify's *built* graph (see
-//! `engine.rs`). Manifest `.psd1` extraction is out of scope (not dispatched).
+//! `engine.rs`). `.psd1` module manifests are handled by [`extract_manifest`]
+//! (graphify `extract_powershell_manifest`), a separate hashtable pass.
 
-use crate::{node_map, ExtractResult};
+use crate::{edge_map, node_map, ExtractResult};
 use atlas_core::ids::{file_stem, make_id};
 use atlas_core::Attrs;
 use std::collections::{HashMap, HashSet};
@@ -480,6 +481,213 @@ impl<'a> Ps<'a> {
         }
         for child in crate::kids(node) {
             self.walk_calls(child, caller_nid, label_to_nid, seen_pairs);
+        }
+    }
+}
+
+// ── .psd1 module manifest ────────────────────────────────────────────────────
+// Port of graphify `extract_powershell_manifest`. A .psd1 is a PowerShell data
+// hashtable (`@{ ... }`), not a script: walk `hash_entry` nodes and, for the
+// import-relevant keys below, emit an `imports_from` edge per referenced module.
+
+const PSD1_IMPORT_KEYS: &[&str] = &["RootModule", "NestedModules", "RequiredModules"];
+
+/// Bare module name from a raw string value: strip path prefix + last extension.
+/// `'MyModule.psm1'` → `MyModule`, `'./sub/Util.psm1'` → `Util`.
+fn psd1_module_name(raw: &str) -> String {
+    let base = raw.replace('\\', "/");
+    let base = base.rsplit('/').next().unwrap_or(&base);
+    match base.rfind('.') {
+        Some(i) => &base[..i],
+        None => base,
+    }
+    .trim()
+    .to_string()
+}
+
+pub fn extract_manifest(path: &Path, source: &[u8]) -> ExtractResult {
+    let mut parser = Parser::new();
+    parser
+        .set_language(&tree_sitter_powershell::LANGUAGE.into())
+        .expect("load powershell grammar");
+    let tree = match parser.parse(source, None) {
+        Some(t) => t,
+        None => {
+            return ExtractResult {
+                nodes: vec![],
+                edges: vec![],
+            }
+        }
+    };
+
+    let stem = file_stem(path);
+    let file_nid = make_id([stem.as_str()]);
+    let str_path = path.to_string_lossy().into_owned();
+    let filename = path
+        .file_name()
+        .map(|s| s.to_string_lossy().into_owned())
+        .unwrap_or_default();
+
+    let mut m = Manifest {
+        source,
+        str_path,
+        file_nid: file_nid.clone(),
+        nodes: vec![node_map(
+            &file_nid,
+            &filename,
+            "code",
+            &path.to_string_lossy(),
+            "L1",
+        )],
+        edges: Vec::new(),
+    };
+    m.walk(tree.root_node());
+    ExtractResult {
+        nodes: m.nodes,
+        edges: m.edges,
+    }
+}
+
+struct Manifest<'a> {
+    source: &'a [u8],
+    str_path: String,
+    file_nid: String,
+    nodes: Vec<Attrs>,
+    edges: Vec<Attrs>,
+}
+
+impl Manifest<'_> {
+    fn text(&self, n: Node) -> String {
+        String::from_utf8_lossy(&self.source[n.byte_range()]).into_owned()
+    }
+
+    /// All `string_literal` texts under `node`, quote-stripped, in tree order.
+    fn collect_strings(&self, node: Node, out: &mut Vec<String>) {
+        if node.kind() == "string_literal" {
+            out.push(self.text(node).trim_matches(['\'', '"']).to_string());
+            return;
+        }
+        for c in crate::kids(node) {
+            self.collect_strings(c, out);
+        }
+    }
+
+    /// Byte offsets of every `string_literal` under `node` (for exclusion).
+    fn collect_string_offsets(&self, node: Node, out: &mut HashSet<usize>) {
+        if node.kind() == "string_literal" {
+            out.insert(node.start_byte());
+            return;
+        }
+        for c in crate::kids(node) {
+            self.collect_string_offsets(c, out);
+        }
+    }
+
+    fn add_import(&mut self, module_raw: &str, line: usize) {
+        let name = psd1_module_name(module_raw);
+        if name.is_empty() {
+            return;
+        }
+        let tgt = make_id([name.as_str()]);
+        self.edges.push(edge_map(
+            &self.file_nid,
+            &tgt,
+            "imports_from",
+            Some("import"),
+            &self.str_path,
+            &format!("L{line}"),
+        ));
+    }
+
+    fn walk(&mut self, node: Node) {
+        if node.kind() != "hash_entry" {
+            for c in crate::kids(node) {
+                self.walk(c);
+            }
+            return;
+        }
+        let Some(key_node) = crate::kids(node)
+            .into_iter()
+            .find(|c| c.kind() == "key_expression")
+        else {
+            return;
+        };
+        let key = self.text(key_node).trim().to_string();
+        if !PSD1_IMPORT_KEYS.contains(&key.as_str()) {
+            return;
+        }
+        let line = node.start_position().row + 1;
+        let Some(value) = crate::kids(node)
+            .into_iter()
+            .find(|c| c.kind() == "pipeline")
+        else {
+            return;
+        };
+
+        if key == "RequiredModules" {
+            // Two forms: bare string, or @{ ModuleName = 'X'; ... }. Collect the
+            // ModuleName values, excluding every string inside any hash_entry from
+            // the "direct" set; emit direct strings then the ModuleName strings.
+            let mut module_names: Vec<String> = Vec::new();
+            let mut inside: HashSet<usize> = HashSet::new();
+            self.required_hash_entries(value, &mut module_names, &mut inside);
+            let mut direct: Vec<String> = Vec::new();
+            self.collect_direct_strings(value, &inside, &mut direct);
+            for s in direct.into_iter().chain(module_names) {
+                self.add_import(&s, line);
+            }
+        } else {
+            // RootModule / NestedModules: every string literal is a module.
+            let mut strings = Vec::new();
+            self.collect_strings(value, &mut strings);
+            for s in strings {
+                self.add_import(&s, line);
+            }
+        }
+    }
+
+    /// graphify `find_modulename_entries`: at each `hash_entry`, mark all its
+    /// strings as "inside", and if its key is `ModuleName` collect their values.
+    fn required_hash_entries(
+        &self,
+        node: Node,
+        module_names: &mut Vec<String>,
+        inside: &mut HashSet<usize>,
+    ) {
+        if node.kind() == "hash_entry" {
+            let sub_key = crate::kids(node)
+                .into_iter()
+                .find(|c| c.kind() == "key_expression");
+            if let Some(sk) = sub_key {
+                for c in crate::kids(node) {
+                    if c.kind() == "pipeline" {
+                        self.collect_string_offsets(c, inside);
+                    }
+                }
+                if self.text(sk).trim() == "ModuleName" {
+                    for c in crate::kids(node) {
+                        if c.kind() == "pipeline" {
+                            self.collect_strings(c, module_names);
+                        }
+                    }
+                }
+            }
+            return; // don't recurse into this hash_entry
+        }
+        for c in crate::kids(node) {
+            self.required_hash_entries(c, module_names, inside);
+        }
+    }
+
+    fn collect_direct_strings(&self, node: Node, inside: &HashSet<usize>, out: &mut Vec<String>) {
+        if node.kind() == "string_literal" {
+            if !inside.contains(&node.start_byte()) {
+                out.push(self.text(node).trim_matches(['\'', '"']).to_string());
+            }
+            return;
+        }
+        for c in crate::kids(node) {
+            self.collect_direct_strings(c, inside, out);
         }
     }
 }

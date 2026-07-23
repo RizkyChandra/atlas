@@ -1,0 +1,65 @@
+{
+  "nodes": [
+    {
+      "id": "sample",
+      "label": "sample.svelte",
+      "file_type": "code",
+      "source_file": "sample.svelte",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "tmp_tmp_atlas_ora_svelte_modal_svelte",
+      "label": "./Modal.svelte",
+      "file_type": "code",
+      "source_file": "Modal.svelte",
+      "confidence": "EXTRACTED",
+      "_origin": "ast"
+    },
+    {
+      "id": "svelte",
+      "label": "svelte",
+      "file_type": "code",
+      "source_file": "svelte",
+      "confidence": "EXTRACTED",
+      "_origin": "ast"
+    },
+    {
+      "id": "tmp_tmp_atlas_ora_svelte_store",
+      "label": "./store",
+      "file_type": "code",
+      "source_file": "store",
+      "confidence": "EXTRACTED",
+      "_origin": "ast"
+    }
+  ],
+  "edges": [
+    {
+      "source": "sample",
+      "target": "tmp_tmp_atlas_ora_svelte_modal_svelte",
+      "relation": "dynamic_import",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.svelte",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "svelte",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.svelte",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "tmp_tmp_atlas_ora_svelte_store",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.svelte",
+      "_origin": "ast"
+    }
+  ],
+  "hyperedges": [],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

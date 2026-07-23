@@ -1,0 +1,153 @@
+{
+  "nodes": [
+    {
+      "id": "sample",
+      "label": "sample.csproj",
+      "file_type": "code",
+      "source_file": "sample.csproj",
+      "source_location": null,
+      "_origin": "ast"
+    },
+    {
+      "id": "framework_net8_0",
+      "label": "net8.0",
+      "file_type": "concept",
+      "source_file": "sample.csproj",
+      "source_location": null,
+      "_origin": "ast"
+    },
+    {
+      "id": "nuget_microsoft_aspnetcore_authentication_jwtbearer",
+      "label": "Microsoft.AspNetCore.Authentication.JwtBearer (8.0.0)",
+      "file_type": "code",
+      "source_file": "sample.csproj",
+      "source_location": null,
+      "_origin": "ast"
+    },
+    {
+      "id": "nuget_swashbuckle_aspnetcore",
+      "label": "Swashbuckle.AspNetCore (6.5.0)",
+      "file_type": "code",
+      "source_file": "sample.csproj",
+      "source_location": null,
+      "_origin": "ast"
+    },
+    {
+      "id": "nuget_mediatr",
+      "label": "MediatR (12.2.0)",
+      "file_type": "code",
+      "source_file": "sample.csproj",
+      "source_location": null,
+      "_origin": "ast"
+    },
+    {
+      "id": "nuget_fluentvalidation",
+      "label": "FluentValidation (11.9.0)",
+      "file_type": "code",
+      "source_file": "sample.csproj",
+      "source_location": null,
+      "_origin": "ast"
+    },
+    {
+      "id": "ext_domain_domain_csproj",
+      "label": "Domain.csproj",
+      "file_type": "code",
+      "source_file": "../Domain/Domain.csproj",
+      "source_location": null,
+      "_origin": "ast"
+    },
+    {
+      "id": "ext_infrastructure_infrastructure_csproj",
+      "label": "Infrastructure.csproj",
+      "file_type": "code",
+      "source_file": "../Infrastructure/Infrastructure.csproj",
+      "source_location": null,
+      "_origin": "ast"
+    },
+    {
+      "id": "sdk_microsoft_net_sdk_web",
+      "label": "Microsoft.NET.Sdk.Web",
+      "file_type": "concept",
+      "source_file": "sample.csproj",
+      "source_location": null,
+      "_origin": "ast"
+    }
+  ],
+  "edges": [
+    {
+      "source": "sample",
+      "target": "framework_net8_0",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.csproj",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "nuget_microsoft_aspnetcore_authentication_jwtbearer",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.csproj",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "nuget_swashbuckle_aspnetcore",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.csproj",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "nuget_mediatr",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.csproj",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "nuget_fluentvalidation",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.csproj",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "ext_domain_domain_csproj",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.csproj",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "ext_infrastructure_infrastructure_csproj",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.csproj",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "sdk_microsoft_net_sdk_web",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.csproj",
+      "weight": 1.0,
+      "_origin": "ast"
+    }
+  ],
+  "hyperedges": [],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

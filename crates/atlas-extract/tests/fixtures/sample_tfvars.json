@@ -1,0 +1,16 @@
+{
+  "nodes": [
+    {
+      "id": "sample",
+      "label": "sample.tfvars",
+      "file_type": "code",
+      "source_file": "sample.tfvars",
+      "source_location": null,
+      "_origin": "ast"
+    }
+  ],
+  "edges": [],
+  "hyperedges": [],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

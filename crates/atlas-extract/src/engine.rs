@@ -22,6 +22,9 @@ pub enum Lang {
     Python,
     Js,
     Ts,
+    /// `.tsx`: same config as `Ts`, but parsed with the JSX-aware `language_tsx`
+    /// grammar so calls nested in JSX expressions are seen (graphify `_TSX_CONFIG`).
+    Tsx,
     Java,
     C,
     Cpp,
@@ -94,7 +97,8 @@ fn config_for(lang: Lang) -> LanguageConfig {
                 "method_definition",
             ],
         },
-        Lang::Ts => LanguageConfig {
+        // .tsx shares the TS config verbatim (only the grammar differs).
+        Lang::Ts | Lang::Tsx => LanguageConfig {
             class_types: &[
                 "class_declaration",
                 "abstract_class_declaration",
@@ -352,6 +356,7 @@ fn language(lang: Lang) -> tree_sitter::Language {
         Lang::Python => tree_sitter_python::LANGUAGE.into(),
         Lang::Js => tree_sitter_javascript::LANGUAGE.into(),
         Lang::Ts => tree_sitter_typescript::LANGUAGE_TYPESCRIPT.into(),
+        Lang::Tsx => tree_sitter_typescript::LANGUAGE_TSX.into(),
         Lang::Java => tree_sitter_java::LANGUAGE.into(),
         Lang::C => tree_sitter_c::LANGUAGE.into(),
         Lang::Cpp => tree_sitter_cpp::LANGUAGE.into(),
@@ -604,7 +609,7 @@ impl<'a> Extractor<'a> {
             self.imports(node);
             // export_statement: recurse into children unless it is a re-export
             // (has a `from` source string).
-            if matches!(self.lang, Lang::Js | Lang::Ts) && t == "export_statement" {
+            if matches!(self.lang, Lang::Js | Lang::Ts | Lang::Tsx) && t == "export_statement" {
                 let has_source = kids(node).iter().any(|c| c.kind() == "string");
                 if !has_source {
                     for child in kids(node) {
@@ -1938,7 +1943,7 @@ impl<'a> Extractor<'a> {
     fn imports(&mut self, node: Node) {
         match self.lang {
             Lang::Python => self.import_python(node),
-            Lang::Js | Lang::Ts => self.import_js(node),
+            Lang::Js | Lang::Ts | Lang::Tsx => self.import_js(node),
             Lang::Java | Lang::Groovy => self.import_java(node),
             Lang::C | Lang::Cpp => self.import_c(node),
             Lang::CSharp => self.import_csharp(node),
@@ -3758,7 +3763,7 @@ fn resolve_js_import_target(raw: &str, file_path: &Path) -> Option<(String, Stri
     Some((make_id(["ref", raw]), String::new()))
 }
 
-fn resolve_js_import_path(candidate: &Path) -> std::path::PathBuf {
+pub(crate) fn resolve_js_import_path(candidate: &Path) -> std::path::PathBuf {
     let candidate = normalize_path(candidate);
     if candidate.is_file() {
         return candidate;
@@ -3801,7 +3806,7 @@ fn resolve_js_import_path(candidate: &Path) -> std::path::PathBuf {
 }
 
 /// `os.path.normpath` — lexical `.`/`..` collapse, no disk access.
-fn normalize_path(p: &Path) -> std::path::PathBuf {
+pub(crate) fn normalize_path(p: &Path) -> std::path::PathBuf {
     use std::path::Component;
     let mut out: Vec<Component> = Vec::new();
     for comp in p.components() {

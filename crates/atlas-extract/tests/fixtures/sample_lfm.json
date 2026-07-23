@@ -1,0 +1,145 @@
+{
+  "nodes": [
+    {
+      "id": "sample",
+      "label": "sample.lfm",
+      "file_type": "code",
+      "source_file": "sample.lfm",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_tsampleform",
+      "label": "TSampleForm",
+      "file_type": "code",
+      "source_file": "sample.lfm",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_tpanel",
+      "label": "TPanel",
+      "file_type": "code",
+      "source_file": "sample.lfm",
+      "source_location": "L7",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_tbutton",
+      "label": "TButton",
+      "file_type": "code",
+      "source_file": "sample.lfm",
+      "source_location": "L12",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_buttonokclick",
+      "label": "ButtonOKClick()",
+      "file_type": "code",
+      "source_file": "sample.lfm",
+      "source_location": "L18",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_tlabel",
+      "label": "TLabel",
+      "file_type": "code",
+      "source_file": "sample.lfm",
+      "source_location": "L20",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_ttimer",
+      "label": "TTimer",
+      "file_type": "code",
+      "source_file": "sample.lfm",
+      "source_location": "L26",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_timerrefreshtimer",
+      "label": "TimerRefreshTimer()",
+      "file_type": "code",
+      "source_file": "sample.lfm",
+      "source_location": "L28",
+      "_origin": "ast"
+    }
+  ],
+  "edges": [
+    {
+      "source": "sample",
+      "target": "sample_tsampleform",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.lfm",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_tsampleform",
+      "target": "sample_tpanel",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.lfm",
+      "source_location": "L7",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_tpanel",
+      "target": "sample_tbutton",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.lfm",
+      "source_location": "L12",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_tbutton",
+      "target": "sample_buttonokclick",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.lfm",
+      "source_location": "L18",
+      "weight": 1.0,
+      "context": "event",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_tpanel",
+      "target": "sample_tlabel",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.lfm",
+      "source_location": "L20",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_tsampleform",
+      "target": "sample_ttimer",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.lfm",
+      "source_location": "L26",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_ttimer",
+      "target": "sample_timerrefreshtimer",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.lfm",
+      "source_location": "L28",
+      "weight": 1.0,
+      "context": "event",
+      "_origin": "ast"
+    }
+  ],
+  "hyperedges": [],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

@@ -1,0 +1,93 @@
+{
+  "nodes": [
+    {
+      "id": "sample",
+      "label": "sample.tsx",
+      "file_type": "code",
+      "source_file": "sample.tsx",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_fmtdate",
+      "label": "fmtDate()",
+      "file_type": "code",
+      "source_file": "sample.tsx",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_fmtcount",
+      "label": "fmtCount()",
+      "file_type": "code",
+      "source_file": "sample.tsx",
+      "source_location": "L5",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_app",
+      "label": "App()",
+      "file_type": "code",
+      "source_file": "sample.tsx",
+      "source_location": "L9",
+      "_origin": "ast"
+    }
+  ],
+  "edges": [
+    {
+      "source": "sample",
+      "target": "sample_fmtdate",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.tsx",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "sample_fmtcount",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "sample_app",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.tsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_app",
+      "target": "sample_fmtdate",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.tsx",
+      "source_location": "L14",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_app",
+      "target": "sample_fmtcount",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.tsx",
+      "source_location": "L15",
+      "weight": 1.0,
+      "_origin": "ast"
+    }
+  ],
+  "hyperedges": [],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

@@ -1,0 +1,200 @@
+{
+  "nodes": [
+    {
+      "id": "claude_desktop_config",
+      "label": "claude_desktop_config.json",
+      "file_type": "code",
+      "source_file": "claude_desktop_config.json",
+      "source_location": "L1",
+      "metadata": {
+        "mcp_kind": "mcp_config_file"
+      },
+      "_origin": "ast"
+    },
+    {
+      "id": "claude_desktop_config_mcp_server_filesystem",
+      "label": "filesystem",
+      "file_type": "code",
+      "source_file": "claude_desktop_config.json",
+      "source_location": "L1",
+      "metadata": {
+        "mcp_kind": "mcp_server"
+      },
+      "_origin": "ast"
+    },
+    {
+      "id": "mcp_command_npx",
+      "label": "npx",
+      "file_type": "code",
+      "source_file": "claude_desktop_config.json",
+      "source_location": "L1",
+      "metadata": {
+        "mcp_kind": "mcp_command"
+      },
+      "_origin": "ast"
+    },
+    {
+      "id": "mcp_package_modelcontextprotocol_server_filesystem",
+      "label": "@modelcontextprotocol/server-filesystem",
+      "file_type": "code",
+      "source_file": "claude_desktop_config.json",
+      "source_location": "L1",
+      "metadata": {
+        "mcp_kind": "mcp_package"
+      },
+      "_origin": "ast"
+    },
+    {
+      "id": "env_var_api_key",
+      "label": "API_KEY",
+      "file_type": "code",
+      "source_file": "claude_desktop_config.json",
+      "source_location": "L1",
+      "metadata": {
+        "mcp_kind": "env_var"
+      },
+      "_origin": "ast"
+    },
+    {
+      "id": "env_var_log_level",
+      "label": "LOG_LEVEL",
+      "file_type": "code",
+      "source_file": "claude_desktop_config.json",
+      "source_location": "L1",
+      "metadata": {
+        "mcp_kind": "env_var"
+      },
+      "_origin": "ast"
+    },
+    {
+      "id": "claude_desktop_config_mcp_server_fetch",
+      "label": "fetch",
+      "file_type": "code",
+      "source_file": "claude_desktop_config.json",
+      "source_location": "L1",
+      "metadata": {
+        "mcp_kind": "mcp_server"
+      },
+      "_origin": "ast"
+    },
+    {
+      "id": "mcp_command_uvx",
+      "label": "uvx",
+      "file_type": "code",
+      "source_file": "claude_desktop_config.json",
+      "source_location": "L1",
+      "metadata": {
+        "mcp_kind": "mcp_command"
+      },
+      "_origin": "ast"
+    },
+    {
+      "id": "mcp_package_mcp_server_fetch",
+      "label": "mcp-server-fetch",
+      "file_type": "code",
+      "source_file": "claude_desktop_config.json",
+      "source_location": "L1",
+      "metadata": {
+        "mcp_kind": "mcp_package"
+      },
+      "_origin": "ast"
+    }
+  ],
+  "edges": [
+    {
+      "source": "claude_desktop_config",
+      "target": "claude_desktop_config_mcp_server_filesystem",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "claude_desktop_config.json",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "claude_desktop_config_mcp_server_filesystem",
+      "target": "mcp_command_npx",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "claude_desktop_config.json",
+      "source_location": "L1",
+      "weight": 1.0,
+      "context": "command",
+      "_origin": "ast"
+    },
+    {
+      "source": "claude_desktop_config_mcp_server_filesystem",
+      "target": "mcp_package_modelcontextprotocol_server_filesystem",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "claude_desktop_config.json",
+      "source_location": "L1",
+      "weight": 1.0,
+      "context": "package",
+      "_origin": "ast"
+    },
+    {
+      "source": "claude_desktop_config_mcp_server_filesystem",
+      "target": "env_var_api_key",
+      "relation": "requires_env",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "claude_desktop_config.json",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "claude_desktop_config_mcp_server_filesystem",
+      "target": "env_var_log_level",
+      "relation": "requires_env",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "claude_desktop_config.json",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "claude_desktop_config",
+      "target": "claude_desktop_config_mcp_server_fetch",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "claude_desktop_config.json",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "claude_desktop_config_mcp_server_fetch",
+      "target": "mcp_command_uvx",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "claude_desktop_config.json",
+      "source_location": "L1",
+      "weight": 1.0,
+      "context": "command",
+      "_origin": "ast"
+    },
+    {
+      "source": "claude_desktop_config_mcp_server_fetch",
+      "target": "mcp_package_mcp_server_fetch",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "claude_desktop_config.json",
+      "source_location": "L1",
+      "weight": 1.0,
+      "context": "package",
+      "_origin": "ast"
+    }
+  ],
+  "hyperedges": [],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

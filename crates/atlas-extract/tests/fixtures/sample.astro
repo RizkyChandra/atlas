@@ -1,0 +1,19 @@
+---
+import Layout from './Layout.astro'
+import { greet } from './greet'
+
+function render(): string {
+  return greet('world')
+}
+---
+
+<Layout title={render()}>
+  <p>{render()}</p>
+</Layout>
+
+<script>
+  import confetti from 'canvas-confetti'
+  confetti()
+</script>
+
+<div data-lazy={() => import('./Heavy.astro')}></div>

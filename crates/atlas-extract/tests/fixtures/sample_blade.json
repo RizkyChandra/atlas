@@ -1,0 +1,131 @@
+{
+  "nodes": [
+    {
+      "id": "sample_blade",
+      "label": "sample.blade.php",
+      "file_type": "code",
+      "source_file": "sample.blade.php",
+      "source_location": null,
+      "_origin": "ast"
+    },
+    {
+      "id": "partials_header",
+      "label": "partials.header",
+      "file_type": "code",
+      "source_file": "sample.blade.php",
+      "source_location": null,
+      "_origin": "ast"
+    },
+    {
+      "id": "partials_footer",
+      "label": "partials.footer",
+      "file_type": "code",
+      "source_file": "sample.blade.php",
+      "source_location": null,
+      "_origin": "ast"
+    },
+    {
+      "id": "user_profile",
+      "label": "user-profile",
+      "file_type": "code",
+      "source_file": "sample.blade.php",
+      "source_location": null,
+      "_origin": "ast"
+    },
+    {
+      "id": "nav_main_menu",
+      "label": "nav.main-menu",
+      "file_type": "code",
+      "source_file": "sample.blade.php",
+      "source_location": null,
+      "_origin": "ast"
+    },
+    {
+      "id": "save",
+      "label": "save",
+      "file_type": "code",
+      "source_file": "sample.blade.php",
+      "source_location": null,
+      "_origin": "ast"
+    },
+    {
+      "id": "refresh",
+      "label": "refresh",
+      "file_type": "code",
+      "source_file": "sample.blade.php",
+      "source_location": null,
+      "_origin": "ast"
+    }
+  ],
+  "edges": [
+    {
+      "source": "sample_blade",
+      "target": "partials_header",
+      "relation": "includes",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "sample.blade.php",
+      "source_location": null,
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_blade",
+      "target": "partials_footer",
+      "relation": "includes",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "sample.blade.php",
+      "source_location": null,
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_blade",
+      "target": "user_profile",
+      "relation": "uses_component",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "sample.blade.php",
+      "source_location": null,
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_blade",
+      "target": "nav_main_menu",
+      "relation": "uses_component",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "sample.blade.php",
+      "source_location": null,
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_blade",
+      "target": "save",
+      "relation": "binds_method",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "sample.blade.php",
+      "source_location": null,
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_blade",
+      "target": "refresh",
+      "relation": "binds_method",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "sample.blade.php",
+      "source_location": null,
+      "weight": 1.0,
+      "_origin": "ast"
+    }
+  ],
+  "hyperedges": [],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

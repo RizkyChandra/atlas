@@ -1,0 +1,113 @@
+{
+  "nodes": [
+    {
+      "id": "sample",
+      "label": "sample.astro",
+      "file_type": "code",
+      "source_file": "sample.astro",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_render",
+      "label": "render()",
+      "file_type": "code",
+      "source_file": "sample.astro",
+      "source_location": "L5",
+      "_origin": "ast"
+    },
+    {
+      "id": "tmp_tmp_atlas_ora_astro_heavy_astro",
+      "label": "./Heavy.astro",
+      "file_type": "code",
+      "source_file": "Heavy.astro",
+      "confidence": "EXTRACTED",
+      "_origin": "ast"
+    },
+    {
+      "id": "tmp_tmp_atlas_ora_astro_layout_astro",
+      "label": "./Layout.astro",
+      "file_type": "code",
+      "source_file": "Layout.astro",
+      "confidence": "EXTRACTED",
+      "_origin": "ast"
+    },
+    {
+      "id": "tmp_tmp_atlas_ora_astro_greet",
+      "label": "./greet",
+      "file_type": "code",
+      "source_file": "greet",
+      "confidence": "EXTRACTED",
+      "_origin": "ast"
+    },
+    {
+      "id": "canvas_confetti",
+      "label": "canvas-confetti",
+      "file_type": "code",
+      "source_file": "canvas-confetti",
+      "confidence": "EXTRACTED",
+      "_origin": "ast"
+    }
+  ],
+  "edges": [
+    {
+      "source": "sample",
+      "target": "tmp_tmp_atlas_ora_astro_greet",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.astro",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "tmp_tmp_atlas_ora_astro_greet_greet",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.astro",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "sample_render",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.astro",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "tmp_tmp_atlas_ora_astro_heavy_astro",
+      "relation": "dynamic_import",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.astro",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "tmp_tmp_atlas_ora_astro_layout_astro",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.astro",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "canvas_confetti",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.astro",
+      "_origin": "ast"
+    }
+  ],
+  "hyperedges": [],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

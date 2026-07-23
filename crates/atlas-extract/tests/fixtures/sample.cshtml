@@ -1,0 +1,8 @@
+@model MyApp.Models.User
+@using MyApp.Helpers
+@inject IUserService UserService
+
+<h1>@Model.Name</h1>
+
+<ProfileCard User="@Model" />
+<StatusBadge Status="@Model.Status" />

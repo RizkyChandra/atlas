@@ -1,0 +1,107 @@
+{
+  "nodes": [
+    {
+      "id": "sample",
+      "label": "sample.cshtml",
+      "file_type": "code",
+      "source_file": "sample.cshtml",
+      "source_location": null,
+      "_origin": "ast"
+    },
+    {
+      "id": "myapp_models_user",
+      "label": "MyApp.Models.User",
+      "file_type": "code",
+      "source_file": "sample.cshtml",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "myapp_helpers",
+      "label": "MyApp.Helpers",
+      "file_type": "code",
+      "source_file": "sample.cshtml",
+      "source_location": "L2",
+      "_origin": "ast"
+    },
+    {
+      "id": "iuserservice",
+      "label": "IUserService",
+      "file_type": "code",
+      "source_file": "sample.cshtml",
+      "source_location": "L3",
+      "_origin": "ast"
+    },
+    {
+      "id": "profilecard",
+      "label": "ProfileCard",
+      "file_type": "code",
+      "source_file": "sample.cshtml",
+      "source_location": "L7",
+      "_origin": "ast"
+    },
+    {
+      "id": "statusbadge",
+      "label": "StatusBadge",
+      "file_type": "code",
+      "source_file": "sample.cshtml",
+      "source_location": "L8",
+      "_origin": "ast"
+    }
+  ],
+  "edges": [
+    {
+      "source": "sample",
+      "target": "myapp_models_user",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.cshtml",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "myapp_helpers",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.cshtml",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "iuserservice",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.cshtml",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "profilecard",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.cshtml",
+      "source_location": "L7",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "statusbadge",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.cshtml",
+      "source_location": "L8",
+      "weight": 1.0,
+      "_origin": "ast"
+    }
+  ],
+  "hyperedges": [],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

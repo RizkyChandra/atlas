@@ -1,0 +1,77 @@
+{
+  "nodes": [
+    {
+      "id": "sample",
+      "label": "sample.slnx",
+      "file_type": "code",
+      "source_file": "sample.slnx",
+      "source_location": null,
+      "_origin": "ast"
+    },
+    {
+      "id": "tmp_atlas_ora_slnx_src_domain_domain_csproj",
+      "label": "Domain",
+      "file_type": "code",
+      "source_file": "src/Domain/Domain.csproj",
+      "source_location": null,
+      "_origin": "ast"
+    },
+    {
+      "id": "tmp_atlas_ora_slnx_src_webapi_webapi_csproj",
+      "label": "WebApi",
+      "file_type": "code",
+      "source_file": "src/WebApi/WebApi.csproj",
+      "source_location": null,
+      "_origin": "ast"
+    },
+    {
+      "id": "tmp_atlas_ora_slnx_tests_tests_tests_csproj",
+      "label": "Tests",
+      "file_type": "code",
+      "source_file": "tests/Tests/Tests.csproj",
+      "source_location": null,
+      "_origin": "ast"
+    }
+  ],
+  "edges": [
+    {
+      "source": "sample",
+      "target": "tmp_atlas_ora_slnx_src_domain_domain_csproj",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.slnx",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "tmp_atlas_ora_slnx_src_webapi_webapi_csproj",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.slnx",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "tmp_atlas_ora_slnx_tests_tests_tests_csproj",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.slnx",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tmp_atlas_ora_slnx_src_webapi_webapi_csproj",
+      "target": "tmp_atlas_ora_slnx_src_domain_domain_csproj",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.slnx",
+      "weight": 1.0,
+      "_origin": "ast"
+    }
+  ],
+  "hyperedges": [],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

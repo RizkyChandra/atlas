@@ -1,0 +1,72 @@
+{
+  "nodes": [
+    {
+      "id": "sample",
+      "label": "sample.psd1",
+      "file_type": "code",
+      "source_file": "sample.psd1",
+      "source_location": "L1",
+      "_origin": "ast"
+    }
+  ],
+  "edges": [
+    {
+      "source": "sample",
+      "target": "mymodule",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.psd1",
+      "source_location": "L2",
+      "weight": 1.0,
+      "context": "import",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "helpers",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.psd1",
+      "source_location": "L7",
+      "weight": 1.0,
+      "context": "import",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "logger",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.psd1",
+      "source_location": "L7",
+      "weight": 1.0,
+      "context": "import",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "psreadline",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.psd1",
+      "source_location": "L8",
+      "weight": 1.0,
+      "context": "import",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "pester",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.psd1",
+      "source_location": "L8",
+      "weight": 1.0,
+      "context": "import",
+      "_origin": "ast"
+    }
+  ],
+  "hyperedges": [],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

@@ -1,0 +1,308 @@
+{
+  "nodes": [
+    {
+      "id": "sample",
+      "label": "sample.xaml",
+      "file_type": "code",
+      "source_file": "sample.xaml",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_window",
+      "label": "Window",
+      "file_type": "code",
+      "source_file": "sample.xaml",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_mainwindow",
+      "label": "MainWindow",
+      "file_type": "code",
+      "source_file": "sample.xaml",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "binding_invoice_tax",
+      "label": "Invoice.Tax",
+      "file_type": "concept",
+      "source_file": "sample.xaml",
+      "source_location": "L5",
+      "_origin": "ast"
+    },
+    {
+      "id": "binding_converter_taxconverter",
+      "label": "TaxConverter",
+      "file_type": "concept",
+      "source_file": "sample.xaml",
+      "source_location": "L5",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_rootpanel",
+      "label": "RootPanel",
+      "file_type": "code",
+      "source_file": "sample.xaml",
+      "source_location": "L7",
+      "_origin": "ast"
+    },
+    {
+      "id": "xaml_stackpanel",
+      "label": "StackPanel",
+      "file_type": "concept",
+      "source_file": "sample.xaml",
+      "source_location": "L7",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_usertext",
+      "label": "UserText",
+      "file_type": "code",
+      "source_file": "sample.xaml",
+      "source_location": "L8",
+      "_origin": "ast"
+    },
+    {
+      "id": "xaml_textblock",
+      "label": "TextBlock",
+      "file_type": "concept",
+      "source_file": "sample.xaml",
+      "source_location": "L8",
+      "_origin": "ast"
+    },
+    {
+      "id": "binding_user_name",
+      "label": "User.Name",
+      "file_type": "concept",
+      "source_file": "sample.xaml",
+      "source_location": "L8",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_totaltext",
+      "label": "TotalText",
+      "file_type": "code",
+      "source_file": "sample.xaml",
+      "source_location": "L9",
+      "_origin": "ast"
+    },
+    {
+      "id": "binding_order_total",
+      "label": "Order.Total",
+      "file_type": "concept",
+      "source_file": "sample.xaml",
+      "source_location": "L9",
+      "_origin": "ast"
+    },
+    {
+      "id": "binding_converter_moneyconverter",
+      "label": "MoneyConverter",
+      "file_type": "concept",
+      "source_file": "sample.xaml",
+      "source_location": "L9",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_savebutton",
+      "label": "SaveButton",
+      "file_type": "code",
+      "source_file": "sample.xaml",
+      "source_location": "L10",
+      "_origin": "ast"
+    },
+    {
+      "id": "xaml_button",
+      "label": "Button",
+      "file_type": "concept",
+      "source_file": "sample.xaml",
+      "source_location": "L10",
+      "_origin": "ast"
+    },
+    {
+      "id": "binding_savecommand",
+      "label": "SaveCommand",
+      "file_type": "concept",
+      "source_file": "sample.xaml",
+      "source_location": "L10",
+      "_origin": "ast"
+    }
+  ],
+  "edges": [
+    {
+      "source": "sample",
+      "target": "sample_window",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.xaml",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_window",
+      "target": "sample_mainwindow",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.xaml",
+      "source_location": "L1",
+      "weight": 1.0,
+      "context": "x_class",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_window",
+      "target": "binding_invoice_tax",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.xaml",
+      "source_location": "L5",
+      "weight": 1.0,
+      "context": "binding_path",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_window",
+      "target": "binding_converter_taxconverter",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.xaml",
+      "source_location": "L5",
+      "weight": 1.0,
+      "context": "binding_converter",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_window",
+      "target": "sample_rootpanel",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.xaml",
+      "source_location": "L7",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_rootpanel",
+      "target": "xaml_stackpanel",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.xaml",
+      "source_location": "L7",
+      "weight": 1.0,
+      "context": "type",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_window",
+      "target": "sample_usertext",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.xaml",
+      "source_location": "L8",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_usertext",
+      "target": "xaml_textblock",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.xaml",
+      "source_location": "L8",
+      "weight": 1.0,
+      "context": "type",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_usertext",
+      "target": "binding_user_name",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.xaml",
+      "source_location": "L8",
+      "weight": 1.0,
+      "context": "binding_path",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_window",
+      "target": "sample_totaltext",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.xaml",
+      "source_location": "L9",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_totaltext",
+      "target": "xaml_textblock",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.xaml",
+      "source_location": "L9",
+      "weight": 1.0,
+      "context": "type",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_totaltext",
+      "target": "binding_order_total",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.xaml",
+      "source_location": "L9",
+      "weight": 1.0,
+      "context": "binding_path",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_totaltext",
+      "target": "binding_converter_moneyconverter",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.xaml",
+      "source_location": "L9",
+      "weight": 1.0,
+      "context": "binding_converter",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_window",
+      "target": "sample_savebutton",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.xaml",
+      "source_location": "L10",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_savebutton",
+      "target": "xaml_button",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.xaml",
+      "source_location": "L10",
+      "weight": 1.0,
+      "context": "type",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_savebutton",
+      "target": "binding_savecommand",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.xaml",
+      "source_location": "L10",
+      "weight": 1.0,
+      "context": "binding_command",
+      "_origin": "ast"
+    }
+  ],
+  "hyperedges": [],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

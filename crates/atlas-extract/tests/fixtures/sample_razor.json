@@ -1,0 +1,229 @@
+{
+  "nodes": [
+    {
+      "id": "sample",
+      "label": "sample.razor",
+      "file_type": "code",
+      "source_file": "sample.razor",
+      "source_location": null,
+      "_origin": "ast"
+    },
+    {
+      "id": "route_counter",
+      "label": "route:/counter",
+      "file_type": "concept",
+      "source_file": "sample.razor",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "microsoft_aspnetcore_components",
+      "label": "Microsoft.AspNetCore.Components",
+      "file_type": "code",
+      "source_file": "sample.razor",
+      "source_location": "L2",
+      "_origin": "ast"
+    },
+    {
+      "id": "myapp_services",
+      "label": "MyApp.Services",
+      "file_type": "code",
+      "source_file": "sample.razor",
+      "source_location": "L3",
+      "_origin": "ast"
+    },
+    {
+      "id": "icounterservice",
+      "label": "ICounterService",
+      "file_type": "code",
+      "source_file": "sample.razor",
+      "source_location": "L4",
+      "_origin": "ast"
+    },
+    {
+      "id": "navigationmanager",
+      "label": "NavigationManager",
+      "file_type": "code",
+      "source_file": "sample.razor",
+      "source_location": "L5",
+      "_origin": "ast"
+    },
+    {
+      "id": "componentbase",
+      "label": "ComponentBase",
+      "file_type": "code",
+      "source_file": "sample.razor",
+      "source_location": "L6",
+      "_origin": "ast"
+    },
+    {
+      "id": "weatherdisplay",
+      "label": "WeatherDisplay",
+      "file_type": "code",
+      "source_file": "sample.razor",
+      "source_location": "L13",
+      "_origin": "ast"
+    },
+    {
+      "id": "datagrid",
+      "label": "DataGrid",
+      "file_type": "code",
+      "source_file": "sample.razor",
+      "source_location": "L14",
+      "_origin": "ast"
+    },
+    {
+      "id": "counterrecord",
+      "label": "CounterRecord",
+      "file_type": "code",
+      "source_file": "sample.razor",
+      "source_location": "L19",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_incrementcount",
+      "label": "IncrementCount",
+      "file_type": "code",
+      "source_file": "sample.razor",
+      "source_location": "L21",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_loaddata",
+      "label": "LoadData",
+      "file_type": "code",
+      "source_file": "sample.razor",
+      "source_location": "L27",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_oninitializedasync",
+      "label": "OnInitializedAsync",
+      "file_type": "code",
+      "source_file": "sample.razor",
+      "source_location": "L32",
+      "_origin": "ast"
+    }
+  ],
+  "edges": [
+    {
+      "source": "sample",
+      "target": "route_counter",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.razor",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "microsoft_aspnetcore_components",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.razor",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "myapp_services",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.razor",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "icounterservice",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.razor",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "navigationmanager",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.razor",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "componentbase",
+      "relation": "inherits",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.razor",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "weatherdisplay",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.razor",
+      "source_location": "L13",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "datagrid",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.razor",
+      "source_location": "L14",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "counterrecord",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.razor",
+      "source_location": "L19",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "sample_incrementcount",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.razor",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "sample_loaddata",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.razor",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "sample_oninitializedasync",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.razor",
+      "weight": 1.0,
+      "_origin": "ast"
+    }
+  ],
+  "hyperedges": [],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

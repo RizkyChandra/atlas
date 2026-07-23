@@ -658,3 +658,534 @@ fn lua_require_import() {
     );
     let _ = std::fs::remove_dir_all(&dir);
 }
+
+// ══════════════════════════════════════════════════════════════════════════
+// merged from batch-h
+// ══════════════════════════════════════════════════════════════════════════
+/// TSX (`.tsx`). Same TS config, but parsed with the JSX-aware `language_tsx`
+/// grammar (graphify `_TSX_CONFIG`) so the `{fmtDate(now)}` / `{fmtCount(42)}`
+/// calls nested in JSX expression containers are seen — parsing `.tsx` with the
+/// plain TypeScript grammar would drop them. EXACT match: functions (`contains`)
+/// + those two in-file `calls`. Fixture is graphify's `sample.tsx`.
+#[test]
+fn tsx_matches_oracle() {
+    let src = format!("{GFIX}/sample.tsx");
+    check("tsx", &src, "sample_tsx", vec![], vec![]);
+}
+
+/// CUDA (`.cu`/`.cuh`). Reuses the C++ grammar/config (graphify routes `.cu` to
+/// its cpp extractor). EXACT match: struct + fields, functions, param/return type
+/// refs, and in-file calls. The CUDA qualifiers `__device__`/`__global__` parse
+/// as the function return type and become sourceless `references`/return_type
+/// stubs (`device`/`global`) — exactly as the shared cpp engine emits them.
+/// Fixture is graphify's `sample.cu`.
+#[test]
+fn cuda_matches_oracle() {
+    let src = format!("{GFIX}/sample.cu");
+    check("cu", &src, "sample_cu", vec![], vec![]);
+}
+
+/// Metal (`.metal`). Also reuses the C++ grammar/config (graphify routes `.metal`
+/// to its cpp extractor). EXACT match: struct + fields, functions, param type
+/// refs, and the Metal address-space/qualifier keywords (`kernel`/`device`/
+/// `constant`/`uint`) as sourceless return/parameter-type stubs — the shared cpp
+/// engine's output. Fixture is graphify's `sample.metal`.
+#[test]
+fn metal_matches_oracle() {
+    let src = format!("{GFIX}/sample.metal");
+    check("metal", &src, "sample_metal", vec![], vec![]);
+}
+
+/// PowerShell `.psd1` module manifest (dedicated hashtable pass, graphify
+/// `extract_powershell_manifest` — NOT the script extractor). EXACT match: the
+/// file node plus one `imports_from` edge per module referenced by RootModule,
+/// NestedModules, and RequiredModules (the latter following both bare strings and
+/// the `@{ ModuleName = ... }` spec form). Module names are basename + extension
+/// stripped, lowercased by `make_id` (`MyModule.psm1`→`mymodule`). Fixture is
+/// graphify's `sample.psd1`.
+#[test]
+fn psd1_matches_oracle() {
+    let src = format!("{GFIX}/sample.psd1");
+    check("psd1", &src, "sample_psd1", vec![], vec![]);
+}
+
+/// Terraform `.tfvars` values file (same extractor as `.tf`). A tfvars file holds
+/// only top-level attribute assignments, no blocks, so the graph is just the file
+/// node (`source_location: null`, like every terraform file node) — matching
+/// graphify, which routes `.tfvars` → the terraform extractor. Fixture is
+/// atlas-owned (graphify ships no `.tfvars` sample).
+#[test]
+fn tfvars_matches_oracle() {
+    let src = format!(
+        "{}/tests/fixtures/sample.tfvars",
+        env!("CARGO_MANIFEST_DIR")
+    );
+    check("tfvars", &src, "sample_tfvars", vec![], vec![]);
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+// merged from batch-i
+// ══════════════════════════════════════════════════════════════════════════
+/// Vue SFC (`.vue`). The `<script setup lang="ts">` body is parsed via the TS
+/// engine on the mask-blanked file (non-script regions → spaces, newlines kept),
+/// so symbol ids, contains/method/calls edges, and static imports come straight
+/// from the shared JS/TS port. A regex pass recovers the template's dynamic
+/// `import('./LazyWidget.vue')` as a `dynamic_import` edge + sourced stub node
+/// (no `source_location`, matching graphify's rescue shape). EXACT match:
+/// interface/function/const nodes, bare default `import axios` → `ref_axios`
+/// `imports_from`, relative `./helper` → `imports_from` + named `imports`, in-file
+/// `bump→greet` call, and the template dynamic import. Relative-import targets
+/// key off the sibling-dir prefix (→DIR), like the JS test; oracle generated in a
+/// fixed temp dir so its DIR prefix is a stable constant. Out of scope: TSX
+/// grammar (`lang="tsx"` falls back to TS), tsconfig-alias/workspace resolution,
+/// AST-level deferred dynamic imports inside `<script>` (kept out of the fixture).
+#[test]
+fn vue_matches_oracle() {
+    let src = format!("{}/tests/fixtures/sample.vue", env!("CARGO_MANIFEST_DIR"));
+    let dir = make_id([Path::new(&src).parent().unwrap().to_string_lossy().as_ref()]);
+    check(
+        "vue",
+        &src,
+        "sample_vue",
+        vec![(dir, "DIR")],
+        vec![("tmp_tmp_atlas_ora_vue".into(), "DIR")],
+    );
+}
+
+/// Svelte SFC (`.svelte`). The raw file is fed to the JS grammar (no masking); the
+/// HTML markup makes the whole parse a top-level ERROR node, so the AST yields
+/// only the file node and every import is recovered by the regex rescue: static
+/// `import … from '…'` inside `<script>` (bare `svelte` → last-segment node;
+/// relative `./store` → sibling-dir target) and the template's `{#await
+/// import('./Modal.svelte')}` → `dynamic_import`. All rescue nodes/edges carry the
+/// graphify shape (no `source_location`/`weight`/`context`). EXACT match. Out of
+/// scope: any script symbol/call extraction (unreachable under the ERROR parse —
+/// same as graphify), tsconfig-alias/workspace resolution, `.svelte.ts` runes.
+#[test]
+fn svelte_matches_oracle() {
+    let src = format!(
+        "{}/tests/fixtures/sample.svelte",
+        env!("CARGO_MANIFEST_DIR")
+    );
+    let dir = make_id([Path::new(&src).parent().unwrap().to_string_lossy().as_ref()]);
+    check(
+        "svelte",
+        &src,
+        "sample_svelte",
+        vec![(dir, "DIR")],
+        vec![("tmp_tmp_atlas_ora_svelte".into(), "DIR")],
+    );
+}
+
+/// Astro component (`.astro`). The raw file goes to the JS grammar: tree-sitter
+/// recovers per-statement, so most frontmatter survives as AST (the `render()`
+/// function → node, the `./greet` import → `imports_from` + named `imports`), but
+/// the import on the line touching the opening `---` fence (`./Layout.astro`) is
+/// swallowed by the ERROR region and recovered only by regex. The regex rescue
+/// also handles the client `<script>`'s `canvas-confetti` and the template's
+/// `import('./Heavy.astro')` dynamic import. Duplicate AST/regex `imports_from`
+/// edges collapse via the build dedupe (keep-first → the AST edge with
+/// context/location wins). EXACT match. Out of scope: tsconfig-alias/workspace
+/// resolution, and (JS/TS engine gap, not SFC-specific) call-initialized
+/// top-level `const`s — `const x = f()` emits no node — so the frontmatter uses a
+/// `function` to exercise AST symbol recovery.
+#[test]
+fn astro_matches_oracle() {
+    let src = format!("{}/tests/fixtures/sample.astro", env!("CARGO_MANIFEST_DIR"));
+    let dir = make_id([Path::new(&src).parent().unwrap().to_string_lossy().as_ref()]);
+    check(
+        "astro",
+        &src,
+        "sample_astro",
+        vec![(dir, "DIR")],
+        vec![("tmp_tmp_atlas_ora_astro".into(), "DIR")],
+    );
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+// merged from batch-j
+// ══════════════════════════════════════════════════════════════════════════
+/// Razor `.razor` (regex extractor — graphify's `razor.py`, no grammar). Fixture
+/// is graphify's `sample.razor`. EXACT match: `@page` route (concept node +
+/// `references`, no edge source_location), `@using`/`@inject`→`imports`,
+/// `@inherits`→`inherits`, PascalCase component tags `<WeatherDisplay>`/
+/// `<DataGrid>` and the generic-arg `List<CounterRecord>`→`calls` (HTML tags
+/// filtered), and `@code` C# methods→`contains` (no edge source_location).
+/// Symbols key off the file stem (FILE); directive/component targets are global
+/// stubs. GAP: graphify's razor extractor handles `@code` only (not
+/// `@functions`), so neither do we — matching the oracle.
+#[test]
+fn razor_matches_oracle() {
+    let src = format!("{}/tests/fixtures/sample.razor", env!("CARGO_MANIFEST_DIR"));
+    check("razor", &src, "sample_razor", vec![], vec![]);
+}
+
+/// Razor `.cshtml` (same extractor, dispatch coverage). Atlas-owned fixture.
+/// EXACT match: `@model`→`references`, `@using`/`@inject`→`imports`, component
+/// tags→`calls`.
+#[test]
+fn cshtml_matches_oracle() {
+    let src = format!(
+        "{}/tests/fixtures/sample.cshtml",
+        env!("CARGO_MANIFEST_DIR")
+    );
+    check("cshtml", &src, "sample_cshtml", vec![], vec![]);
+}
+
+/// Blade `.blade.php` (regex extractor — graphify's `blade.py`, no grammar).
+/// Compound extension is dispatched before the `.php` arm. Atlas-owned fixture.
+/// EXACT match: `@include('a.b')`→`includes` (target id from `a/b`, label kept
+/// dotted), `<livewire:x>`→`uses_component`, `wire:click="m"`→`binds_method`.
+/// All edges carry `confidence_score: 1.0` and null source_location; nodes null
+/// source_location. The file node keys off the stem (`sample.blade`→`sample_blade`,
+/// FILE); component/include/method targets are global stubs.
+#[test]
+fn blade_matches_oracle() {
+    let src = format!(
+        "{}/tests/fixtures/sample.blade.php",
+        env!("CARGO_MANIFEST_DIR")
+    );
+    check("blade.php", &src, "sample_blade", vec![], vec![]);
+}
+
+/// XAML `.xaml` (roxmltree DOM port of graphify's `extract_xaml`). Atlas-owned
+/// fixture (no code-behind sibling, no ViewModel `.cs` — so the un-ported
+/// cross-file paths stay dormant in the oracle too). EXACT match: file→root
+/// `contains`, `x:Class`→class node + `references`(context `x_class`), named
+/// elements (`x:Name`)→`contains` + `references`(context `type`) to `xaml_<type>`
+/// concept nodes, `{Binding …}` paths→`references`(context `binding_path` /
+/// `binding_command`), `{StaticResource …}` converters→`references`(context
+/// `binding_converter`), and the direct `<Binding Path=… Converter=…>` element.
+/// Element ids key off the stem (FILE); type/binding/converter nodes use global
+/// `xaml`/`binding`/`binding_converter` prefixes. GAP (documented in src/xaml.rs,
+/// all needing OTHER files — out of single-file scope): code-behind event-handler
+/// wiring, ViewModel inference + project C# scan, and CommunityToolkit member
+/// generation. The fixture omits event attributes so nothing is silently dropped.
+#[test]
+fn xaml_matches_oracle() {
+    let src = format!("{}/tests/fixtures/sample.xaml", env!("CARGO_MANIFEST_DIR"));
+    check("xaml", &src, "sample_xaml", vec![], vec![]);
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+// merged from batch-k
+// ══════════════════════════════════════════════════════════════════════════
+/// Like [`check`] but the oracle file was generated from a file whose basename
+/// is NOT `sample.<ext>` (e.g. `package.json`, `widgets.lpk`). The oracle file
+/// node id is derived from the source basename stem, which is identical on both
+/// sides.
+fn check_named(
+    oracle_json: &str,
+    src_path: &str,
+    my_extra: Vec<(String, &'static str)>,
+    oracle_extra: Vec<(String, &'static str)>,
+) {
+    let got = atlas_extract::extract_file(src_path).expect("extract");
+
+    let my_file_nid = make_id([file_stem(Path::new(src_path)).as_str()]);
+    let base = basename(src_path);
+    let oracle_file_nid = make_id([file_stem(Path::new(&base)).as_str()]);
+
+    let mut my_maps = vec![(my_file_nid, "FILE")];
+    my_maps.extend(my_extra);
+    let mut or_maps = vec![(oracle_file_nid, "FILE")];
+    or_maps.extend(oracle_extra);
+    let my_r = Remap::new(my_maps);
+    let or_r = Remap::new(or_maps);
+
+    let fixture_json = std::fs::read_to_string(format!(
+        "{}/tests/fixtures/{oracle_json}.json",
+        env!("CARGO_MANIFEST_DIR")
+    ))
+    .expect("fixture");
+    let oracle: Value = serde_json::from_str(&fixture_json).expect("parse fixture");
+
+    let my_nodes: Vec<Value> = got.nodes.into_iter().map(Value::Object).collect();
+    let my_edges: Vec<Value> = got.edges.into_iter().map(Value::Object).collect();
+
+    let want_nodes = canon_set(oracle["nodes"].as_array().unwrap(), &or_r);
+    let got_nodes = canon_set(&my_nodes, &my_r);
+    assert_eq!(
+        got_nodes,
+        want_nodes,
+        "NODES mismatch for {oracle_json}\nmissing (oracle, not ours): {:?}\nextra (ours): {:?}",
+        diff(&want_nodes, &got_nodes),
+        diff(&got_nodes, &want_nodes)
+    );
+
+    let want_edges = canon_set(oracle["edges"].as_array().unwrap(), &or_r);
+    let got_edges = canon_set(&my_edges, &my_r);
+    assert_eq!(
+        got_edges,
+        want_edges,
+        "EDGES mismatch for {oracle_json}\nmissing (oracle, not ours): {:?}\nextra (ours): {:?}",
+        diff(&want_edges, &got_edges),
+        diff(&got_edges, &want_edges)
+    );
+}
+
+/// The parent dir of `src`, as a `make_id` prefix token (mirrors how graphify's
+/// build derives the scan-relative id prefix). `up` = how many dirs to ascend.
+fn dir_prefix(src: &str, up: usize) -> String {
+    let mut p = Path::new(src).parent().unwrap();
+    for _ in 0..up {
+        p = p.parent().unwrap();
+    }
+    make_id([p.to_string_lossy().as_ref()])
+}
+
+fn fx(name: &str) -> String {
+    format!("{}/tests/fixtures/{name}", env!("CARGO_MANIFEST_DIR"))
+}
+
+// ── M2 file-type coverage: .NET, JSON config, Pascal forms ───────────────────
+
+/// .NET `.sln` (legacy text solution). Fixture is graphify's `sample.sln`.
+/// EXACT match: file `contains` each project (path-keyed nodes), and the
+/// `ProjectSection(ProjectDependencies)` GUID edge WebApi→Domain (`imports`).
+/// Project ids key off the RESOLVED project path (INSIDE the scan root, so
+/// graphify keeps the absolute-derived id) → neutralized by the SCAN remap
+/// (oracle generated in the fixed dir `/tmp/atlas_ora_sln`). Solution folders
+/// (virtual, no file) key off the folder name — none in this fixture.
+#[test]
+fn sln_matches_oracle() {
+    let src = fx("sample.sln");
+    check_named(
+        "sample_sln",
+        &src,
+        vec![(dir_prefix(&src, 0), "SCAN")],
+        vec![("tmp_atlas_ora_sln".into(), "SCAN")],
+    );
+}
+
+/// .NET `.slnx` (XML solution). Fixture is graphify's `sample.slnx`. EXACT
+/// match: file `contains` each `<Project Path=…>` (label = project file stem),
+/// and `<BuildDependency>` WebApi→Domain (`imports`). Project ids resolve INSIDE
+/// the scan root → SCAN remap (`/tmp/atlas_ora_slnx`).
+#[test]
+fn slnx_matches_oracle() {
+    let src = fx("sample.slnx");
+    check_named(
+        "sample_slnx",
+        &src,
+        vec![(dir_prefix(&src, 0), "SCAN")],
+        vec![("tmp_atlas_ora_slnx".into(), "SCAN")],
+    );
+}
+
+/// .NET `.csproj` (MSBuild project). Fixture is graphify's `sample.csproj`.
+/// EXACT match: `TargetFramework`→`framework_*` (`references`), `Sdk` attr→
+/// `sdk_*` (`references`), each `PackageReference`→`nuget_*` (`imports`, label
+/// `name (version)`), each `ProjectReference`→project node (`imports`). The two
+/// `..\…\*.csproj` refs resolve OUTSIDE the scan root, so graphify `ext_`-
+/// prefixes their ids — reproduced by mapping our resolved-parent prefix to
+/// `ext`. `.fsproj`/`.vbproj` route through the same code path.
+#[test]
+fn csproj_matches_oracle() {
+    let src = fx("sample.csproj");
+    check_named(
+        "sample_csproj",
+        &src,
+        vec![(dir_prefix(&src, 1), "ext")],
+        vec![],
+    );
+}
+
+/// Delphi `.dfm` form. Fixture is graphify's `sample.dfm` (text form). EXACT
+/// match: file `contains` root form class, nested `object … : TClass` →
+/// component nodes (`contains`, parent→child), and `OnXxx = Handler` → handler
+/// nodes (`references`, context `event`). All ids key off the file stem (FILE).
+/// Binary `.dfm` (FF 0A magic) is skipped — this fixture is text.
+#[test]
+fn dfm_matches_oracle() {
+    check_named("sample_dfm", &fx("sample.dfm"), vec![], vec![]);
+}
+
+/// Lazarus `.lfm` form (same text grammar as `.dfm`). Fixture is graphify's
+/// `sample.lfm`. EXACT match: component containment tree + `OnXxx` event handler
+/// references. All ids key off the file stem (FILE).
+#[test]
+fn lfm_matches_oracle() {
+    check_named("sample_lfm", &fx("sample.lfm"), vec![], vec![]);
+}
+
+/// Lazarus `.lpk` package (XML). Fixture is atlas-authored `widgets.lpk`
+/// (graphify's `sample.lpk` names a unit `sample` that collides with the file
+/// stem under graphify's build-time id relativization — a merge quirk atlas's
+/// single-file pipeline does not reproduce; the collision-free fixture avoids
+/// it). EXACT match: file `contains` package (`<Name>`→stem-keyed node),
+/// package `imports` each `<PackageName>` dep (global id, context `import`),
+/// package `contains` each `<UnitName>` unit (global bare id). DELTA: on-disk
+/// unit→.pas resolution (graphify rglobs the project) is out of single-file
+/// scope — units stay bare `make_id(unit_name)` (graphify's on-disk-miss
+/// fallback), matching the oracle when no sibling `.pas` is present.
+#[test]
+fn lpk_matches_oracle() {
+    check_named("widgets_lpk", &fx("widgets.lpk"), vec![], vec![]);
+}
+
+/// MCP config JSON, routed by filename to the MCP extractor. Fixture is atlas-
+/// authored `claude_desktop_config.json` (the other MCP filenames — `mcp.json`,
+/// `.mcp.json`, `mcp_servers.json` — route through the identical code path; this
+/// name is used because a `mcp.json` stem collides with the global `mcp_*` id
+/// prefix under the test's canon FILE remap, not in the extractor). EXACT match:
+/// file `contains` each server (stem-keyed), server `references` command
+/// (`mcp_command_*`, context `command`), server `references` package parsed from
+/// args (`mcp_package_*`, context `package`), server `requires_env` each env var
+/// (`env_var_*`, NAMES ONLY — values never read). Edges carry `confidence_score`.
+/// Command/package/env ids are global (shared across configs); server ids key
+/// off the file stem (FILE).
+#[test]
+fn mcp_config_matches_oracle() {
+    check_named(
+        "mcp_config",
+        &fx("claude_desktop_config.json"),
+        vec![],
+        vec![],
+    );
+}
+
+/// `package.json` (config/manifest JSON, recognized by filename). Fixture is
+/// atlas-authored. EXACT match: file `contains` each top-level key (stem-keyed),
+/// `dependencies`/`devDependencies` blocks `contains` each entry key, and each
+/// dependency entry `imports` a global `concept` package node (context
+/// `import`). Plain scalar keys (`name`, `version`) are key nodes only.
+#[test]
+fn package_json_matches_oracle() {
+    check_named("package_json", &fx("package.json"), vec![], vec![]);
+}
+
+/// `tsconfig.json` (config JSON). Fixture is atlas-authored. EXACT match:
+/// `extends` string → global `ref_*` concept anchored to the FILE (`extends`,
+/// context `import`); `compilerOptions` nested object → key nodes (`contains`),
+/// depth-first up to graphify's depth-6 / 500-pair caps.
+#[test]
+fn tsconfig_json_matches_oracle() {
+    check_named("tsconfig_json", &fx("tsconfig.json"), vec![], vec![]);
+}
+
+/// Plain data JSON is deliberately SKIPPED (graphify #1224/#2107/#2108): a
+/// `.json` that is neither an MCP config nor a recognized config/manifest (by
+/// filename or top-level key probe) emits an EMPTY graph, so it does not explode
+/// into orphan key-nodes. Fixture `data.json` (`{"users": […], "count": …}`)
+/// has no recognized key → zero nodes/edges on both sides.
+#[test]
+fn data_json_skipped_matches_oracle() {
+    check_named("data_json", &fx("data.json"), vec![], vec![]);
+}
+
+// ══════════════════════════════════════════════════════════════════════════
+// merged from batch-l
+// ══════════════════════════════════════════════════════════════════════════
+
+// ─────────────────────────────────────────────────────────────────────────────
+// BACKLOG new languages (M2): R, Nix, Solidity, Ada. graphify has NO extractor
+// for these, so there is no oracle. The tests below are HAND-AUTHORED GOLDENS —
+// they document the intended single-file extraction contract for each language.
+// Node ids embed the (absolute) path stem, so we resolve nodes by label and
+// assert edges structurally. External import/call targets are `make_id([name])`,
+// which is path-independent, so those are asserted literally.
+
+/// id of the sole node carrying `label`.
+fn nid_of<'a>(nodes: &'a [atlas_core::Attrs], label: &str) -> String {
+    nodes
+        .iter()
+        .find(|n| n.get("label").and_then(Value::as_str) == Some(label))
+        .unwrap_or_else(|| panic!("no node labelled {label:?}"))
+        .get("id")
+        .and_then(Value::as_str)
+        .unwrap()
+        .to_string()
+}
+
+fn has_edge(edges: &[atlas_core::Attrs], src: &str, rel: &str, tgt: &str) -> bool {
+    edges.iter().any(|e| {
+        e.get("source").and_then(Value::as_str) == Some(src)
+            && e.get("relation").and_then(Value::as_str) == Some(rel)
+            && e.get("target").and_then(Value::as_str) == Some(tgt)
+    })
+}
+
+/// Every edge must carry confidence EXTRACTED (the standalone-module contract).
+fn all_extracted(edges: &[atlas_core::Attrs]) {
+    assert!(edges
+        .iter()
+        .all(|e| e.get("confidence").and_then(Value::as_str) == Some("EXTRACTED")));
+}
+
+/// R — functions + `library()` imports (no classes/inheritance).
+/// file → contains square()/compute(); file → imports dplyr; compute → calls square.
+#[test]
+fn r_backlog_golden() {
+    let src = format!("{}/tests/fixtures/sample.R", env!("CARGO_MANIFEST_DIR"));
+    let g = atlas_extract::extract_file(&src).expect("extract");
+    let file = nid_of(&g.nodes, "sample.R");
+    assert!(g.nodes.iter().any(
+        |n| n.get("label").and_then(Value::as_str) == Some("sample.R")
+            && n.get("source_location").unwrap().is_null()
+    ));
+    let square = nid_of(&g.nodes, "square()");
+    let compute = nid_of(&g.nodes, "compute()");
+    assert!(has_edge(&g.edges, &file, "contains", &square));
+    assert!(has_edge(&g.edges, &file, "contains", &compute));
+    assert!(has_edge(&g.edges, &file, "imports", "dplyr"));
+    assert!(has_edge(&g.edges, &compute, "calls", &square));
+    all_extracted(&g.edges);
+}
+
+/// Nix — attrset bindings + `import` (no classes/inheritance).
+/// file → contains greet()/pkgs/message; file → imports nixpkgs; message → calls greet.
+#[test]
+fn nix_backlog_golden() {
+    let src = format!("{}/tests/fixtures/sample.nix", env!("CARGO_MANIFEST_DIR"));
+    let g = atlas_extract::extract_file(&src).expect("extract");
+    let file = nid_of(&g.nodes, "sample.nix");
+    let greet = nid_of(&g.nodes, "greet()"); // lambda binding → name()
+    let message = nid_of(&g.nodes, "message");
+    assert!(nid_of(&g.nodes, "pkgs").ends_with("pkgs"));
+    assert!(has_edge(&g.edges, &file, "contains", &greet));
+    assert!(has_edge(&g.edges, &file, "contains", &message));
+    assert!(has_edge(&g.edges, &file, "imports", "nixpkgs"));
+    assert!(has_edge(&g.edges, &message, "calls", &greet));
+    all_extracted(&g.edges);
+}
+
+/// Solidity — contracts, functions, `is` inheritance, `import`.
+/// file → contains Base; Base → contains ping(); Token → inherits Base;
+/// file → imports ownable; mint → calls ping.
+#[test]
+fn solidity_backlog_golden() {
+    let src = format!("{}/tests/fixtures/sample.sol", env!("CARGO_MANIFEST_DIR"));
+    let g = atlas_extract::extract_file(&src).expect("extract");
+    let file = nid_of(&g.nodes, "sample.sol");
+    let base = nid_of(&g.nodes, "Base");
+    let token = nid_of(&g.nodes, "Token");
+    let ping = nid_of(&g.nodes, "ping()");
+    let mint = nid_of(&g.nodes, "mint()");
+    assert!(has_edge(&g.edges, &file, "contains", &base));
+    assert!(has_edge(&g.edges, &base, "contains", &ping));
+    assert!(has_edge(&g.edges, &token, "contains", &mint));
+    assert!(has_edge(&g.edges, &token, "inherits", &base));
+    assert!(has_edge(&g.edges, &file, "imports", "ownable"));
+    assert!(has_edge(&g.edges, &mint, "calls", &ping));
+    all_extracted(&g.edges);
+}
+
+/// Ada — packages, subprograms, `with` imports, calls.
+/// file → contains Sample; Sample → contains Square()/Run(); file → imports
+/// ada_text_io; Run → calls Square.
+#[test]
+fn ada_backlog_golden() {
+    let src = format!("{}/tests/fixtures/sample.adb", env!("CARGO_MANIFEST_DIR"));
+    let g = atlas_extract::extract_file(&src).expect("extract");
+    let file = nid_of(&g.nodes, "sample.adb");
+    let pkg = nid_of(&g.nodes, "Sample");
+    let square = nid_of(&g.nodes, "Square()");
+    let run = nid_of(&g.nodes, "Run()");
+    assert!(has_edge(&g.edges, &file, "contains", &pkg));
+    assert!(has_edge(&g.edges, &pkg, "contains", &square));
+    assert!(has_edge(&g.edges, &pkg, "contains", &run));
+    assert!(has_edge(&g.edges, &file, "imports", "ada_text_io"));
+    assert!(has_edge(&g.edges, &run, "calls", &square));
+    all_extracted(&g.edges);
+}
