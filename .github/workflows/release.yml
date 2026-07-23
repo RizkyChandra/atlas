@@ -19,6 +19,9 @@ jobs:
         with:
           fetch-depth: 0
       - uses: dtolnay/rust-toolchain@stable
+        with:
+          # cargo-zigbuild needs each non-host target's std installed.
+          targets: aarch64-unknown-linux-gnu, x86_64-pc-windows-gnu
       # zig is the cross-compiler GoReleaser's rust builder uses via cargo-zigbuild.
       - uses: mlugg/setup-zig@v2
       - uses: goreleaser/goreleaser-action@v6

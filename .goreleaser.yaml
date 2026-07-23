@@ -21,12 +21,14 @@ builds:
     # produces the `atlas` binary.
     flags:
       - --package=atlas-cli
+    # macOS targets are omitted: cross-compiling apple-darwin from the Linux CI
+    # runner needs the macOS SDK (the `xcrun … MacOSX.sdk` failure). These three
+    # cross-compile cleanly with zig from Linux; add darwin later via a macOS
+    # runner + prebuilt builder.
     targets:
       - x86_64-unknown-linux-gnu
-      - x86_64-apple-darwin
-      - x86_64-pc-windows-gnu
       - aarch64-unknown-linux-gnu
-      - aarch64-apple-darwin
+      - x86_64-pc-windows-gnu
 
 # One archive per target: tar.gz everywhere, zip on Windows.
 archives:
@@ -51,10 +53,6 @@ nfpms:
       - deb
       - apk
       - rpm
-
-# One universal binary on macOS instead of separate x86_64/aarch64.
-universal_binaries:
-  - replace: true
 
 # Ship a source archive too.
 source:
