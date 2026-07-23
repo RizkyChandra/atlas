@@ -102,7 +102,7 @@ dependencies = [
 
 [[package]]
 name = "atlas-cli"
-version = "0.1.0"
+version = "0.8.0"
 dependencies = [
  "anyhow",
  "atlas-core",
@@ -118,7 +118,7 @@ dependencies = [
 
 [[package]]
 name = "atlas-core"
-version = "0.1.0"
+version = "0.8.0"
 dependencies = [
  "anyhow",
  "regex",
@@ -129,7 +129,7 @@ dependencies = [
 
 [[package]]
 name = "atlas-export"
-version = "0.1.0"
+version = "0.8.0"
 dependencies = [
  "atlas-core",
  "serde_json",
@@ -137,7 +137,7 @@ dependencies = [
 
 [[package]]
 name = "atlas-extract"
-version = "0.1.0"
+version = "0.8.0"
 dependencies = [
  "atlas-core",
  "regex",
@@ -179,7 +179,7 @@ dependencies = [
 
 [[package]]
 name = "atlas-graph"
-version = "0.1.0"
+version = "0.8.0"
 dependencies = [
  "anyhow",
  "atlas-core",
@@ -189,7 +189,7 @@ dependencies = [
 
 [[package]]
 name = "atlas-ingest"
-version = "0.1.0"
+version = "0.8.0"
 dependencies = [
  "atlas-core",
  "calamine",
@@ -203,7 +203,7 @@ dependencies = [
 
 [[package]]
 name = "atlas-install"
-version = "0.1.0"
+version = "0.8.0"
 dependencies = [
  "anyhow",
  "regex",
@@ -212,7 +212,7 @@ dependencies = [
 
 [[package]]
 name = "atlas-llm"
-version = "0.1.0"
+version = "0.8.0"
 dependencies = [
  "anyhow",
  "reqwest",
@@ -221,7 +221,7 @@ dependencies = [
 
 [[package]]
 name = "atlas-query"
-version = "0.1.0"
+version = "0.8.0"
 dependencies = [
  "anyhow",
  "atlas-core",
@@ -231,7 +231,7 @@ dependencies = [
 
 [[package]]
 name = "atlas-serve"
-version = "0.1.0"
+version = "0.8.0"
 dependencies = [
  "anyhow",
  "atlas-core",
