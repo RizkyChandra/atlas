@@ -1,0 +1,11 @@
+[package]
+name = "atlas-llm"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "atlas LLM backends — direct API path (OpenAI/Anthropic/Gemini/Kimi/DeepSeek/Ollama/Azure/Bedrock + claude CLI), a Rust port of graphify's llm.py"
+
+[dependencies]
+serde_json.workspace = true
+anyhow.workspace = true
+reqwest = { version = "0.12", default-features = false, features = ["blocking", "json", "rustls-tls"] }
