@@ -18,8 +18,11 @@ builds:
   - builder: rust
     binary: atlas
     # This is a Cargo workspace with several crates; build the CLI package that
-    # produces the `atlas` binary.
+    # produces the `atlas` binary. `--release` is required because specifying
+    # `flags` overrides the builder's default release flag (otherwise it builds
+    # the dev profile and the binary lands in target/<t>/debug, not release).
     flags:
+      - --release
       - --package=atlas-cli
     # macOS targets are omitted: cross-compiling apple-darwin from the Linux CI
     # runner needs the macOS SDK (the `xcrun … MacOSX.sdk` failure). These three
