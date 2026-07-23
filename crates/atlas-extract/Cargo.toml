@@ -1,0 +1,15 @@
+[package]
+name = "atlas-extract"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "atlas AST extractor — deterministic code-graph extraction (Python), a Rust port of graphify's extract --code-only"
+
+[dependencies]
+atlas-core = { path = "../atlas-core" }
+serde_json.workspace = true
+tree-sitter = "0.25"
+tree-sitter-python = "0.25"
+
+[dev-dependencies]
+serde_json.workspace = true
