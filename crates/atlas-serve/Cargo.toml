@@ -1,0 +1,17 @@
+[package]
+name = "atlas-serve"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "atlas — MCP server exposing the graph over stdio (Rust port of graphify's serve.py)"
+
+[[bin]]
+name = "atlas-serve"
+path = "src/main.rs"
+
+[dependencies]
+atlas-core = { path = "../atlas-core" }
+atlas-query = { path = "../atlas-query" }
+serde_json.workspace = true
+anyhow.workspace = true
+clap.workspace = true
