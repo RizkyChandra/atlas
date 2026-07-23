@@ -17,6 +17,10 @@ before:
 builds:
   - builder: rust
     binary: atlas
+    # This is a Cargo workspace with several crates; build the CLI package that
+    # produces the `atlas` binary.
+    flags:
+      - --package=atlas-cli
     targets:
       - x86_64-unknown-linux-gnu
       - x86_64-apple-darwin
