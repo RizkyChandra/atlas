@@ -1,0 +1,22 @@
+# atlas — Rust port of graphify (see BACKLOG.md / plan). Single static binary.
+[workspace]
+resolver = "2"
+members = ["crates/atlas-core", "crates/atlas-cli"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+license = "Apache-2.0"
+repository = "https://github.com/Graphify-Labs/atlas"
+
+[workspace.dependencies]
+serde = { version = "1", features = ["derive"] }
+# preserve_order keeps node/edge attribute order identical to the Python (NetworkX)
+# output, so graph.json round-trips losslessly.
+serde_json = { version = "1", features = ["preserve_order", "float_roundtrip"] }
+anyhow = "1"
+clap = { version = "4", features = ["derive"] }
+
+[profile.release]
+lto = true
+strip = true
