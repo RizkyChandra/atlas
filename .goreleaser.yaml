@@ -1,0 +1,72 @@
+# GoReleaser config for atlas — a Rust single-binary release.
+# Modeled on https://github.com/goreleaser/example-rust (the rust builder).
+# yaml-language-server: $schema=https://goreleaser.com/static/schema.json
+version: 2
+
+project_name: atlas
+
+# Hooks run before building: pin stable Rust, install the cross-compiler
+# GoReleaser's rust builder uses, and pre-fetch deps.
+before:
+  hooks:
+    - rustup default stable
+    - cargo install --locked cargo-zigbuild
+    - cargo fetch --locked
+
+# Build the single `atlas` binary (from crates/atlas-cli) for each target.
+builds:
+  - builder: rust
+    binary: atlas
+    targets:
+      - x86_64-unknown-linux-gnu
+      - x86_64-apple-darwin
+      - x86_64-pc-windows-gnu
+      - aarch64-unknown-linux-gnu
+      - aarch64-apple-darwin
+
+# One archive per target: tar.gz everywhere, zip on Windows.
+archives:
+  - formats: [tar.gz]
+    name_template: >-
+      {{ .ProjectName }}_
+      {{- title .Os }}_
+      {{- if eq .Arch "amd64" }}x86_64
+      {{- else if eq .Arch "386" }}i386
+      {{- else }}{{ .Arch }}{{ end }}
+    format_overrides:
+      - goos: windows
+        formats: [zip]
+
+# Linux system packages.
+nfpms:
+  - file_name_template: "{{ .ConventionalFileName }}"
+    maintainer: RizkyChandra <ridusaladaris@gmail.com>
+    description: Turn any folder of code, docs, or media into a queryable knowledge graph.
+    license: Apache-2.0
+    formats:
+      - deb
+      - apk
+      - rpm
+
+# One universal binary on macOS instead of separate x86_64/aarch64.
+universal_binaries:
+  - replace: true
+
+# Ship a source archive too.
+source:
+  enabled: true
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - "^docs:"
+      - "^test:"
+      - "^chore:"
+
+release:
+  footer: >-
+
+    ---
+
+    Released by [GoReleaser](https://github.com/goreleaser/goreleaser).
