@@ -1,0 +1,12 @@
+[package]
+name = "atlas-graph"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "atlas graph intelligence: Louvain communities, god nodes, GRAPH_REPORT.md"
+
+[dependencies]
+atlas-core = { path = "../atlas-core" }
+serde_json.workspace = true
+anyhow.workspace = true
+petgraph.workspace = true

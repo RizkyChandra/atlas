@@ -11,6 +11,6 @@ path = "src/main.rs"
 
 [dependencies]
 atlas-core = { path = "../atlas-core" }
-petgraph = "0.6"
+petgraph.workspace = true
 serde_json.workspace = true
 anyhow.workspace = true

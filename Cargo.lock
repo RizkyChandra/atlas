@@ -97,6 +97,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "atlas-graph"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "atlas-core",
+ "petgraph",
+ "serde_json",
+]
+
+[[package]]
 name = "atlas-query"
 version = "0.1.0"
 dependencies = [

@@ -1,7 +1,7 @@
 # atlas — Rust port of graphify (see BACKLOG.md / plan). Single static binary.
 [workspace]
 resolver = "2"
-members = ["crates/atlas-core", "crates/atlas-cli", "crates/atlas-export", "crates/atlas-query"]
+members = ["crates/atlas-core", "crates/atlas-cli", "crates/atlas-export", "crates/atlas-query", "crates/atlas-graph"]
 
 [workspace.package]
 version = "0.1.0"
@@ -16,6 +16,7 @@ serde = { version = "1", features = ["derive"] }
 serde_json = { version = "1", features = ["preserve_order", "float_roundtrip"] }
 anyhow = "1"
 clap = { version = "4", features = ["derive"] }
+petgraph = "0.6"
 
 [profile.release]
 lto = true
