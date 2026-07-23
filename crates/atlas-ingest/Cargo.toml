@@ -1,0 +1,32 @@
+[package]
+name = "atlas-ingest"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "atlas document/media readers + chunking — turn non-code files (markdown, csv/tsv, pdf, office, ipynb) into doc nodes and text for the semantic pass. Rust port of graphify's ingest/detect doc path."
+
+[features]
+# pdf/office pull heavy transitive deps; keep them opt-in so the core (markdown,
+# csv, ipynb, chunk) always builds. Enabled by default; disable with
+# --no-default-features if a reader crate won't build in your toolchain.
+default = ["pdf", "office"]
+pdf = ["dep:pdf-extract"]
+# docx is an OOXML zip; we read text from word/document.xml directly (zip +
+# regex) rather than the heavier docx-rs model. xlsx via calamine.
+office = ["dep:zip", "dep:calamine"]
+
+[dependencies]
+atlas-core = { path = "../atlas-core" }
+serde_json.workspace = true
+regex = "1"
+csv = "1"
+pdf-extract = { version = "0.7", optional = true }
+zip = { version = "2", default-features = false, features = ["deflate"], optional = true }
+calamine = { version = "0.26", optional = true }
+
+[dev-dependencies]
+serde_json.workspace = true
+# Generate binary fixtures at test time (round-trip): zip builds the .docx/.xlsx
+# OOXML packages, lopdf builds a text PDF.
+zip = { version = "2", default-features = false, features = ["deflate"] }
+lopdf = "0.34"
