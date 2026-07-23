@@ -1,0 +1,10 @@
+[package]
+name = "atlas-export"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "atlas — graph export formats (GraphML, Cypher, SVG, HTML). Rust port of graphify export.py."
+
+[dependencies]
+atlas-core = { path = "../atlas-core" }
+serde_json.workspace = true

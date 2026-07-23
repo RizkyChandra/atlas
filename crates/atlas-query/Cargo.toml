@@ -1,0 +1,16 @@
+[package]
+name = "atlas-query"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "atlas — query/path/explain over a graph.json (Rust port of graphify's query layer)"
+
+[[bin]]
+name = "atlas-query"
+path = "src/main.rs"
+
+[dependencies]
+atlas-core = { path = "../atlas-core" }
+petgraph = "0.6"
+serde_json.workspace = true
+anyhow.workspace = true

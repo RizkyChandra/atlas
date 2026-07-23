@@ -1,7 +1,7 @@
 # atlas — Rust port of graphify (see BACKLOG.md / plan). Single static binary.
 [workspace]
 resolver = "2"
-members = ["crates/atlas-core", "crates/atlas-cli"]
+members = ["crates/atlas-core", "crates/atlas-cli", "crates/atlas-export", "crates/atlas-query"]
 
 [workspace.package]
 version = "0.1.0"
