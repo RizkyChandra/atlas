@@ -171,6 +171,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "atlas-install"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "regex",
+ "serde_json",
+]
+
+[[package]]
 name = "atlas-llm"
 version = "0.1.0"
 dependencies = [

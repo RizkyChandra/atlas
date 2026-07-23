@@ -1,0 +1,11 @@
+[package]
+name = "atlas-install"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "atlas — assistant-skill installers + git hooks. Rust port of graphify install.py / hooks.py."
+
+[dependencies]
+anyhow.workspace = true
+serde_json.workspace = true
+regex = "1"
