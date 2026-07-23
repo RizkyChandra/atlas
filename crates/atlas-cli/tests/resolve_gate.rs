@@ -20,7 +20,10 @@ use std::collections::BTreeSet;
 use std::path::Path;
 use std::process::Command;
 
-const HTTPX_RAW: &str = "/home/yoshirakou/work/graphify/worked/httpx/raw";
+const HTTPX_RAW: &str = concat!(
+    env!("CARGO_MANIFEST_DIR"),
+    "/../../fixtures/graphify/httpx/raw"
+);
 
 #[test]
 fn httpx_pipeline_matches_code_only_oracle() {

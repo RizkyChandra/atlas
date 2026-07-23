@@ -6,23 +6,18 @@ use atlas_core::Graph;
 use serde_json::Value;
 use std::path::PathBuf;
 
-fn worked_dir() -> Option<PathBuf> {
-    // The Python graphify tree is the sibling conformance oracle.
-    for cand in ["../../../graphify/worked", "../../graphify/worked"] {
-        let p = PathBuf::from(cand);
-        if p.is_dir() {
-            return Some(p);
-        }
-    }
-    None
+fn worked_dir() -> PathBuf {
+    // Vendored copies of graphify's `worked/*/graph.json` goldens (hermetic — CI
+    // has no sibling graphify tree). Each subdir holds one `graph.json`.
+    PathBuf::from(concat!(
+        env!("CARGO_MANIFEST_DIR"),
+        "/../../fixtures/graphify"
+    ))
 }
 
 #[test]
 fn worked_goldens_round_trip_losslessly() {
-    let Some(dir) = worked_dir() else {
-        eprintln!("skipping: graphify/worked not found next to atlas");
-        return;
-    };
+    let dir = worked_dir();
     let mut checked = 0;
     for entry in std::fs::read_dir(&dir).unwrap() {
         let gj = entry.unwrap().path().join("graph.json");

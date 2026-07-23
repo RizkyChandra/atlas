@@ -77,7 +77,10 @@ pub(crate) fn xml_escape(s: &str) -> String {
 }
 
 #[cfg(test)]
-pub(crate) const GOLDEN: &str = "/home/yoshirakou/work/graphify/worked/httpx/graph.json";
+pub(crate) const GOLDEN: &str = concat!(
+    env!("CARGO_MANIFEST_DIR"),
+    "/../../fixtures/graphify/httpx/graph.json"
+);
 
 #[cfg(test)]
 pub(crate) fn httpx() -> Graph {

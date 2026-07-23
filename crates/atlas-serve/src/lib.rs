@@ -254,7 +254,10 @@ mod tests {
     use super::*;
     use atlas_query::QGraph;
 
-    const GOLDEN: &str = "/home/yoshirakou/work/graphify/worked/httpx/graph.json";
+    const GOLDEN: &str = concat!(
+        env!("CARGO_MANIFEST_DIR"),
+        "/../../fixtures/graphify/httpx/graph.json"
+    );
 
     fn qg() -> QGraph {
         QGraph::from_file(GOLDEN).expect("load golden httpx graph")

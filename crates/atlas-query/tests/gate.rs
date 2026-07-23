@@ -4,7 +4,10 @@ use atlas_core::Graph as AtlasGraph;
 use atlas_query::QGraph;
 use std::collections::HashSet;
 
-const GOLDEN: &str = "/home/yoshirakou/work/graphify/worked/httpx/graph.json";
+const GOLDEN: &str = concat!(
+    env!("CARGO_MANIFEST_DIR"),
+    "/../../fixtures/graphify/httpx/graph.json"
+);
 
 fn load() -> QGraph {
     QGraph::from_file(GOLDEN).expect("load golden graph.json")

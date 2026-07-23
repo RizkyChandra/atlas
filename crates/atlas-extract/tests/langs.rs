@@ -21,7 +21,10 @@ use serde_json::{Map, Value};
 use std::collections::BTreeMap;
 use std::path::Path;
 
-const GFIX: &str = "/home/yoshirakou/work/graphify/tests/fixtures";
+const GFIX: &str = concat!(
+    env!("CARGO_MANIFEST_DIR"),
+    "/../../fixtures/graphify/samples"
+);
 
 /// A prefix rewrite: any id equal to `raw` becomes `token`; any id starting with
 /// `raw_` becomes `token_<rest>`.
@@ -172,7 +175,10 @@ fn javascript_matches_oracle() {
 #[test]
 fn typescript_matches_oracle() {
     let src = format!("{GFIX}/sample.ts");
-    let dir = make_id([Path::new(&src).parent().unwrap().to_string_lossy().as_ref()]);
+    // GFIX contains `..` (crate-relative); the extractor normalizes import target
+    // paths, so derive the DIR prefix from the normalized parent to match.
+    let src_norm = std::fs::canonicalize(&src).unwrap();
+    let dir = make_id([src_norm.parent().unwrap().to_string_lossy().as_ref()]);
     check(
         "ts",
         &src,

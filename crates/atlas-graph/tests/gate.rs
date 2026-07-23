@@ -7,8 +7,14 @@ use atlas_core::Graph;
 use atlas_graph::{cluster, god_nodes, render_report, Model, DEFAULT_RESOLUTION};
 use std::collections::HashMap;
 
-const GRAPH_JSON: &str = "/home/yoshirakou/work/graphify/worked/httpx/graph.json";
-const GOLDEN_REPORT: &str = "/home/yoshirakou/work/graphify/worked/httpx/GRAPH_REPORT.md";
+const GRAPH_JSON: &str = concat!(
+    env!("CARGO_MANIFEST_DIR"),
+    "/../../fixtures/graphify/httpx/graph.json"
+);
+const GOLDEN_REPORT: &str = concat!(
+    env!("CARGO_MANIFEST_DIR"),
+    "/../../fixtures/graphify/httpx/GRAPH_REPORT.md"
+);
 
 /// Node degree computed directly from the golden's edges (each edge contributes
 /// +1 to both endpoints) — the independent oracle the gate checks against.

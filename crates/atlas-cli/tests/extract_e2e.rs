@@ -7,7 +7,10 @@
 use std::path::{Path, PathBuf};
 use std::process::Command;
 
-const HTTPX_RAW: &str = "/home/yoshirakou/work/graphify/worked/httpx/raw";
+const HTTPX_RAW: &str = concat!(
+    env!("CARGO_MANIFEST_DIR"),
+    "/../../fixtures/graphify/httpx/raw"
+);
 
 fn atlas() -> Command {
     Command::new(env!("CARGO_BIN_EXE_atlas"))

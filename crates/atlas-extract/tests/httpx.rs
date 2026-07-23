@@ -21,7 +21,10 @@ use serde_json::{Map, Value};
 use std::collections::BTreeMap;
 use std::path::Path;
 
-const RAW_DIR: &str = "/home/yoshirakou/work/graphify/worked/httpx/raw";
+const RAW_DIR: &str = concat!(
+    env!("CARGO_MANIFEST_DIR"),
+    "/../../fixtures/graphify/httpx/raw"
+);
 
 /// Map one node/edge map into a path-neutral, order-independent canonical form:
 /// drop `_origin`; rewrite id/source/target so the file-node prefix becomes
