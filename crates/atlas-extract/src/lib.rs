@@ -29,10 +29,16 @@ use std::collections::HashSet;
 use std::path::Path;
 
 mod bash;
+mod dart;
 mod elixir;
 mod engine;
+mod fortran;
 mod go;
+mod julia;
+mod objc;
+mod powershell;
 mod rust_lang;
+mod zig_lang;
 
 pub use engine::Lang;
 
@@ -72,6 +78,18 @@ pub fn extract_file(path: impl AsRef<Path>) -> std::io::Result<ExtractResult> {
         "lua" | "luau" | "toc" => engine::extract(path, &source, Lang::Lua),
         "sh" | "bash" => bash::extract(path, &source),
         "ex" | "exs" => elixir::extract(path, &source),
+        "zig" => zig_lang::extract(path, &source),
+        "ps1" | "psm1" => powershell::extract(path, &source),
+        "m" | "mm" => objc::extract(path, &source),
+        "jl" => julia::extract(path, &source),
+        // Fortran. Lowercase .f* are unpreprocessed (clean anchors). Capital .F*
+        // is lowercased by this match and routed here WITHOUT cpp -P — so its
+        // line anchors differ from graphify's cpp-renumbered oracle (#2092);
+        // out of scope, documented in tests/langs.rs.
+        "f90" | "f95" | "f03" | "f08" | "f" | "for" | "ftn" | "fpp" => {
+            fortran::extract(path, &source)
+        }
+        "dart" => dart::extract(path, &source),
         // Unknown extension: empty graph (graphify returns nothing for these).
         _ => ExtractResult {
             nodes: vec![],

@@ -1,0 +1,366 @@
+{
+  "nodes": [
+    {
+      "id": "sample",
+      "label": "sample.dart",
+      "file_type": "code",
+      "source_file": "sample.dart",
+      "source_location": null,
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_shape",
+      "label": "Shape",
+      "file_type": "code",
+      "source_file": "sample.dart",
+      "source_location": null,
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_drawable",
+      "label": "Drawable",
+      "file_type": "code",
+      "source_file": "sample.dart",
+      "source_location": null,
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_circle",
+      "label": "Circle",
+      "file_type": "code",
+      "source_file": "sample.dart",
+      "source_location": null,
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_square",
+      "label": "Square",
+      "file_type": "code",
+      "source_file": "sample.dart",
+      "source_location": null,
+      "_origin": "ast"
+    },
+    {
+      "id": "comparable",
+      "label": "Comparable",
+      "file_type": "code",
+      "source_file": null,
+      "source_location": null,
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_shapeinfo",
+      "label": "ShapeInfo",
+      "file_type": "code",
+      "source_file": "sample.dart",
+      "source_location": null,
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_shapelist",
+      "label": "ShapeList",
+      "file_type": "code",
+      "source_file": "sample.dart",
+      "source_location": null,
+      "_origin": "ast"
+    },
+    {
+      "id": "typedef",
+      "label": "typedef",
+      "file_type": "code",
+      "source_file": null,
+      "source_location": null,
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_radius",
+      "label": "radius",
+      "file_type": "code",
+      "source_file": "sample.dart",
+      "source_location": null,
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_side",
+      "label": "side",
+      "file_type": "code",
+      "source_file": "sample.dart",
+      "source_location": null,
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_area",
+      "label": "area",
+      "file_type": "code",
+      "source_file": "sample.dart",
+      "source_location": null,
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_draw",
+      "label": "draw",
+      "file_type": "code",
+      "source_file": "sample.dart",
+      "source_location": null,
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_describe",
+      "label": "describe",
+      "file_type": "code",
+      "source_file": "sample.dart",
+      "source_location": null,
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_totalarea",
+      "label": "totalArea",
+      "file_type": "code",
+      "source_file": "sample.dart",
+      "source_location": null,
+      "_origin": "ast"
+    },
+    {
+      "id": "package_flutter_material_dart",
+      "label": "package:flutter/material.dart",
+      "file_type": "code",
+      "source_file": null,
+      "source_location": null,
+      "_origin": "ast"
+    },
+    {
+      "id": "shapes_dart",
+      "label": "shapes.dart",
+      "file_type": "code",
+      "source_file": null,
+      "source_location": null,
+      "_origin": "ast"
+    }
+  ],
+  "edges": [
+    {
+      "source": "sample",
+      "target": "sample_shape",
+      "relation": "defines",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "sample.dart",
+      "source_location": null,
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "sample_drawable",
+      "relation": "defines",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "sample.dart",
+      "source_location": null,
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "sample_circle",
+      "relation": "defines",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "sample.dart",
+      "source_location": null,
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_circle",
+      "target": "sample_shape",
+      "relation": "inherits",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "sample.dart",
+      "source_location": null,
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "sample_square",
+      "relation": "defines",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "sample.dart",
+      "source_location": null,
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_square",
+      "target": "sample_shape",
+      "relation": "inherits",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "sample.dart",
+      "source_location": null,
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_square",
+      "target": "sample_drawable",
+      "relation": "mixes_in",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "sample.dart",
+      "source_location": null,
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_square",
+      "target": "comparable",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "sample.dart",
+      "source_location": null,
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "sample_shapeinfo",
+      "relation": "defines",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "sample.dart",
+      "source_location": null,
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_shapeinfo",
+      "target": "sample_shape",
+      "relation": "extends",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "sample.dart",
+      "source_location": null,
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "sample_shapelist",
+      "relation": "defines",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "sample.dart",
+      "source_location": null,
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "typedef",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "sample.dart",
+      "source_location": null,
+      "weight": 1.0,
+      "context": "variable_type",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "sample_radius",
+      "relation": "defines",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "sample.dart",
+      "source_location": null,
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "sample_side",
+      "relation": "defines",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "sample.dart",
+      "source_location": null,
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "sample_area",
+      "relation": "defines",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "sample.dart",
+      "source_location": null,
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "sample_draw",
+      "relation": "defines",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "sample.dart",
+      "source_location": null,
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "sample_describe",
+      "relation": "defines",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "sample.dart",
+      "source_location": null,
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "sample_totalarea",
+      "relation": "defines",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "sample.dart",
+      "source_location": null,
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "package_flutter_material_dart",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "sample.dart",
+      "source_location": null,
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "shapes_dart",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "sample.dart",
+      "source_location": null,
+      "weight": 1.0,
+      "_origin": "ast"
+    }
+  ],
+  "hyperedges": [],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

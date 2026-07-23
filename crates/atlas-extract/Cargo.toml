@@ -26,6 +26,12 @@ tree-sitter-swift = "0.7.3"
 tree-sitter-lua = "0.5"
 tree-sitter-bash = "0.25"
 tree-sitter-elixir = "0.3"
+tree-sitter-zig = "1.1.2"
+tree-sitter-powershell = "0.26.4"
+tree-sitter-objc = "3.0.2"
+tree-sitter-julia = "0.23.1"
+tree-sitter-fortran = "0.6"
+regex = "1"
 
 [dev-dependencies]
 serde_json.workspace = true

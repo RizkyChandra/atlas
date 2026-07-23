@@ -344,6 +344,106 @@ fn elixir_matches_oracle() {
     check("ex", &src, "sample_elixir", vec![], vec![]);
 }
 
+/// Zig (standalone extractor, tree-sitter-zig 1.1.2 matching the oracle grammar).
+/// Sample is graphify's `sample.zig`. EXACT match: file node, struct/enum/union
+/// type nodes (`contains`), struct methods (`.distance()`→`method`), free
+/// functions (`contains`), `@import("std")`→`imports_from` (deduped to one std
+/// edge; the `std.mem` second import resolves to the same std target), and the
+/// two in-file `calls` (`main`→`add`, `main`→`multiply`). Out of scope
+/// (single-file): member calls (`std.math.sqrt`) resolve to no in-file label and
+/// emit no edge — matching the oracle. Struct fields / enum cases are not nodes
+/// (graphify's zig extractor emits none).
+#[test]
+fn zig_matches_oracle() {
+    let src = format!("{GFIX}/sample.zig");
+    check("zig", &src, "sample_zig", vec![], vec![]);
+}
+
+/// PowerShell (standalone extractor, tree-sitter-powershell 0.26.4 matching the
+/// oracle grammar). Sample is graphify's `sample.ps1`. EXACT match: functions
+/// (`contains`), classes (`contains`), class methods (`.Transform()`→`method`),
+/// `Circle : Shape`→`inherits`, property/param/return type refs to sourceless
+/// stubs (`string`/`void`/`double`, `references`), `using`→`imports_from`
+/// (`System.IO`→`io`, `MyModule`→`mymodule`), and the `Get-Data`→`Process-Items`
+/// in-file `calls`. Out of scope: `.psd1` manifest extraction (not dispatched),
+/// cross-file dot-source/Import-Module resolution.
+#[test]
+fn powershell_matches_oracle() {
+    let src = format!("{GFIX}/sample.ps1");
+    check("ps1", &src, "sample_powershell", vec![], vec![]);
+}
+
+/// Objective-C (standalone extractor, tree-sitter-objc 3.0.2 matching the oracle
+/// grammar). Sample is graphify's `sample.m`. EXACT match: `@interface`/
+/// `@implementation` class nodes + `@protocol` nodes (`contains`), `: NSObject`→
+/// `inherits`, `<SampleDelegate>`/`<Base>` adoption→`implements`, methods
+/// (`-speak`/`-fetch`, sigil-prefixed labels→`method`), `NSString` property→
+/// `references`/field, `#import`→`imports`/import (dangling stub targets), the
+/// same-file selector-suffix `[self speak]`→`calls`, and the self/super
+/// member-send resolver folded in single-file (`initWithName`→`Animal` and
+/// `fetch`→`Dog` as `references`/call with `confidence_score`). Out of scope
+/// (cross-file resolver / god-node guard): `@selector(...)` refs, capitalized-
+/// receiver and local-var-typed (`Foo *f; [f m]`) sends, and full quoted-`#import`
+/// path resolution beyond a same-dir on-disk check.
+#[test]
+fn objc_matches_oracle() {
+    let src = format!("{GFIX}/sample.m");
+    check("m", &src, "sample_objc", vec![], vec![]);
+}
+
+/// Julia (tree-sitter-julia 0.23.1, matching the oracle grammar). EXACT match:
+/// module (`defines`), abstract type + structs (`<:` → inherits, `name::Type`
+/// fields → references[field]), functions and short-form `f(x)=...` (`defines`,
+/// label `name()`), `using`/`import` (bare / scoped `Base.Threads` / relative
+/// `..ParentModule` / selected `import Base: show` → imports), and in-file direct
+/// + `obj.method()` calls. Calls to undefined names (`norm`, `show`) stay
+/// dangling with the file-stem prefix (single-file scope) — the oracle keeps the
+/// temp-dir stem, mapped to FILE via oracle_extra.
+#[test]
+fn julia_matches_oracle() {
+    let src = format!("{GFIX}/sample.jl");
+    check(
+        "jl",
+        &src,
+        "sample_julia",
+        vec![],
+        vec![("tmp_atlas_ora_jl_sample".into(), "FILE")],
+    );
+}
+
+/// Fortran (tree-sitter-fortran 0.6.0, matching the oracle grammar). Fixture is a
+/// plain lowercase `.f90` (NO cpp preprocessing), so the oracle line anchors are
+/// clean and we match exactly — #2092 (cpp -P line renumbering on `.F90`) does
+/// NOT apply here. EXACT match: program/module (`defines`), derived types
+/// (`defines`), subroutines/functions (`defines`, label `name()`), `use`
+/// (`imports`), `type(T)` parameter/result declarations → references[parameter_
+/// type|return_type], and in-file `call foo` + `x = foo(...)` calls (the latter
+/// only when `foo` is a defined procedure, so array indexing can't fake a call).
+/// #2092 status: N/A for this plain `.f90` fixture; a `.F90` path would route
+/// through atlas WITHOUT cpp and diverge from graphify's cpp-renumbered anchors
+/// (documented gap — atlas does not shell out to cpp).
+#[test]
+fn fortran_matches_oracle() {
+    let src = format!("{GFIX}/sample.f90");
+    check("f90", &src, "sample_fortran", vec![], vec![]);
+}
+
+/// Dart (regex-based extractor, matching graphify's regex oracle — graphify does
+/// NOT use tree-sitter for Dart). Fixture is atlas-owned plain Dart. EXACT match:
+/// classes/mixins (`defines`), extends/on → inherits, `with` → mixes_in,
+/// `implements` → implements, extensions (`defines` + extends), top-level/member
+/// vars (`defines` + variable-type references), methods (`defines`), and
+/// import/export. Bare base/mixin/interface stubs collapse onto the real stem-
+/// keyed defs via the shared in-file rewire. DELTA (documented in src/dart.rs):
+/// Flutter/Bloc/Riverpod/navigation in-body heuristics, `@annotation` configures,
+/// and the generic-call `word<Type>(` pass are NOT ported (no Flutter idioms in
+/// this fixture — output is byte-identical to the oracle regardless).
+#[test]
+fn dart_matches_oracle() {
+    let src = format!("{}/tests/fixtures/sample.dart", env!("CARGO_MANIFEST_DIR"));
+    check("dart", &src, "sample_dart", vec![], vec![]);
+}
+
 // ── Bash backlog #2141: calls to functions defined in a sourced file ─────────
 //
 // `sourced/main.sh` does `source ./helpers.sh` then calls `greet` — a function

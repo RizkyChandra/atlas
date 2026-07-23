@@ -1,0 +1,331 @@
+{
+  "nodes": [
+    {
+      "id": "sample",
+      "label": "sample.jl",
+      "file_type": "code",
+      "source_file": "sample.jl",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_geometry",
+      "label": "Geometry",
+      "file_type": "code",
+      "source_file": "sample.jl",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "linearalgebra",
+      "label": "LinearAlgebra",
+      "file_type": "code",
+      "source_file": "sample.jl",
+      "source_location": "L3",
+      "_origin": "ast"
+    },
+    {
+      "id": "base",
+      "label": "Base",
+      "file_type": "code",
+      "source_file": "sample.jl",
+      "source_location": "L4",
+      "_origin": "ast"
+    },
+    {
+      "id": "base_threads",
+      "label": "Base.Threads",
+      "file_type": "code",
+      "source_file": "sample.jl",
+      "source_location": "L5",
+      "_origin": "ast"
+    },
+    {
+      "id": "parentmodule",
+      "label": "ParentModule",
+      "file_type": "code",
+      "source_file": "sample.jl",
+      "source_location": "L6",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_shape",
+      "label": "Shape",
+      "file_type": "code",
+      "source_file": "sample.jl",
+      "source_location": "L8",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_point",
+      "label": "Point",
+      "file_type": "code",
+      "source_file": "sample.jl",
+      "source_location": "L10",
+      "_origin": "ast"
+    },
+    {
+      "id": "float64",
+      "label": "Float64",
+      "file_type": "code",
+      "source_file": "",
+      "source_location": "",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_circle",
+      "label": "Circle",
+      "file_type": "code",
+      "source_file": "sample.jl",
+      "source_location": "L15",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_area",
+      "label": "area()",
+      "file_type": "code",
+      "source_file": "sample.jl",
+      "source_location": "L20",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_distance",
+      "label": "distance()",
+      "file_type": "code",
+      "source_file": "sample.jl",
+      "source_location": "L24",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_perimeter",
+      "label": "perimeter()",
+      "file_type": "code",
+      "source_file": "sample.jl",
+      "source_location": "L28",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_describe",
+      "label": "describe()",
+      "file_type": "code",
+      "source_file": "sample.jl",
+      "source_location": "L30",
+      "_origin": "ast"
+    }
+  ],
+  "edges": [
+    {
+      "source": "sample",
+      "target": "sample_geometry",
+      "relation": "defines",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.jl",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_geometry",
+      "target": "linearalgebra",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.jl",
+      "source_location": "L3",
+      "weight": 1.0,
+      "context": "import",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_geometry",
+      "target": "base",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.jl",
+      "source_location": "L4",
+      "weight": 1.0,
+      "context": "import",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_geometry",
+      "target": "base_threads",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.jl",
+      "source_location": "L5",
+      "weight": 1.0,
+      "context": "import",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_geometry",
+      "target": "parentmodule",
+      "relation": "imports",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.jl",
+      "source_location": "L6",
+      "weight": 1.0,
+      "context": "import",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_geometry",
+      "target": "sample_shape",
+      "relation": "defines",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.jl",
+      "source_location": "L8",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_geometry",
+      "target": "sample_point",
+      "relation": "defines",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.jl",
+      "source_location": "L10",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_point",
+      "target": "sample_shape",
+      "relation": "inherits",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.jl",
+      "source_location": "L10",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_point",
+      "target": "float64",
+      "relation": "references",
+      "context": "field",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.jl",
+      "source_location": "L11",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_geometry",
+      "target": "sample_circle",
+      "relation": "defines",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.jl",
+      "source_location": "L15",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_circle",
+      "target": "sample_shape",
+      "relation": "inherits",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.jl",
+      "source_location": "L15",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_circle",
+      "target": "sample_point",
+      "relation": "references",
+      "context": "field",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.jl",
+      "source_location": "L16",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_circle",
+      "target": "float64",
+      "relation": "references",
+      "context": "field",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.jl",
+      "source_location": "L17",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_geometry",
+      "target": "sample_area",
+      "relation": "defines",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.jl",
+      "source_location": "L20",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_geometry",
+      "target": "sample_distance",
+      "relation": "defines",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.jl",
+      "source_location": "L24",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_geometry",
+      "target": "sample_perimeter",
+      "relation": "defines",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.jl",
+      "source_location": "L28",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_geometry",
+      "target": "sample_describe",
+      "relation": "defines",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.jl",
+      "source_location": "L30",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_distance",
+      "target": "tmp_atlas_ora_jl_sample_norm",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.jl",
+      "source_location": "L25",
+      "weight": 1.0,
+      "context": "call",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_describe",
+      "target": "tmp_atlas_ora_jl_sample_show",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.jl",
+      "source_location": "L31",
+      "weight": 1.0,
+      "context": "call",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_describe",
+      "target": "sample_area",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.jl",
+      "source_location": "L32",
+      "weight": 1.0,
+      "context": "call",
+      "_origin": "ast"
+    }
+  ],
+  "hyperedges": [],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

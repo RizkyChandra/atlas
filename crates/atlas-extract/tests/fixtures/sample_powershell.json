@@ -1,0 +1,360 @@
+{
+  "nodes": [
+    {
+      "id": "sample",
+      "label": "sample.ps1",
+      "file_type": "code",
+      "source_file": "sample.ps1",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_get_data",
+      "label": "Get-Data()",
+      "file_type": "code",
+      "source_file": "sample.ps1",
+      "source_location": "L4",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_process_items",
+      "label": "Process-Items()",
+      "file_type": "code",
+      "source_file": "sample.ps1",
+      "source_location": "L13",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_dataprocessor",
+      "label": "DataProcessor",
+      "file_type": "code",
+      "source_file": "sample.ps1",
+      "source_location": "L18",
+      "_origin": "ast"
+    },
+    {
+      "id": "string",
+      "label": "string",
+      "file_type": "code",
+      "source_file": "",
+      "source_location": "",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_dataprocessor_dataprocessor",
+      "label": ".DataProcessor()",
+      "file_type": "code",
+      "source_file": "sample.ps1",
+      "source_location": "L21",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_dataprocessor_transform",
+      "label": ".Transform()",
+      "file_type": "code",
+      "source_file": "sample.ps1",
+      "source_location": "L25",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_dataprocessor_save",
+      "label": ".Save()",
+      "file_type": "code",
+      "source_file": "sample.ps1",
+      "source_location": "L29",
+      "_origin": "ast"
+    },
+    {
+      "id": "void",
+      "label": "void",
+      "file_type": "code",
+      "source_file": "",
+      "source_location": "",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_shape",
+      "label": "Shape",
+      "file_type": "code",
+      "source_file": "sample.ps1",
+      "source_location": "L34",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_shape_area",
+      "label": ".Area()",
+      "file_type": "code",
+      "source_file": "sample.ps1",
+      "source_location": "L37",
+      "_origin": "ast"
+    },
+    {
+      "id": "double",
+      "label": "double",
+      "file_type": "code",
+      "source_file": "",
+      "source_location": "",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_circle",
+      "label": "Circle",
+      "file_type": "code",
+      "source_file": "sample.ps1",
+      "source_location": "L42",
+      "_origin": "ast"
+    },
+    {
+      "id": "sample_circle_area",
+      "label": ".Area()",
+      "file_type": "code",
+      "source_file": "sample.ps1",
+      "source_location": "L45",
+      "_origin": "ast"
+    }
+  ],
+  "edges": [
+    {
+      "source": "sample",
+      "target": "io",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.ps1",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "mymodule",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.ps1",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "sample_get_data",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.ps1",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "sample_process_items",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.ps1",
+      "source_location": "L13",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "sample_dataprocessor",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.ps1",
+      "source_location": "L18",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_dataprocessor",
+      "target": "string",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.ps1",
+      "source_location": "L19",
+      "weight": 1.0,
+      "context": "field",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_dataprocessor",
+      "target": "sample_dataprocessor_dataprocessor",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.ps1",
+      "source_location": "L21",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_dataprocessor_dataprocessor",
+      "target": "string",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.ps1",
+      "source_location": "L21",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_dataprocessor",
+      "target": "sample_dataprocessor_transform",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.ps1",
+      "source_location": "L25",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_dataprocessor_transform",
+      "target": "string",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.ps1",
+      "source_location": "L25",
+      "weight": 1.0,
+      "context": "return_type",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_dataprocessor",
+      "target": "sample_dataprocessor_save",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.ps1",
+      "source_location": "L29",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_dataprocessor_save",
+      "target": "void",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.ps1",
+      "source_location": "L29",
+      "weight": 1.0,
+      "context": "return_type",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_dataprocessor_save",
+      "target": "string",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.ps1",
+      "source_location": "L29",
+      "weight": 1.0,
+      "context": "parameter_type",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "sample_shape",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.ps1",
+      "source_location": "L34",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_shape",
+      "target": "string",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.ps1",
+      "source_location": "L35",
+      "weight": 1.0,
+      "context": "field",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_shape",
+      "target": "sample_shape_area",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.ps1",
+      "source_location": "L37",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_shape_area",
+      "target": "double",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.ps1",
+      "source_location": "L37",
+      "weight": 1.0,
+      "context": "return_type",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample",
+      "target": "sample_circle",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.ps1",
+      "source_location": "L42",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_circle",
+      "target": "sample_shape",
+      "relation": "inherits",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.ps1",
+      "source_location": "L42",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_circle",
+      "target": "double",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.ps1",
+      "source_location": "L43",
+      "weight": 1.0,
+      "context": "field",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_circle",
+      "target": "sample_circle_area",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.ps1",
+      "source_location": "L45",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_circle_area",
+      "target": "double",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.ps1",
+      "source_location": "L45",
+      "weight": 1.0,
+      "context": "return_type",
+      "_origin": "ast"
+    },
+    {
+      "source": "sample_get_data",
+      "target": "sample_process_items",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "sample.ps1",
+      "source_location": "L9",
+      "weight": 1.0,
+      "_origin": "ast"
+    }
+  ],
+  "hyperedges": [],
+  "input_tokens": 0,
+  "output_tokens": 0
+}
